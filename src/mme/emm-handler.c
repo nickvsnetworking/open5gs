@@ -34,7 +34,7 @@
 #define OGS_LOG_DOMAIN __emm_log_domain
 
 int emm_handle_attach_request(
-        mme_ue_t *mme_ue, ogs_nas_attach_request_t *attach_request)
+        mme_ue_t *mme_ue, ogs_nas_eps_attach_request_t *attach_request)
 {
     int served_tai_index = 0;
 
@@ -94,7 +94,8 @@ int emm_handle_attach_request(
     ogs_debug("    OLD E_CGI[PLMN_ID:%06x,CELL_ID:%d]",
             ogs_plmn_id_hexdump(&mme_ue->e_cgi.plmn_id), mme_ue->e_cgi.cell_id);
     ogs_debug("    TAI[PLMN_ID:%06x,TAC:%d]",
-            ogs_plmn_id_hexdump(&enb_ue->saved.tai.plmn_id), enb_ue->saved.tai.tac);
+            ogs_plmn_id_hexdump(&enb_ue->saved.tai.plmn_id),
+            enb_ue->saved.tai.tac);
     ogs_debug("    E_CGI[PLMN_ID:%06x,CELL_ID:%d]",
             ogs_plmn_id_hexdump(&enb_ue->saved.e_cgi.plmn_id),
             enb_ue->saved.e_cgi.cell_id);
@@ -139,7 +140,8 @@ int emm_handle_attach_request(
                 sizeof(attach_request->ms_network_capability));
     }
 
-    if (mme_selected_int_algorithm(mme_ue) == OGS_NAS_SECURITY_ALGORITHMS_EIA0) {
+    if (mme_selected_int_algorithm(mme_ue) ==
+            OGS_NAS_SECURITY_ALGORITHMS_EIA0) {
         ogs_warn("Encrypt[0x%x] can be skipped with EEA0, "
             "but Integrity[0x%x] cannot be bypassed with EIA0",
             mme_selected_enc_algorithm(mme_ue), 
@@ -184,19 +186,21 @@ int emm_handle_attach_request(
         break;
     }
 
-    OGS_NAS_STORE_DATA(&mme_ue->pdn_connectivity_request, esm_message_container);
+    OGS_NAS_STORE_DATA(
+            &mme_ue->pdn_connectivity_request, esm_message_container);
 
     return OGS_OK;
 }
 
 int emm_handle_attach_complete(
-    mme_ue_t *mme_ue, ogs_nas_attach_complete_t *attach_complete)
+    mme_ue_t *mme_ue, ogs_nas_eps_attach_complete_t *attach_complete)
 {
     int rv;
     ogs_pkbuf_t *emmbuf = NULL;
 
     ogs_nas_eps_message_t message;
-    ogs_nas_emm_information_t *emm_information = &message.emm.emm_information;
+    ogs_nas_eps_emm_information_t *emm_information =
+        &message.emm.emm_information;
     ogs_nas_time_zone_and_time_t *universal_time_and_local_time_zone =
         &emm_information->universal_time_and_local_time_zone;
     ogs_nas_daylight_saving_time_t *network_daylight_saving_time = 
@@ -220,7 +224,8 @@ int emm_handle_attach_complete(
         local.tm_hour, local.tm_min, local.tm_sec,
         (int)local.tm_gmtoff);
 
-    rv = nas_eps_send_emm_to_esm(mme_ue, &attach_complete->esm_message_container);
+    rv = nas_eps_send_emm_to_esm(
+            mme_ue, &attach_complete->esm_message_container);
     if (rv != OGS_OK) {
         ogs_error("nas_eps_send_emm_to_esm() failed");
         return OGS_ERROR;
@@ -288,7 +293,7 @@ int emm_handle_attach_complete(
 }
 
 int emm_handle_identity_response(
-        mme_ue_t *mme_ue, ogs_nas_identity_response_t *identity_response)
+        mme_ue_t *mme_ue, ogs_nas_eps_identity_response_t *identity_response)
 {
     ogs_nas_mobile_identity_t *mobile_identity = NULL;
     enb_ue_t *enb_ue = NULL;
@@ -328,7 +333,7 @@ int emm_handle_identity_response(
 }
 
 int emm_handle_detach_request(
-        mme_ue_t *mme_ue, ogs_nas_detach_request_from_ue_t *detach_request)
+        mme_ue_t *mme_ue, ogs_nas_eps_detach_request_from_ue_t *detach_request)
 {
     ogs_nas_detach_type_t *detach_type = NULL;
 
@@ -371,7 +376,7 @@ int emm_handle_detach_request(
 }
 
 int emm_handle_service_request(
-        mme_ue_t *mme_ue, ogs_nas_service_request_t *service_request)
+        mme_ue_t *mme_ue, ogs_nas_eps_service_request_t *service_request)
 {
     ogs_nas_ksi_and_sequence_number_t *ksi_and_sequence_number =
                     &service_request->ksi_and_sequence_number;
@@ -415,8 +420,8 @@ int emm_handle_service_request(
     return OGS_OK;
 }
 
-int emm_handle_tau_request(
-        mme_ue_t *mme_ue, ogs_nas_tracking_area_update_request_t *tau_request)
+int emm_handle_tau_request(mme_ue_t *mme_ue,
+        ogs_nas_eps_tracking_area_update_request_t *tau_request)
 {
     int served_tai_index = 0;
 
@@ -474,7 +479,8 @@ int emm_handle_tau_request(
     ogs_debug("    OLD E_CGI[PLMN_ID:%06x,CELL_ID:%d]",
             ogs_plmn_id_hexdump(&mme_ue->e_cgi.plmn_id), mme_ue->e_cgi.cell_id);
     ogs_debug("    TAI[PLMN_ID:%06x,TAC:%d]",
-            ogs_plmn_id_hexdump(&enb_ue->saved.tai.plmn_id), enb_ue->saved.tai.tac);
+            ogs_plmn_id_hexdump(&enb_ue->saved.tai.plmn_id),
+            enb_ue->saved.tai.tac);
     ogs_debug("    E_CGI[PLMN_ID:%06x,CELL_ID:%d]",
             ogs_plmn_id_hexdump(&enb_ue->saved.e_cgi.plmn_id),
             enb_ue->saved.e_cgi.cell_id);
@@ -551,7 +557,7 @@ int emm_handle_tau_request(
 }
 
 int emm_handle_extended_service_request(mme_ue_t *mme_ue,
-        ogs_nas_extended_service_request_t *extended_service_request)
+        ogs_nas_eps_extended_service_request_t *extended_service_request)
 {
     int served_tai_index = 0;
 
@@ -596,7 +602,8 @@ int emm_handle_extended_service_request(mme_ue_t *mme_ue,
     ogs_debug("    OLD E_CGI[PLMN_ID:%06x,CELL_ID:%d]",
             ogs_plmn_id_hexdump(&mme_ue->e_cgi.plmn_id), mme_ue->e_cgi.cell_id);
     ogs_debug("    TAI[PLMN_ID:%06x,TAC:%d]",
-            ogs_plmn_id_hexdump(&enb_ue->saved.tai.plmn_id), enb_ue->saved.tai.tac);
+            ogs_plmn_id_hexdump(&enb_ue->saved.tai.plmn_id),
+            enb_ue->saved.tai.tac);
     ogs_debug("    E_CGI[PLMN_ID:%06x,CELL_ID:%d]",
             ogs_plmn_id_hexdump(&enb_ue->saved.e_cgi.plmn_id),
             enb_ue->saved.e_cgi.cell_id);
@@ -633,7 +640,7 @@ int emm_handle_extended_service_request(mme_ue_t *mme_ue,
 }
 
 int emm_handle_security_mode_complete(mme_ue_t *mme_ue,
-    ogs_nas_security_mode_complete_t *security_mode_complete)
+    ogs_nas_eps_security_mode_complete_t *security_mode_complete)
 {
     ogs_nas_mobile_identity_t *imeisv = &security_mode_complete->imeisv;
 

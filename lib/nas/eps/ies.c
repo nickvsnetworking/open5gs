@@ -28,8 +28,8 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.1.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-22 16:36:19.138766 by acetcom
- * from 24301-d80.docx
+ * Created on: 2020-05-22 16:44:51.835164 by acetcom
+ * from 24501-g41.docx
  ******************************************************************************/
 
 #include "ogs-nas-eps.h"

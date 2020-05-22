@@ -510,7 +510,7 @@ void emm_state_authentication(ogs_fsm_t *s, mme_event_t *e)
         switch (message->emm.h.message_type) {
         case OGS_NAS_EPS_AUTHENTICATION_RESPONSE:
         {
-            ogs_nas_authentication_response_t *authentication_response =
+            ogs_nas_eps_authentication_response_t *authentication_response =
                 &message->emm.authentication_response;
             ogs_nas_authentication_response_parameter_t
                 *authentication_response_parameter =
@@ -541,7 +541,7 @@ void emm_state_authentication(ogs_fsm_t *s, mme_event_t *e)
         }
         case OGS_NAS_EPS_AUTHENTICATION_FAILURE:
         {
-            ogs_nas_authentication_failure_t *authentication_failure =
+            ogs_nas_eps_authentication_failure_t *authentication_failure =
                 &message->emm.authentication_failure;
             ogs_nas_authentication_failure_parameter_t
                 *authentication_failure_parameter = 

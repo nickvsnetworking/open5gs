@@ -29,7 +29,7 @@
 #define OGS_LOG_DOMAIN __esm_log_domain
 
 int esm_handle_pdn_connectivity_request(mme_bearer_t *bearer, 
-        ogs_nas_pdn_connectivity_request_t *req)
+        ogs_nas_eps_pdn_connectivity_request_t *req)
 {
     mme_ue_t *mme_ue = NULL;
     mme_sess_t *sess = NULL;
@@ -104,7 +104,7 @@ int esm_handle_pdn_connectivity_request(mme_bearer_t *bearer,
 }
 
 int esm_handle_information_response(mme_sess_t *sess, 
-        ogs_nas_esm_information_response_t *rsp)
+        ogs_nas_eps_esm_information_response_t *rsp)
 {
     mme_ue_t *mme_ue = NULL;
 

@@ -551,7 +551,7 @@ for (k, v) in sorted_msg_list:
     for i, ie in enumerate([ies for ies in msg_list[k]["ies"] if ies["presence"] == "O"]):
         f.write("\n#define OGS_NAS_5GS_%s_%s_TYPE 0x%s" % (v_upper(k), v_upper(ie["value"]), re.sub('-', '0', ie["iei"])))
 
-    f.write("\n\ntypedef struct ogs_nas_%s_s {\n" % v_lower(k))
+    f.write("\n\ntypedef struct ogs_nas_5gs_%s_s {\n" % v_lower(k))
 
     mandatory_fields = False;
     optional_fields = False;
@@ -568,7 +568,7 @@ for (k, v) in sorted_msg_list:
         f.write("    ogs_nas_" + v_lower(ie["type"]) + "_t " + \
                 get_value(ie["value"]) + ";\n")
 
-    f.write("} ogs_nas_%s_t;\n\n" % v_lower(k))
+    f.write("} ogs_nas_5gs_%s_t;\n\n" % v_lower(k))
 
 f.write("\n")
 
@@ -582,7 +582,7 @@ for (k, v) in sorted_msg_list:
     if len(msg_list[k]["ies"]) == 0:
         continue;
     if float(msg_list[k]["type"]) < 192:
-        f.write("        ogs_nas_%s_t %s;\n" % (v_lower(k), get_value(k)))
+        f.write("        ogs_nas_5gs_%s_t %s;\n" % (v_lower(k), get_value(k)))
 f.write("""    };
 } ogs_nas_5gmm_message_t;
 
@@ -596,7 +596,7 @@ for (k, v) in sorted_msg_list:
     if len(msg_list[k]["ies"]) == 0:
         continue;
     if float(msg_list[k]["type"]) >= 192:
-        f.write("        ogs_nas_%s_t %s;\n" % (v_lower(k), get_value(k)))
+        f.write("        ogs_nas_5gs_%s_t %s;\n" % (v_lower(k), get_value(k)))
 
 f.write("""    };
 } ogs_nas_5gsm_message_t;
@@ -647,9 +647,9 @@ for (k, v) in sorted_msg_list:
 
     f.write("int ogs_nas_5gs_decode_%s(ogs_nas_5gs_message_t *message, ogs_pkbuf_t *pkbuf)\n{\n" % v_lower(k))
     if float(msg_list[k]["type"]) < 192:
-        f.write("    ogs_nas_%s_t *%s = &message->gmm.%s;\n" % (v_lower(k), get_value(k), get_value(k)))
+        f.write("    ogs_nas_5gs_%s_t *%s = &message->gmm.%s;\n" % (v_lower(k), get_value(k), get_value(k)))
     else:
-        f.write("    ogs_nas_%s_t *%s = &message->gsm.%s;\n" % (v_lower(k), get_value(k), get_value(k)))
+        f.write("    ogs_nas_5gs_%s_t *%s = &message->gsm.%s;\n" % (v_lower(k), get_value(k), get_value(k)))
     f.write("    int decoded = 0;\n")
     f.write("    int size = 0;\n\n")
     f.write("    ogs_trace(\"[NAS] Decode %s\\n\");\n\n" % v_upper(k))
@@ -800,9 +800,9 @@ for (k, v) in sorted_msg_list:
 
     f.write("int ogs_nas_5gs_encode_%s(ogs_pkbuf_t *pkbuf, ogs_nas_5gs_message_t *message)\n{\n" % v_lower(k))
     if float(msg_list[k]["type"]) < 192:
-        f.write("    ogs_nas_%s_t *%s = &message->gmm.%s;\n" % (v_lower(k), get_value(k), get_value(k)))
+        f.write("    ogs_nas_5gs_%s_t *%s = &message->gmm.%s;\n" % (v_lower(k), get_value(k), get_value(k)))
     else:
-        f.write("    ogs_nas_%s_t *%s = &message->gsm.%s;\n" % (v_lower(k), get_value(k), get_value(k)))
+        f.write("    ogs_nas_5gs_%s_t *%s = &message->gsm.%s;\n" % (v_lower(k), get_value(k), get_value(k)))
     f.write("    int encoded = 0;\n")
     f.write("    int size = 0;\n\n")
     f.write("    ogs_trace(\"[NAS] Encode %s\");\n\n" % v_upper(k))

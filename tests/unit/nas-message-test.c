@@ -66,7 +66,7 @@ static void ogs_nas_eps_message_test2(abts_case *tc, void *data)
     char esm_buffer[50];
 
     ogs_nas_eps_message_t message;
-    ogs_nas_attach_accept_t *attach_accept = &message.emm.attach_accept;
+    ogs_nas_eps_attach_accept_t *attach_accept = &message.emm.attach_accept;
     tai0_list_t tai0_list;
     tai2_list_t tai2_list;
     ogs_plmn_id_t plmn_id;
@@ -162,7 +162,7 @@ static void ogs_nas_eps_message_test4(abts_case *tc, void *data)
     char buffer[3];
 
     ogs_nas_eps_message_t message;
-    ogs_nas_attach_reject_t *attach_reject = &message.emm.attach_reject;
+    ogs_nas_eps_attach_reject_t *attach_reject = &message.emm.attach_reject;
 
     ogs_pkbuf_t *pkbuf = NULL;
     int rv;
@@ -201,7 +201,8 @@ static void ogs_nas_eps_message_test6(abts_case *tc, void *data)
     char hexbuf[OGS_MAX_SDU_LEN];
 
     ogs_nas_eps_message_t message;
-    ogs_nas_identity_request_t *identity_request = &message.emm.identity_request;
+    ogs_nas_eps_identity_request_t *identity_request =
+        &message.emm.identity_request;
     ogs_pkbuf_t *pkbuf;
     int rv;
 
@@ -231,7 +232,8 @@ static void ogs_nas_eps_message_test7(abts_case *tc, void *data)
     char buffer[11];
 
     ogs_nas_eps_message_t message;
-    ogs_nas_identity_response_t *identity_response = &message.emm.identity_response;
+    ogs_nas_eps_identity_response_t *identity_response =
+        &message.emm.identity_response;
 
     ogs_pkbuf_t *pkbuf = NULL;
     int rv;
@@ -278,7 +280,8 @@ static void ogs_nas_eps_message_test8(abts_case *tc, void *data)
     ogs_pkbuf_t *pkbuf;
     int rv;
     char hexbuf[OGS_MAX_SDU_LEN];
-    ogs_nas_service_request_t *service_request = &message.emm.service_request;
+    ogs_nas_eps_service_request_t *service_request =
+        &message.emm.service_request;
     ogs_nas_ksi_and_sequence_number_t *ksi_and_sequence_number = 
         &service_request->ksi_and_sequence_number;
 

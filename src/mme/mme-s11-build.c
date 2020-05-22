@@ -742,8 +742,8 @@ ogs_pkbuf_t *mme_s11_build_bearer_resource_command(
     ogs_gtp_message_t gtp_message;
     ogs_gtp_bearer_resource_command_t *cmd =
         &gtp_message.bearer_resource_command;
-    ogs_nas_bearer_resource_allocation_request_t *allocation = NULL;
-    ogs_nas_bearer_resource_modification_request_t *modification = NULL;
+    ogs_nas_eps_bearer_resource_allocation_request_t *allocation = NULL;
+    ogs_nas_eps_bearer_resource_modification_request_t *modification = NULL;
 
     ogs_nas_eps_quality_of_service_t *qos = NULL;
     ogs_nas_traffic_flow_aggregate_description_t *tad = NULL;

@@ -2472,7 +2472,7 @@ static void build_bearer_resource_modification_request(ogs_pkbuf_t **pkbuf,
     ogs_pkbuf_t *emmbuf = NULL;
 
     ogs_nas_eps_message_t message;
-    ogs_nas_bearer_resource_modification_request_t
+    ogs_nas_eps_bearer_resource_modification_request_t
         *req = &message.esm.bearer_resource_modification_request;
     ogs_nas_traffic_flow_aggregate_description_t *tad =
         &req->traffic_flow_aggregate;

@@ -2335,9 +2335,9 @@ mme_ue_t *mme_ue_find_by_teid(uint32_t teid)
 mme_ue_t *mme_ue_find_by_message(ogs_nas_eps_message_t *message)
 {
     mme_ue_t *mme_ue = NULL;
-    ogs_nas_attach_request_t *attach_request = NULL;
-    ogs_nas_tracking_area_update_request_t *tau_request = NULL;
-    ogs_nas_extended_service_request_t *extended_service_request = NULL;
+    ogs_nas_eps_attach_request_t *attach_request = NULL;
+    ogs_nas_eps_tracking_area_update_request_t *tau_request = NULL;
+    ogs_nas_eps_extended_service_request_t *extended_service_request = NULL;
     ogs_nas_eps_mobile_identity_t *eps_mobile_identity = NULL;
     ogs_nas_mobile_identity_t *mobile_identity = NULL;
 
@@ -2870,7 +2870,7 @@ mme_bearer_t *mme_bearer_find_or_add_by_message(
     }
 
     if (message->esm.h.message_type == OGS_NAS_EPS_PDN_DISCONNECT_REQUEST) {
-        ogs_nas_pdn_disconnect_request_t *pdn_disconnect_request = 
+        ogs_nas_eps_pdn_disconnect_request_t *pdn_disconnect_request = 
             &message->esm.pdn_disconnect_request;
         ogs_nas_linked_eps_bearer_identity_t *linked_eps_bearer_identity =
             &pdn_disconnect_request->linked_eps_bearer_identity;
@@ -2887,7 +2887,7 @@ mme_bearer_t *mme_bearer_find_or_add_by_message(
         }
     } else if (message->esm.h.message_type ==
             OGS_NAS_EPS_BEARER_RESOURCE_ALLOCATION_REQUEST) {
-        ogs_nas_bearer_resource_allocation_request_t
+        ogs_nas_eps_bearer_resource_allocation_request_t
             *bearer_allocation_request =
                 &message->esm.bearer_resource_allocation_request;
         ogs_nas_linked_eps_bearer_identity_t *linked_eps_bearer_identity =
@@ -2905,7 +2905,7 @@ mme_bearer_t *mme_bearer_find_or_add_by_message(
         }
     } else if (message->esm.h.message_type ==
             OGS_NAS_EPS_BEARER_RESOURCE_MODIFICATION_REQUEST) {
-        ogs_nas_bearer_resource_modification_request_t
+        ogs_nas_eps_bearer_resource_modification_request_t
             *bearer_modification_request =
                 &message->esm.bearer_resource_modification_request;
         ogs_nas_linked_eps_bearer_identity_t *linked_eps_bearer_identity =
@@ -2932,7 +2932,7 @@ mme_bearer_t *mme_bearer_find_or_add_by_message(
     }
 
     if (message->esm.h.message_type == OGS_NAS_EPS_PDN_CONNECTIVITY_REQUEST) {
-        ogs_nas_pdn_connectivity_request_t *pdn_connectivity_request =
+        ogs_nas_eps_pdn_connectivity_request_t *pdn_connectivity_request =
             &message->esm.pdn_connectivity_request;
         if (pdn_connectivity_request->presencemask &
                 OGS_NAS_EPS_PDN_CONNECTIVITY_REQUEST_ACCESS_POINT_NAME_PRESENT)

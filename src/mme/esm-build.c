@@ -29,7 +29,7 @@ ogs_pkbuf_t *esm_build_pdn_connectivity_reject(
 {
     mme_ue_t *mme_ue = NULL;
     ogs_nas_eps_message_t message;
-    ogs_nas_pdn_connectivity_reject_t *pdn_connectivity_reject =
+    ogs_nas_eps_pdn_connectivity_reject_t *pdn_connectivity_reject =
             &message.esm.pdn_connectivity_reject;
 
     ogs_assert(sess);
@@ -92,7 +92,7 @@ ogs_pkbuf_t *esm_build_activate_default_bearer_context_request(
         mme_sess_t *sess)
 {
     ogs_nas_eps_message_t message;
-    ogs_nas_activate_default_eps_bearer_context_request_t 
+    ogs_nas_eps_activate_default_eps_bearer_context_request_t 
         *activate_default_eps_bearer_context_request =
             &message.esm.activate_default_eps_bearer_context_request;
     ogs_nas_eps_quality_of_service_t *eps_qos =
@@ -249,7 +249,7 @@ ogs_pkbuf_t *esm_build_activate_dedicated_bearer_context_request(
     mme_bearer_t *linked_bearer = NULL;
 
     ogs_nas_eps_message_t message;
-    ogs_nas_activate_dedicated_eps_bearer_context_request_t 
+    ogs_nas_eps_activate_dedicated_eps_bearer_context_request_t 
         *activate_dedicated_eps_bearer_context_request =
             &message.esm.activate_dedicated_eps_bearer_context_request;
     ogs_nas_linked_eps_bearer_identity_t *linked_ebi =
@@ -300,7 +300,7 @@ ogs_pkbuf_t *esm_build_modify_bearer_context_request(
     mme_sess_t *sess = NULL;
 
     ogs_nas_eps_message_t message;
-    ogs_nas_modify_eps_bearer_context_request_t 
+    ogs_nas_eps_modify_eps_bearer_context_request_t 
         *modify_eps_bearer_context_request =
             &message.esm.modify_eps_bearer_context_request;
     ogs_nas_eps_quality_of_service_t *new_eps_qos =
@@ -354,7 +354,7 @@ ogs_pkbuf_t *esm_build_deactivate_bearer_context_request(
     mme_sess_t *sess = NULL;
 
     ogs_nas_eps_message_t message;
-    ogs_nas_deactivate_eps_bearer_context_request_t 
+    ogs_nas_eps_deactivate_eps_bearer_context_request_t 
         *deactivate_eps_bearer_context_request =
             &message.esm.deactivate_eps_bearer_context_request;
     
@@ -391,7 +391,7 @@ ogs_pkbuf_t *esm_build_bearer_resource_allocation_reject(
     mme_sess_t *sess = NULL;
 
     ogs_nas_eps_message_t message;
-    ogs_nas_bearer_resource_allocation_reject_t
+    ogs_nas_eps_bearer_resource_allocation_reject_t
         *bearer_resource_allocation_reject =
             &message.esm.bearer_resource_allocation_reject;
 
@@ -433,7 +433,7 @@ ogs_pkbuf_t *esm_build_bearer_resource_modification_reject(
     mme_sess_t *sess = NULL;
 
     ogs_nas_eps_message_t message;
-    ogs_nas_bearer_resource_modification_reject_t
+    ogs_nas_eps_bearer_resource_modification_reject_t
         *bearer_resource_modification_reject =
             &message.esm.bearer_resource_modification_reject;
 

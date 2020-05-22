@@ -28,8 +28,8 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.1.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-22 16:36:19.145086 by acetcom
- * from 24301-d80.docx
+ * Created on: 2020-05-22 16:44:51.841502 by acetcom
+ * from 24501-g41.docx
  ******************************************************************************/
 
 #if !defined(OGS_NAS_INSIDE) && !defined(OGS_NAS_COMPILATION)
@@ -164,7 +164,7 @@ ED2(uint8_t security_header_type:4;,
 #define OGS_NAS_EPS_ATTACH_REQUEST_T3412_EXTENDED_VALUE_TYPE 0x5E
 #define OGS_NAS_EPS_ATTACH_REQUEST_EXTENDED_DRX_PARAMETERS_TYPE 0x6E
 
-typedef struct ogs_nas_attach_request_s {
+typedef struct ogs_nas_eps_attach_request_s {
     /* Mandatory fields */
     ogs_nas_eps_attach_type_t eps_attach_type;
     ogs_nas_eps_mobile_identity_t eps_mobile_identity;
@@ -192,7 +192,7 @@ typedef struct ogs_nas_attach_request_s {
     ogs_nas_gprs_timer_2_t t3324_value;
     ogs_nas_gprs_timer_3_t t3412_extended_value;
     ogs_nas_extended_drx_parameters_t extended_drx_parameters;
-} ogs_nas_attach_request_t;
+} ogs_nas_eps_attach_request_t;
 
 
 /*******************************************************
@@ -225,7 +225,7 @@ typedef struct ogs_nas_attach_request_s {
 #define OGS_NAS_EPS_ATTACH_ACCEPT_T3324_VALUE_TYPE 0x6A
 #define OGS_NAS_EPS_ATTACH_ACCEPT_EXTENDED_DRX_PARAMETERS_TYPE 0x6E
 
-typedef struct ogs_nas_attach_accept_s {
+typedef struct ogs_nas_eps_attach_accept_s {
     /* Mandatory fields */
     ogs_nas_eps_attach_result_t eps_attach_result;
     ogs_nas_gprs_timer_t t3412_value;
@@ -247,17 +247,17 @@ typedef struct ogs_nas_attach_accept_s {
     ogs_nas_gprs_timer_3_t t3412_extended_value;
     ogs_nas_gprs_timer_2_t t3324_value;
     ogs_nas_extended_drx_parameters_t extended_drx_parameters;
-} ogs_nas_attach_accept_t;
+} ogs_nas_eps_attach_accept_t;
 
 
 /*******************************************************
  * ATTACH COMPLETE
  ******************************************************/
 
-typedef struct ogs_nas_attach_complete_s {
+typedef struct ogs_nas_eps_attach_complete_s {
     /* Mandatory fields */
     ogs_nas_esm_message_container_t esm_message_container;
-} ogs_nas_attach_complete_t;
+} ogs_nas_eps_attach_complete_t;
 
 
 /*******************************************************
@@ -272,7 +272,7 @@ typedef struct ogs_nas_attach_complete_s {
 #define OGS_NAS_EPS_ATTACH_REJECT_T3402_VALUE_TYPE 0x16
 #define OGS_NAS_EPS_ATTACH_REJECT_EXTENDED_EMM_CAUSE_TYPE 0xA0
 
-typedef struct ogs_nas_attach_reject_s {
+typedef struct ogs_nas_eps_attach_reject_s {
     /* Mandatory fields */
     ogs_nas_emm_cause_t emm_cause;
 
@@ -282,18 +282,18 @@ typedef struct ogs_nas_attach_reject_s {
     ogs_nas_gprs_timer_2_t t3346_value;
     ogs_nas_gprs_timer_2_t t3402_value;
     ogs_nas_extended_emm_cause_t extended_emm_cause;
-} ogs_nas_attach_reject_t;
+} ogs_nas_eps_attach_reject_t;
 
 
 /*******************************************************
  * DETACH REQUEST FROM UE
  ******************************************************/
 
-typedef struct ogs_nas_detach_request_from_ue_s {
+typedef struct ogs_nas_eps_detach_request_from_ue_s {
     /* Mandatory fields */
     ogs_nas_detach_type_t detach_type;
     ogs_nas_eps_mobile_identity_t eps_mobile_identity;
-} ogs_nas_detach_request_from_ue_t;
+} ogs_nas_eps_detach_request_from_ue_t;
 
 
 /*******************************************************
@@ -302,14 +302,14 @@ typedef struct ogs_nas_detach_request_from_ue_s {
 #define OGS_NAS_EPS_DETACH_REQUEST_EMM_CAUSE_PRESENT (1<<0)
 #define OGS_NAS_EPS_DETACH_REQUEST_EMM_CAUSE_TYPE 0x53
 
-typedef struct ogs_nas_detach_request_to_ue_s {
+typedef struct ogs_nas_eps_detach_request_to_ue_s {
     /* Mandatory fields */
     ogs_nas_detach_type_t detach_type;
 
     /* Optional fields */
     uint32_t presencemask;
     ogs_nas_emm_cause_t emm_cause;
-} ogs_nas_detach_request_to_ue_t;
+} ogs_nas_eps_detach_request_to_ue_t;
 
 
 /*******************************************************
@@ -366,7 +366,7 @@ typedef struct ogs_nas_detach_request_to_ue_s {
 #define OGS_NAS_EPS_TRACKING_AREA_UPDATE_REQUEST_T3412_EXTENDED_VALUE_TYPE 0x5E
 #define OGS_NAS_EPS_TRACKING_AREA_UPDATE_REQUEST_EXTENDED_DRX_PARAMETERS_TYPE 0x6E
 
-typedef struct ogs_nas_tracking_area_update_request_s {
+typedef struct ogs_nas_eps_tracking_area_update_request_s {
     /* Mandatory fields */
     ogs_nas_eps_update_type_t eps_update_type;
     ogs_nas_eps_mobile_identity_t old_guti;
@@ -398,7 +398,7 @@ typedef struct ogs_nas_tracking_area_update_request_s {
     ogs_nas_gprs_timer_2_t t3324_value;
     ogs_nas_gprs_timer_3_t t3412_extended_value;
     ogs_nas_extended_drx_parameters_t extended_drx_parameters;
-} ogs_nas_tracking_area_update_request_t;
+} ogs_nas_eps_tracking_area_update_request_t;
 
 
 /*******************************************************
@@ -439,7 +439,7 @@ typedef struct ogs_nas_tracking_area_update_request_s {
 #define OGS_NAS_EPS_TRACKING_AREA_UPDATE_ACCEPT_EXTENDED_DRX_PARAMETERS_TYPE 0x6E
 #define OGS_NAS_EPS_TRACKING_AREA_UPDATE_ACCEPT_HEADER_COMPRESSION_CONFIGURATION_STATUS_TYPE 0x68
 
-typedef struct ogs_nas_tracking_area_update_accept_s {
+typedef struct ogs_nas_eps_tracking_area_update_accept_s {
     /* Mandatory fields */
     ogs_nas_eps_update_result_t eps_update_result;
 
@@ -462,7 +462,7 @@ typedef struct ogs_nas_tracking_area_update_accept_s {
     ogs_nas_gprs_timer_2_t t3324_value;
     ogs_nas_extended_drx_parameters_t extended_drx_parameters;
     ogs_nas_header_compression_configuration_status_t header_compression_configuration_status;
-} ogs_nas_tracking_area_update_accept_t;
+} ogs_nas_eps_tracking_area_update_accept_t;
 
 
 /*******************************************************
@@ -473,7 +473,7 @@ typedef struct ogs_nas_tracking_area_update_accept_s {
 #define OGS_NAS_EPS_TRACKING_AREA_UPDATE_REJECT_T3346_VALUE_TYPE 0x5F
 #define OGS_NAS_EPS_TRACKING_AREA_UPDATE_REJECT_EXTENDED_EMM_CAUSE_TYPE 0xA0
 
-typedef struct ogs_nas_tracking_area_update_reject_s {
+typedef struct ogs_nas_eps_tracking_area_update_reject_s {
     /* Mandatory fields */
     ogs_nas_emm_cause_t emm_cause;
 
@@ -481,7 +481,7 @@ typedef struct ogs_nas_tracking_area_update_reject_s {
     uint32_t presencemask;
     ogs_nas_gprs_timer_2_t t3346_value;
     ogs_nas_extended_emm_cause_t extended_emm_cause;
-} ogs_nas_tracking_area_update_reject_t;
+} ogs_nas_eps_tracking_area_update_reject_t;
 
 
 /*******************************************************
@@ -494,7 +494,7 @@ typedef struct ogs_nas_tracking_area_update_reject_s {
 #define OGS_NAS_EPS_EXTENDED_SERVICE_REQUEST_EPS_BEARER_CONTEXT_STATUS_TYPE 0x57
 #define OGS_NAS_EPS_EXTENDED_SERVICE_REQUEST_DEVICE_PROPERTIES_TYPE 0xD0
 
-typedef struct ogs_nas_extended_service_request_s {
+typedef struct ogs_nas_eps_extended_service_request_s {
     /* Mandatory fields */
     ogs_nas_service_type_t service_type;
     ogs_nas_mobile_identity_t m_tmsi;
@@ -504,18 +504,18 @@ typedef struct ogs_nas_extended_service_request_s {
     ogs_nas_csfb_response_t csfb_response;
     ogs_nas_eps_bearer_context_status_t eps_bearer_context_status;
     ogs_nas_device_properties_t device_properties;
-} ogs_nas_extended_service_request_t;
+} ogs_nas_eps_extended_service_request_t;
 
 
 /*******************************************************
  * SERVICE REQUEST
  ******************************************************/
 
-typedef struct ogs_nas_service_request_s {
+typedef struct ogs_nas_eps_service_request_s {
     /* Mandatory fields */
     ogs_nas_ksi_and_sequence_number_t ksi_and_sequence_number;
     ogs_nas_short_mac_t message_authentication_code;
-} ogs_nas_service_request_t;
+} ogs_nas_eps_service_request_t;
 
 
 /*******************************************************
@@ -524,7 +524,7 @@ typedef struct ogs_nas_service_request_s {
 #define OGS_NAS_EPS_SERVICE_REJECT_T3346_VALUE_PRESENT (1<<0)
 #define OGS_NAS_EPS_SERVICE_REJECT_T3346_VALUE_TYPE 0x5F
 
-typedef struct ogs_nas_service_reject_s {
+typedef struct ogs_nas_eps_service_reject_s {
     /* Mandatory fields */
     ogs_nas_emm_cause_t emm_cause;
     ogs_nas_gprs_timer_t t3442_value;
@@ -532,7 +532,7 @@ typedef struct ogs_nas_service_reject_s {
     /* Optional fields */
     uint32_t presencemask;
     ogs_nas_gprs_timer_2_t t3346_value;
-} ogs_nas_service_reject_t;
+} ogs_nas_eps_service_reject_t;
 
 
 /*******************************************************
@@ -541,56 +541,56 @@ typedef struct ogs_nas_service_reject_s {
 #define OGS_NAS_EPS_GUTI_REALLOCATION_COMMAND_TAI_LIST_PRESENT (1<<0)
 #define OGS_NAS_EPS_GUTI_REALLOCATION_COMMAND_TAI_LIST_TYPE 0x54
 
-typedef struct ogs_nas_guti_reallocation_command_s {
+typedef struct ogs_nas_eps_guti_reallocation_command_s {
     /* Mandatory fields */
     ogs_nas_eps_mobile_identity_t guti;
 
     /* Optional fields */
     uint32_t presencemask;
     ogs_nas_tracking_area_identity_list_t tai_list;
-} ogs_nas_guti_reallocation_command_t;
+} ogs_nas_eps_guti_reallocation_command_t;
 
 
 /*******************************************************
  * AUTHENTICATION REQUEST
  ******************************************************/
 
-typedef struct ogs_nas_authentication_request_s {
+typedef struct ogs_nas_eps_authentication_request_s {
     /* Mandatory fields */
     ogs_nas_key_set_identifier_t nas_key_set_identifierasme;
     ogs_nas_authentication_parameter_rand_t authentication_parameter_rand;
     ogs_nas_authentication_parameter_autn_t authentication_parameter_autn;
-} ogs_nas_authentication_request_t;
+} ogs_nas_eps_authentication_request_t;
 
 
 /*******************************************************
  * AUTHENTICATION RESPONSE
  ******************************************************/
 
-typedef struct ogs_nas_authentication_response_s {
+typedef struct ogs_nas_eps_authentication_response_s {
     /* Mandatory fields */
     ogs_nas_authentication_response_parameter_t authentication_response_parameter;
-} ogs_nas_authentication_response_t;
+} ogs_nas_eps_authentication_response_t;
 
 
 /*******************************************************
  * IDENTITY REQUEST
  ******************************************************/
 
-typedef struct ogs_nas_identity_request_s {
+typedef struct ogs_nas_eps_identity_request_s {
     /* Mandatory fields */
     ogs_nas_identity_type_2_t identity_type;
-} ogs_nas_identity_request_t;
+} ogs_nas_eps_identity_request_t;
 
 
 /*******************************************************
  * IDENTITY RESPONSE
  ******************************************************/
 
-typedef struct ogs_nas_identity_response_s {
+typedef struct ogs_nas_eps_identity_response_s {
     /* Mandatory fields */
     ogs_nas_mobile_identity_t mobile_identity;
-} ogs_nas_identity_response_t;
+} ogs_nas_eps_identity_response_t;
 
 
 /*******************************************************
@@ -599,14 +599,14 @@ typedef struct ogs_nas_identity_response_s {
 #define OGS_NAS_EPS_AUTHENTICATION_FAILURE_AUTHENTICATION_FAILURE_PARAMETER_PRESENT (1<<0)
 #define OGS_NAS_EPS_AUTHENTICATION_FAILURE_AUTHENTICATION_FAILURE_PARAMETER_TYPE 0x30
 
-typedef struct ogs_nas_authentication_failure_s {
+typedef struct ogs_nas_eps_authentication_failure_s {
     /* Mandatory fields */
     ogs_nas_emm_cause_t emm_cause;
 
     /* Optional fields */
     uint32_t presencemask;
     ogs_nas_authentication_failure_parameter_t authentication_failure_parameter;
-} ogs_nas_authentication_failure_t;
+} ogs_nas_eps_authentication_failure_t;
 
 
 /*******************************************************
@@ -619,7 +619,7 @@ typedef struct ogs_nas_authentication_failure_s {
 #define OGS_NAS_EPS_SECURITY_MODE_COMMAND_REPLAYED_NONCEUE_TYPE 0x55
 #define OGS_NAS_EPS_SECURITY_MODE_COMMAND_NONCEMME_TYPE 0x56
 
-typedef struct ogs_nas_security_mode_command_s {
+typedef struct ogs_nas_eps_security_mode_command_s {
     /* Mandatory fields */
     ogs_nas_security_algorithms_t selected_nas_security_algorithms;
     ogs_nas_key_set_identifier_t nas_key_set_identifier;
@@ -630,7 +630,7 @@ typedef struct ogs_nas_security_mode_command_s {
     ogs_nas_imeisv_request_t imeisv_request;
     ogs_nas_nonce_t replayed_nonceue;
     ogs_nas_nonce_t noncemme;
-} ogs_nas_security_mode_command_t;
+} ogs_nas_eps_security_mode_command_t;
 
 
 /*******************************************************
@@ -639,32 +639,32 @@ typedef struct ogs_nas_security_mode_command_s {
 #define OGS_NAS_EPS_SECURITY_MODE_COMPLETE_IMEISV_PRESENT (1<<0)
 #define OGS_NAS_EPS_SECURITY_MODE_COMPLETE_IMEISV_TYPE 0x23
 
-typedef struct ogs_nas_security_mode_complete_s {
+typedef struct ogs_nas_eps_security_mode_complete_s {
 
     /* Optional fields */
     uint32_t presencemask;
     ogs_nas_mobile_identity_t imeisv;
-} ogs_nas_security_mode_complete_t;
+} ogs_nas_eps_security_mode_complete_t;
 
 
 /*******************************************************
  * SECURITY MODE REJECT
  ******************************************************/
 
-typedef struct ogs_nas_security_mode_reject_s {
+typedef struct ogs_nas_eps_security_mode_reject_s {
     /* Mandatory fields */
     ogs_nas_emm_cause_t emm_cause;
-} ogs_nas_security_mode_reject_t;
+} ogs_nas_eps_security_mode_reject_t;
 
 
 /*******************************************************
  * EMM STATUS
  ******************************************************/
 
-typedef struct ogs_nas_emm_status_s {
+typedef struct ogs_nas_eps_emm_status_s {
     /* Mandatory fields */
     ogs_nas_emm_cause_t emm_cause;
-} ogs_nas_emm_status_t;
+} ogs_nas_eps_emm_status_t;
 
 
 /*******************************************************
@@ -681,7 +681,7 @@ typedef struct ogs_nas_emm_status_s {
 #define OGS_NAS_EPS_EMM_INFORMATION_UNIVERSAL_TIME_AND_LOCAL_TIME_ZONE_TYPE 0x47
 #define OGS_NAS_EPS_EMM_INFORMATION_NETWORK_DAYLIGHT_SAVING_TIME_TYPE 0x49
 
-typedef struct ogs_nas_emm_information_s {
+typedef struct ogs_nas_eps_emm_information_s {
 
     /* Optional fields */
     uint32_t presencemask;
@@ -690,27 +690,27 @@ typedef struct ogs_nas_emm_information_s {
     ogs_nas_time_zone_t local_time_zone;
     ogs_nas_time_zone_and_time_t universal_time_and_local_time_zone;
     ogs_nas_daylight_saving_time_t network_daylight_saving_time;
-} ogs_nas_emm_information_t;
+} ogs_nas_eps_emm_information_t;
 
 
 /*******************************************************
  * DOWNLINK NAS TRANSPORT
  ******************************************************/
 
-typedef struct ogs_nas_downlink_nas_transport_s {
+typedef struct ogs_nas_eps_downlink_nas_transport_s {
     /* Mandatory fields */
     ogs_nas_message_container_t nas_message_container;
-} ogs_nas_downlink_nas_transport_t;
+} ogs_nas_eps_downlink_nas_transport_t;
 
 
 /*******************************************************
  * UPLINK NAS TRANSPORT
  ******************************************************/
 
-typedef struct ogs_nas_uplink_nas_transport_s {
+typedef struct ogs_nas_eps_uplink_nas_transport_s {
     /* Mandatory fields */
     ogs_nas_message_container_t nas_message_container;
-} ogs_nas_uplink_nas_transport_t;
+} ogs_nas_eps_uplink_nas_transport_t;
 
 
 /*******************************************************
@@ -725,7 +725,7 @@ typedef struct ogs_nas_uplink_nas_transport_s {
 #define OGS_NAS_EPS_CS_SERVICE_NOTIFICATION_LCS_INDICATOR_TYPE 0x62
 #define OGS_NAS_EPS_CS_SERVICE_NOTIFICATION_LCS_CLIENT_IDENTITY_TYPE 0x63
 
-typedef struct ogs_nas_cs_service_notification_s {
+typedef struct ogs_nas_eps_cs_service_notification_s {
     /* Mandatory fields */
     ogs_nas_paging_identity_t paging_identity;
 
@@ -735,7 +735,7 @@ typedef struct ogs_nas_cs_service_notification_s {
     ogs_nas_ss_code_t ss_code;
     ogs_nas_lcs_indicator_t lcs_indicator;
     ogs_nas_lcs_client_identity_t lcs_client_identity;
-} ogs_nas_cs_service_notification_t;
+} ogs_nas_eps_cs_service_notification_t;
 
 
 /*******************************************************
@@ -744,7 +744,7 @@ typedef struct ogs_nas_cs_service_notification_s {
 #define OGS_NAS_EPS_UPLINK_GENERIC_NAS_TRANSPORT_ADDITIONAL_INFORMATION_PRESENT (1<<0)
 #define OGS_NAS_EPS_UPLINK_GENERIC_NAS_TRANSPORT_ADDITIONAL_INFORMATION_TYPE 0x65
 
-typedef struct ogs_nas_uplink_generic_nas_transport_s {
+typedef struct ogs_nas_eps_uplink_generic_nas_transport_s {
     /* Mandatory fields */
     ogs_nas_generic_message_container_type_t generic_message_container_type;
     ogs_nas_generic_message_container_t generic_message_container;
@@ -752,7 +752,7 @@ typedef struct ogs_nas_uplink_generic_nas_transport_s {
     /* Optional fields */
     uint32_t presencemask;
     ogs_nas_additional_information_t additional_information;
-} ogs_nas_uplink_generic_nas_transport_t;
+} ogs_nas_eps_uplink_generic_nas_transport_t;
 
 
 /*******************************************************
@@ -761,7 +761,7 @@ typedef struct ogs_nas_uplink_generic_nas_transport_s {
 #define OGS_NAS_EPS_DOWNLINK_GENERIC_NAS_TRANSPORT_ADDITIONAL_INFORMATION_PRESENT (1<<0)
 #define OGS_NAS_EPS_DOWNLINK_GENERIC_NAS_TRANSPORT_ADDITIONAL_INFORMATION_TYPE 0x65
 
-typedef struct ogs_nas_downlink_generic_nas_transport_s {
+typedef struct ogs_nas_eps_downlink_generic_nas_transport_s {
     /* Mandatory fields */
     ogs_nas_generic_message_container_type_t generic_message_container_type;
     ogs_nas_generic_message_container_t generic_message_container;
@@ -769,7 +769,7 @@ typedef struct ogs_nas_downlink_generic_nas_transport_s {
     /* Optional fields */
     uint32_t presencemask;
     ogs_nas_additional_information_t additional_information;
-} ogs_nas_downlink_generic_nas_transport_t;
+} ogs_nas_eps_downlink_generic_nas_transport_t;
 
 
 /*******************************************************
@@ -806,7 +806,7 @@ typedef struct ogs_nas_downlink_generic_nas_transport_s {
 #define OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 #define OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_SERVING_PLMN_RATE_CONTROL_TYPE 0x6E
 
-typedef struct ogs_nas_activate_default_eps_bearer_context_request_s {
+typedef struct ogs_nas_eps_activate_default_eps_bearer_context_request_s {
     /* Mandatory fields */
     ogs_nas_eps_quality_of_service_t eps_qos;
     ogs_nas_access_point_name_t access_point_name;
@@ -829,7 +829,7 @@ typedef struct ogs_nas_activate_default_eps_bearer_context_request_s {
     ogs_nas_control_plane_only_indication_t control_plane_only_indication;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
     ogs_nas_serving_plmn_rate_control_t serving_plmn_rate_control;
-} ogs_nas_activate_default_eps_bearer_context_request_t;
+} ogs_nas_eps_activate_default_eps_bearer_context_request_t;
 
 
 /*******************************************************
@@ -840,13 +840,13 @@ typedef struct ogs_nas_activate_default_eps_bearer_context_request_s {
 #define OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_ACCEPT_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x27
 #define OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_ACCEPT_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_activate_default_eps_bearer_context_accept_s {
+typedef struct ogs_nas_eps_activate_default_eps_bearer_context_accept_s {
 
     /* Optional fields */
     uint32_t presencemask;
     ogs_nas_protocol_configuration_options_t protocol_configuration_options;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_activate_default_eps_bearer_context_accept_t;
+} ogs_nas_eps_activate_default_eps_bearer_context_accept_t;
 
 
 /*******************************************************
@@ -857,7 +857,7 @@ typedef struct ogs_nas_activate_default_eps_bearer_context_accept_s {
 #define OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REJECT_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x27
 #define OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REJECT_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_activate_default_eps_bearer_context_reject_s {
+typedef struct ogs_nas_eps_activate_default_eps_bearer_context_reject_s {
     /* Mandatory fields */
     ogs_nas_esm_cause_t esm_cause;
 
@@ -865,7 +865,7 @@ typedef struct ogs_nas_activate_default_eps_bearer_context_reject_s {
     uint32_t presencemask;
     ogs_nas_protocol_configuration_options_t protocol_configuration_options;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_activate_default_eps_bearer_context_reject_t;
+} ogs_nas_eps_activate_default_eps_bearer_context_reject_t;
 
 
 /*******************************************************
@@ -890,7 +890,7 @@ typedef struct ogs_nas_activate_default_eps_bearer_context_reject_s {
 #define OGS_NAS_EPS_ACTIVATE_DEDICATED_EPS_BEARER_CONTEXT_REQUEST_NBIFOM_CONTAINER_TYPE 0x33
 #define OGS_NAS_EPS_ACTIVATE_DEDICATED_EPS_BEARER_CONTEXT_REQUEST_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_activate_dedicated_eps_bearer_context_request_s {
+typedef struct ogs_nas_eps_activate_dedicated_eps_bearer_context_request_s {
     /* Mandatory fields */
     ogs_nas_linked_eps_bearer_identity_t linked_eps_bearer_identity;
     ogs_nas_eps_quality_of_service_t eps_qos;
@@ -907,7 +907,7 @@ typedef struct ogs_nas_activate_dedicated_eps_bearer_context_request_s {
     ogs_nas_wlan_offload_acceptability_t wlan_offload_indication;
     ogs_nas_nbifom_container_t nbifom_container;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_activate_dedicated_eps_bearer_context_request_t;
+} ogs_nas_eps_activate_dedicated_eps_bearer_context_request_t;
 
 
 /*******************************************************
@@ -920,14 +920,14 @@ typedef struct ogs_nas_activate_dedicated_eps_bearer_context_request_s {
 #define OGS_NAS_EPS_ACTIVATE_DEDICATED_EPS_BEARER_CONTEXT_ACCEPT_NBIFOM_CONTAINER_TYPE 0x33
 #define OGS_NAS_EPS_ACTIVATE_DEDICATED_EPS_BEARER_CONTEXT_ACCEPT_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_activate_dedicated_eps_bearer_context_accept_s {
+typedef struct ogs_nas_eps_activate_dedicated_eps_bearer_context_accept_s {
 
     /* Optional fields */
     uint32_t presencemask;
     ogs_nas_protocol_configuration_options_t protocol_configuration_options;
     ogs_nas_nbifom_container_t nbifom_container;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_activate_dedicated_eps_bearer_context_accept_t;
+} ogs_nas_eps_activate_dedicated_eps_bearer_context_accept_t;
 
 
 /*******************************************************
@@ -940,7 +940,7 @@ typedef struct ogs_nas_activate_dedicated_eps_bearer_context_accept_s {
 #define OGS_NAS_EPS_ACTIVATE_DEDICATED_EPS_BEARER_CONTEXT_REJECT_NBIFOM_CONTAINER_TYPE 0x33
 #define OGS_NAS_EPS_ACTIVATE_DEDICATED_EPS_BEARER_CONTEXT_REJECT_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_activate_dedicated_eps_bearer_context_reject_s {
+typedef struct ogs_nas_eps_activate_dedicated_eps_bearer_context_reject_s {
     /* Mandatory fields */
     ogs_nas_esm_cause_t esm_cause;
 
@@ -949,7 +949,7 @@ typedef struct ogs_nas_activate_dedicated_eps_bearer_context_reject_s {
     ogs_nas_protocol_configuration_options_t protocol_configuration_options;
     ogs_nas_nbifom_container_t nbifom_container;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_activate_dedicated_eps_bearer_context_reject_t;
+} ogs_nas_eps_activate_dedicated_eps_bearer_context_reject_t;
 
 
 /*******************************************************
@@ -980,7 +980,7 @@ typedef struct ogs_nas_activate_dedicated_eps_bearer_context_reject_s {
 #define OGS_NAS_EPS_MODIFY_EPS_BEARER_CONTEXT_REQUEST_HEADER_COMPRESSION_CONFIGURATION_TYPE 0x66
 #define OGS_NAS_EPS_MODIFY_EPS_BEARER_CONTEXT_REQUEST_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_modify_eps_bearer_context_request_s {
+typedef struct ogs_nas_eps_modify_eps_bearer_context_request_s {
 
     /* Optional fields */
     uint32_t presencemask;
@@ -996,7 +996,7 @@ typedef struct ogs_nas_modify_eps_bearer_context_request_s {
     ogs_nas_nbifom_container_t nbifom_container;
     ogs_nas_header_compression_configuration_t header_compression_configuration;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_modify_eps_bearer_context_request_t;
+} ogs_nas_eps_modify_eps_bearer_context_request_t;
 
 
 /*******************************************************
@@ -1009,14 +1009,14 @@ typedef struct ogs_nas_modify_eps_bearer_context_request_s {
 #define OGS_NAS_EPS_MODIFY_EPS_BEARER_CONTEXT_ACCEPT_NBIFOM_CONTAINER_TYPE 0x33
 #define OGS_NAS_EPS_MODIFY_EPS_BEARER_CONTEXT_ACCEPT_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_modify_eps_bearer_context_accept_s {
+typedef struct ogs_nas_eps_modify_eps_bearer_context_accept_s {
 
     /* Optional fields */
     uint32_t presencemask;
     ogs_nas_protocol_configuration_options_t protocol_configuration_options;
     ogs_nas_nbifom_container_t nbifom_container;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_modify_eps_bearer_context_accept_t;
+} ogs_nas_eps_modify_eps_bearer_context_accept_t;
 
 
 /*******************************************************
@@ -1029,7 +1029,7 @@ typedef struct ogs_nas_modify_eps_bearer_context_accept_s {
 #define OGS_NAS_EPS_MODIFY_EPS_BEARER_CONTEXT_REJECT_NBIFOM_CONTAINER_TYPE 0x33
 #define OGS_NAS_EPS_MODIFY_EPS_BEARER_CONTEXT_REJECT_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_modify_eps_bearer_context_reject_s {
+typedef struct ogs_nas_eps_modify_eps_bearer_context_reject_s {
     /* Mandatory fields */
     ogs_nas_esm_cause_t esm_cause;
 
@@ -1038,7 +1038,7 @@ typedef struct ogs_nas_modify_eps_bearer_context_reject_s {
     ogs_nas_protocol_configuration_options_t protocol_configuration_options;
     ogs_nas_nbifom_container_t nbifom_container;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_modify_eps_bearer_context_reject_t;
+} ogs_nas_eps_modify_eps_bearer_context_reject_t;
 
 
 /*******************************************************
@@ -1055,7 +1055,7 @@ typedef struct ogs_nas_modify_eps_bearer_context_reject_s {
 #define OGS_NAS_EPS_DEACTIVATE_EPS_BEARER_CONTEXT_REQUEST_NBIFOM_CONTAINER_TYPE 0x33
 #define OGS_NAS_EPS_DEACTIVATE_EPS_BEARER_CONTEXT_REQUEST_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_deactivate_eps_bearer_context_request_s {
+typedef struct ogs_nas_eps_deactivate_eps_bearer_context_request_s {
     /* Mandatory fields */
     ogs_nas_esm_cause_t esm_cause;
 
@@ -1066,7 +1066,7 @@ typedef struct ogs_nas_deactivate_eps_bearer_context_request_s {
     ogs_nas_wlan_offload_acceptability_t wlan_offload_indication;
     ogs_nas_nbifom_container_t nbifom_container;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_deactivate_eps_bearer_context_request_t;
+} ogs_nas_eps_deactivate_eps_bearer_context_request_t;
 
 
 /*******************************************************
@@ -1077,13 +1077,13 @@ typedef struct ogs_nas_deactivate_eps_bearer_context_request_s {
 #define OGS_NAS_EPS_DEACTIVATE_EPS_BEARER_CONTEXT_ACCEPT_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x27
 #define OGS_NAS_EPS_DEACTIVATE_EPS_BEARER_CONTEXT_ACCEPT_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_deactivate_eps_bearer_context_accept_s {
+typedef struct ogs_nas_eps_deactivate_eps_bearer_context_accept_s {
 
     /* Optional fields */
     uint32_t presencemask;
     ogs_nas_protocol_configuration_options_t protocol_configuration_options;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_deactivate_eps_bearer_context_accept_t;
+} ogs_nas_eps_deactivate_eps_bearer_context_accept_t;
 
 
 /*******************************************************
@@ -1104,7 +1104,7 @@ typedef struct ogs_nas_deactivate_eps_bearer_context_accept_s {
 #define OGS_NAS_EPS_PDN_CONNECTIVITY_REQUEST_HEADER_COMPRESSION_CONFIGURATION_TYPE 0x66
 #define OGS_NAS_EPS_PDN_CONNECTIVITY_REQUEST_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_pdn_connectivity_request_s {
+typedef struct ogs_nas_eps_pdn_connectivity_request_s {
     /* Mandatory fields */
     ogs_nas_request_type_t request_type;
 
@@ -1117,7 +1117,7 @@ typedef struct ogs_nas_pdn_connectivity_request_s {
     ogs_nas_nbifom_container_t nbifom_container;
     ogs_nas_header_compression_configuration_t header_compression_configuration;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_pdn_connectivity_request_t;
+} ogs_nas_eps_pdn_connectivity_request_t;
 
 
 /*******************************************************
@@ -1134,7 +1134,7 @@ typedef struct ogs_nas_pdn_connectivity_request_s {
 #define OGS_NAS_EPS_PDN_CONNECTIVITY_REJECT_NBIFOM_CONTAINER_TYPE 0x33
 #define OGS_NAS_EPS_PDN_CONNECTIVITY_REJECT_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_pdn_connectivity_reject_s {
+typedef struct ogs_nas_eps_pdn_connectivity_reject_s {
     /* Mandatory fields */
     ogs_nas_esm_cause_t esm_cause;
 
@@ -1145,7 +1145,7 @@ typedef struct ogs_nas_pdn_connectivity_reject_s {
     ogs_nas_re_attempt_indicator_t re_attempt_indicator;
     ogs_nas_nbifom_container_t nbifom_container;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_pdn_connectivity_reject_t;
+} ogs_nas_eps_pdn_connectivity_reject_t;
 
 
 /*******************************************************
@@ -1156,7 +1156,7 @@ typedef struct ogs_nas_pdn_connectivity_reject_s {
 #define OGS_NAS_EPS_PDN_DISCONNECT_REQUEST_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x27
 #define OGS_NAS_EPS_PDN_DISCONNECT_REQUEST_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_pdn_disconnect_request_s {
+typedef struct ogs_nas_eps_pdn_disconnect_request_s {
     /* Mandatory fields */
     ogs_nas_linked_eps_bearer_identity_t linked_eps_bearer_identity;
 
@@ -1164,7 +1164,7 @@ typedef struct ogs_nas_pdn_disconnect_request_s {
     uint32_t presencemask;
     ogs_nas_protocol_configuration_options_t protocol_configuration_options;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_pdn_disconnect_request_t;
+} ogs_nas_eps_pdn_disconnect_request_t;
 
 
 /*******************************************************
@@ -1175,7 +1175,7 @@ typedef struct ogs_nas_pdn_disconnect_request_s {
 #define OGS_NAS_EPS_PDN_DISCONNECT_REJECT_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x27
 #define OGS_NAS_EPS_PDN_DISCONNECT_REJECT_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_pdn_disconnect_reject_s {
+typedef struct ogs_nas_eps_pdn_disconnect_reject_s {
     /* Mandatory fields */
     ogs_nas_esm_cause_t esm_cause;
 
@@ -1183,7 +1183,7 @@ typedef struct ogs_nas_pdn_disconnect_reject_s {
     uint32_t presencemask;
     ogs_nas_protocol_configuration_options_t protocol_configuration_options;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_pdn_disconnect_reject_t;
+} ogs_nas_eps_pdn_disconnect_reject_t;
 
 
 /*******************************************************
@@ -1198,7 +1198,7 @@ typedef struct ogs_nas_pdn_disconnect_reject_s {
 #define OGS_NAS_EPS_BEARER_RESOURCE_ALLOCATION_REQUEST_NBIFOM_CONTAINER_TYPE 0x33
 #define OGS_NAS_EPS_BEARER_RESOURCE_ALLOCATION_REQUEST_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_bearer_resource_allocation_request_s {
+typedef struct ogs_nas_eps_bearer_resource_allocation_request_s {
     /* Mandatory fields */
     ogs_nas_linked_eps_bearer_identity_t linked_eps_bearer_identity;
     ogs_nas_traffic_flow_aggregate_description_t traffic_flow_aggregate;
@@ -1210,7 +1210,7 @@ typedef struct ogs_nas_bearer_resource_allocation_request_s {
     ogs_nas_device_properties_t device_properties;
     ogs_nas_nbifom_container_t nbifom_container;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_bearer_resource_allocation_request_t;
+} ogs_nas_eps_bearer_resource_allocation_request_t;
 
 
 /*******************************************************
@@ -1227,7 +1227,7 @@ typedef struct ogs_nas_bearer_resource_allocation_request_s {
 #define OGS_NAS_EPS_BEARER_RESOURCE_ALLOCATION_REJECT_NBIFOM_CONTAINER_TYPE 0x33
 #define OGS_NAS_EPS_BEARER_RESOURCE_ALLOCATION_REJECT_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_bearer_resource_allocation_reject_s {
+typedef struct ogs_nas_eps_bearer_resource_allocation_reject_s {
     /* Mandatory fields */
     ogs_nas_esm_cause_t esm_cause;
 
@@ -1238,7 +1238,7 @@ typedef struct ogs_nas_bearer_resource_allocation_reject_s {
     ogs_nas_re_attempt_indicator_t re_attempt_indicator;
     ogs_nas_nbifom_container_t nbifom_container;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_bearer_resource_allocation_reject_t;
+} ogs_nas_eps_bearer_resource_allocation_reject_t;
 
 
 /*******************************************************
@@ -1259,7 +1259,7 @@ typedef struct ogs_nas_bearer_resource_allocation_reject_s {
 #define OGS_NAS_EPS_BEARER_RESOURCE_MODIFICATION_REQUEST_HEADER_COMPRESSION_CONFIGURATION_TYPE 0x66
 #define OGS_NAS_EPS_BEARER_RESOURCE_MODIFICATION_REQUEST_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_bearer_resource_modification_request_s {
+typedef struct ogs_nas_eps_bearer_resource_modification_request_s {
     /* Mandatory fields */
     ogs_nas_linked_eps_bearer_identity_t eps_bearer_identity_for_packet_filter;
     ogs_nas_traffic_flow_aggregate_description_t traffic_flow_aggregate;
@@ -1273,7 +1273,7 @@ typedef struct ogs_nas_bearer_resource_modification_request_s {
     ogs_nas_nbifom_container_t nbifom_container;
     ogs_nas_header_compression_configuration_t header_compression_configuration;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_bearer_resource_modification_request_t;
+} ogs_nas_eps_bearer_resource_modification_request_t;
 
 
 /*******************************************************
@@ -1290,7 +1290,7 @@ typedef struct ogs_nas_bearer_resource_modification_request_s {
 #define OGS_NAS_EPS_BEARER_RESOURCE_MODIFICATION_REJECT_NBIFOM_CONTAINER_TYPE 0x33
 #define OGS_NAS_EPS_BEARER_RESOURCE_MODIFICATION_REJECT_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_bearer_resource_modification_reject_s {
+typedef struct ogs_nas_eps_bearer_resource_modification_reject_s {
     /* Mandatory fields */
     ogs_nas_esm_cause_t esm_cause;
 
@@ -1301,7 +1301,7 @@ typedef struct ogs_nas_bearer_resource_modification_reject_s {
     ogs_nas_re_attempt_indicator_t re_attempt_indicator;
     ogs_nas_nbifom_container_t nbifom_container;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_bearer_resource_modification_reject_t;
+} ogs_nas_eps_bearer_resource_modification_reject_t;
 
 
 /*******************************************************
@@ -1314,84 +1314,84 @@ typedef struct ogs_nas_bearer_resource_modification_reject_s {
 #define OGS_NAS_EPS_ESM_INFORMATION_RESPONSE_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x27
 #define OGS_NAS_EPS_ESM_INFORMATION_RESPONSE_EXTENDED_PROTOCOL_CONFIGURATION_OPTIONS_TYPE 0x7B
 
-typedef struct ogs_nas_esm_information_response_s {
+typedef struct ogs_nas_eps_esm_information_response_s {
 
     /* Optional fields */
     uint32_t presencemask;
     ogs_nas_access_point_name_t access_point_name;
     ogs_nas_protocol_configuration_options_t protocol_configuration_options;
     ogs_nas_extended_protocol_configuration_options_t extended_protocol_configuration_options;
-} ogs_nas_esm_information_response_t;
+} ogs_nas_eps_esm_information_response_t;
 
 
 /*******************************************************
  * ESM STATUS
  ******************************************************/
 
-typedef struct ogs_nas_esm_status_s {
+typedef struct ogs_nas_eps_esm_status_s {
     /* Mandatory fields */
     ogs_nas_esm_cause_t esm_cause;
-} ogs_nas_esm_status_t;
+} ogs_nas_eps_esm_status_t;
 
 
 typedef struct ogs_nas_emm_message_s {
     ogs_nas_emm_header_t h;
     union {
-        ogs_nas_attach_request_t attach_request;
-        ogs_nas_attach_accept_t attach_accept;
-        ogs_nas_attach_complete_t attach_complete;
-        ogs_nas_attach_reject_t attach_reject;
-        ogs_nas_detach_request_from_ue_t detach_request_from_ue;
-        ogs_nas_detach_request_to_ue_t detach_request_to_ue;
-        ogs_nas_tracking_area_update_request_t tracking_area_update_request;
-        ogs_nas_tracking_area_update_accept_t tracking_area_update_accept;
-        ogs_nas_tracking_area_update_reject_t tracking_area_update_reject;
-        ogs_nas_extended_service_request_t extended_service_request;
-        ogs_nas_service_request_t service_request;
-        ogs_nas_service_reject_t service_reject;
-        ogs_nas_guti_reallocation_command_t guti_reallocation_command;
-        ogs_nas_authentication_request_t authentication_request;
-        ogs_nas_authentication_response_t authentication_response;
-        ogs_nas_identity_request_t identity_request;
-        ogs_nas_identity_response_t identity_response;
-        ogs_nas_authentication_failure_t authentication_failure;
-        ogs_nas_security_mode_command_t security_mode_command;
-        ogs_nas_security_mode_complete_t security_mode_complete;
-        ogs_nas_security_mode_reject_t security_mode_reject;
-        ogs_nas_emm_status_t emm_status;
-        ogs_nas_emm_information_t emm_information;
-        ogs_nas_downlink_nas_transport_t downlink_nas_transport;
-        ogs_nas_uplink_nas_transport_t uplink_nas_transport;
-        ogs_nas_cs_service_notification_t cs_service_notification;
-        ogs_nas_uplink_generic_nas_transport_t uplink_generic_nas_transport;
-        ogs_nas_downlink_generic_nas_transport_t downlink_generic_nas_transport;
+        ogs_nas_eps_attach_request_t attach_request;
+        ogs_nas_eps_attach_accept_t attach_accept;
+        ogs_nas_eps_attach_complete_t attach_complete;
+        ogs_nas_eps_attach_reject_t attach_reject;
+        ogs_nas_eps_detach_request_from_ue_t detach_request_from_ue;
+        ogs_nas_eps_detach_request_to_ue_t detach_request_to_ue;
+        ogs_nas_eps_tracking_area_update_request_t tracking_area_update_request;
+        ogs_nas_eps_tracking_area_update_accept_t tracking_area_update_accept;
+        ogs_nas_eps_tracking_area_update_reject_t tracking_area_update_reject;
+        ogs_nas_eps_extended_service_request_t extended_service_request;
+        ogs_nas_eps_service_request_t service_request;
+        ogs_nas_eps_service_reject_t service_reject;
+        ogs_nas_eps_guti_reallocation_command_t guti_reallocation_command;
+        ogs_nas_eps_authentication_request_t authentication_request;
+        ogs_nas_eps_authentication_response_t authentication_response;
+        ogs_nas_eps_identity_request_t identity_request;
+        ogs_nas_eps_identity_response_t identity_response;
+        ogs_nas_eps_authentication_failure_t authentication_failure;
+        ogs_nas_eps_security_mode_command_t security_mode_command;
+        ogs_nas_eps_security_mode_complete_t security_mode_complete;
+        ogs_nas_eps_security_mode_reject_t security_mode_reject;
+        ogs_nas_eps_emm_status_t emm_status;
+        ogs_nas_eps_emm_information_t emm_information;
+        ogs_nas_eps_downlink_nas_transport_t downlink_nas_transport;
+        ogs_nas_eps_uplink_nas_transport_t uplink_nas_transport;
+        ogs_nas_eps_cs_service_notification_t cs_service_notification;
+        ogs_nas_eps_uplink_generic_nas_transport_t uplink_generic_nas_transport;
+        ogs_nas_eps_downlink_generic_nas_transport_t downlink_generic_nas_transport;
     };
 } ogs_nas_emm_message_t;
 
 typedef struct ogs_nas_esm_message_s {
     ogs_nas_esm_header_t h;
     union {
-        ogs_nas_activate_default_eps_bearer_context_request_t activate_default_eps_bearer_context_request;
-        ogs_nas_activate_default_eps_bearer_context_accept_t activate_default_eps_bearer_context_accept;
-        ogs_nas_activate_default_eps_bearer_context_reject_t activate_default_eps_bearer_context_reject;
-        ogs_nas_activate_dedicated_eps_bearer_context_request_t activate_dedicated_eps_bearer_context_request;
-        ogs_nas_activate_dedicated_eps_bearer_context_accept_t activate_dedicated_eps_bearer_context_accept;
-        ogs_nas_activate_dedicated_eps_bearer_context_reject_t activate_dedicated_eps_bearer_context_reject;
-        ogs_nas_modify_eps_bearer_context_request_t modify_eps_bearer_context_request;
-        ogs_nas_modify_eps_bearer_context_accept_t modify_eps_bearer_context_accept;
-        ogs_nas_modify_eps_bearer_context_reject_t modify_eps_bearer_context_reject;
-        ogs_nas_deactivate_eps_bearer_context_request_t deactivate_eps_bearer_context_request;
-        ogs_nas_deactivate_eps_bearer_context_accept_t deactivate_eps_bearer_context_accept;
-        ogs_nas_pdn_connectivity_request_t pdn_connectivity_request;
-        ogs_nas_pdn_connectivity_reject_t pdn_connectivity_reject;
-        ogs_nas_pdn_disconnect_request_t pdn_disconnect_request;
-        ogs_nas_pdn_disconnect_reject_t pdn_disconnect_reject;
-        ogs_nas_bearer_resource_allocation_request_t bearer_resource_allocation_request;
-        ogs_nas_bearer_resource_allocation_reject_t bearer_resource_allocation_reject;
-        ogs_nas_bearer_resource_modification_request_t bearer_resource_modification_request;
-        ogs_nas_bearer_resource_modification_reject_t bearer_resource_modification_reject;
-        ogs_nas_esm_information_response_t esm_information_response;
-        ogs_nas_esm_status_t esm_status;
+        ogs_nas_eps_activate_default_eps_bearer_context_request_t activate_default_eps_bearer_context_request;
+        ogs_nas_eps_activate_default_eps_bearer_context_accept_t activate_default_eps_bearer_context_accept;
+        ogs_nas_eps_activate_default_eps_bearer_context_reject_t activate_default_eps_bearer_context_reject;
+        ogs_nas_eps_activate_dedicated_eps_bearer_context_request_t activate_dedicated_eps_bearer_context_request;
+        ogs_nas_eps_activate_dedicated_eps_bearer_context_accept_t activate_dedicated_eps_bearer_context_accept;
+        ogs_nas_eps_activate_dedicated_eps_bearer_context_reject_t activate_dedicated_eps_bearer_context_reject;
+        ogs_nas_eps_modify_eps_bearer_context_request_t modify_eps_bearer_context_request;
+        ogs_nas_eps_modify_eps_bearer_context_accept_t modify_eps_bearer_context_accept;
+        ogs_nas_eps_modify_eps_bearer_context_reject_t modify_eps_bearer_context_reject;
+        ogs_nas_eps_deactivate_eps_bearer_context_request_t deactivate_eps_bearer_context_request;
+        ogs_nas_eps_deactivate_eps_bearer_context_accept_t deactivate_eps_bearer_context_accept;
+        ogs_nas_eps_pdn_connectivity_request_t pdn_connectivity_request;
+        ogs_nas_eps_pdn_connectivity_reject_t pdn_connectivity_reject;
+        ogs_nas_eps_pdn_disconnect_request_t pdn_disconnect_request;
+        ogs_nas_eps_pdn_disconnect_reject_t pdn_disconnect_reject;
+        ogs_nas_eps_bearer_resource_allocation_request_t bearer_resource_allocation_request;
+        ogs_nas_eps_bearer_resource_allocation_reject_t bearer_resource_allocation_reject;
+        ogs_nas_eps_bearer_resource_modification_request_t bearer_resource_modification_request;
+        ogs_nas_eps_bearer_resource_modification_reject_t bearer_resource_modification_reject;
+        ogs_nas_eps_esm_information_response_t esm_information_response;
+        ogs_nas_eps_esm_status_t esm_status;
     };
 } ogs_nas_esm_message_t;
 
