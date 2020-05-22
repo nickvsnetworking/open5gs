@@ -280,7 +280,7 @@ void s1ap_send_initial_context_setup_request(mme_ue_t *mme_ue)
     s1apbuf = s1ap_build_initial_context_setup_request(mme_ue, NULL);
     ogs_expect_or_return(s1apbuf);
 
-    rv = nas_send_to_enb(mme_ue, s1apbuf);
+    rv = nas_eps_send_to_enb(mme_ue, s1apbuf);
     ogs_expect(rv == OGS_OK);
 }
 
@@ -294,7 +294,7 @@ void s1ap_send_ue_context_modification_request(mme_ue_t *mme_ue)
     s1apbuf = s1ap_build_ue_context_modification_request(mme_ue);
     ogs_expect_or_return(s1apbuf);
 
-    rv = nas_send_to_enb(mme_ue, s1apbuf);
+    rv = nas_eps_send_to_enb(mme_ue, s1apbuf);
     ogs_expect(rv == OGS_OK);
 }
 
@@ -399,7 +399,7 @@ void s1ap_send_path_switch_ack(mme_ue_t *mme_ue)
     s1apbuf = s1ap_build_path_switch_ack(mme_ue);
     ogs_expect_or_return(s1apbuf);
 
-    rv = nas_send_to_enb(mme_ue, s1apbuf);
+    rv = nas_eps_send_to_enb(mme_ue, s1apbuf);
     ogs_expect(rv == OGS_OK);
 }
 

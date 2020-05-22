@@ -64,7 +64,7 @@ int esm_handle_pdn_connectivity_request(mme_bearer_t *bearer,
         sess->pdn = mme_pdn_find_by_apn(mme_ue, req->access_point_name.apn);
         if (!sess->pdn) {
             /* Invalid APN */
-            nas_send_pdn_connectivity_reject(
+            nas_eps_send_pdn_connectivity_reject(
                     sess, ESM_CAUSE_MISSING_OR_UNKNOWN_APN);
             return OGS_ERROR;
         }
@@ -81,7 +81,7 @@ int esm_handle_pdn_connectivity_request(mme_bearer_t *bearer,
 
     if (security_protected_required) {
         CLEAR_BEARER_TIMER(bearer->t3489);
-        nas_send_esm_information_request(bearer);
+        nas_eps_send_esm_information_request(bearer);
 
         return OGS_OK;
     }
@@ -95,7 +95,7 @@ int esm_handle_pdn_connectivity_request(mme_bearer_t *bearer,
         ogs_debug("    APN[%s]", sess->pdn->apn);
         mme_gtp_send_create_session_request(sess);
     } else {
-        nas_send_pdn_connectivity_reject(
+        nas_eps_send_pdn_connectivity_reject(
                 sess, ESM_CAUSE_MISSING_OR_UNKNOWN_APN);
         return OGS_ERROR;
     }
@@ -136,13 +136,13 @@ int esm_handle_information_response(mme_sess_t *sess,
             if (csmap) {
                 sgsap_send_location_update_request(mme_ue);
             } else {
-                nas_send_attach_accept(mme_ue);
+                nas_eps_send_attach_accept(mme_ue);
             }
         } else {
             mme_gtp_send_create_session_request(sess);
         }
     } else {
-        nas_send_pdn_connectivity_reject(
+        nas_eps_send_pdn_connectivity_reject(
                 sess, ESM_CAUSE_MISSING_OR_UNKNOWN_APN);
         return OGS_ERROR;
     }
@@ -154,7 +154,7 @@ int esm_handle_bearer_resource_allocation_request(
         mme_bearer_t *bearer, ogs_nas_eps_message_t *message)
 {
     ogs_assert(bearer);
-    nas_send_bearer_resource_allocation_reject(
+    nas_eps_send_bearer_resource_allocation_reject(
             bearer, ESM_CAUSE_SERVICE_OPTION_NOT_SUPPORTED);
 
     return OGS_OK;

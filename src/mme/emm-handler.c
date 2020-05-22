@@ -109,7 +109,7 @@ int emm_handle_attach_request(
         /* Send Attach Reject */
         ogs_warn("Cannot find Served TAI[PLMN_ID:%06x,TAC:%d]",
             ogs_plmn_id_hexdump(&mme_ue->tai.plmn_id), mme_ue->tai.tac);
-        nas_send_attach_reject(mme_ue,
+        nas_eps_send_attach_reject(mme_ue,
             EMM_CAUSE_TRACKING_AREA_NOT_ALLOWED,
             ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
         return OGS_ERROR;
@@ -144,7 +144,7 @@ int emm_handle_attach_request(
             "but Integrity[0x%x] cannot be bypassed with EIA0",
             mme_selected_enc_algorithm(mme_ue), 
             mme_selected_int_algorithm(mme_ue));
-        nas_send_attach_reject(mme_ue,
+        nas_eps_send_attach_reject(mme_ue,
             EMM_CAUSE_UE_SECURITY_CAPABILITIES_MISMATCH,
             ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
         return OGS_ERROR;
@@ -220,9 +220,9 @@ int emm_handle_attach_complete(
         local.tm_hour, local.tm_min, local.tm_sec,
         (int)local.tm_gmtoff);
 
-    rv = nas_send_emm_to_esm(mme_ue, &attach_complete->esm_message_container);
+    rv = nas_eps_send_emm_to_esm(mme_ue, &attach_complete->esm_message_container);
     if (rv != OGS_OK) {
-        ogs_error("nas_send_emm_to_esm() failed");
+        ogs_error("nas_eps_send_emm_to_esm() failed");
         return OGS_ERROR;
     }
 
@@ -279,7 +279,7 @@ int emm_handle_attach_complete(
 
     emmbuf = nas_eps_security_encode(mme_ue, &message);
     if (emmbuf) 
-        nas_send_to_downlink_nas_transport(mme_ue, emmbuf);
+        nas_eps_send_to_downlink_nas_transport(mme_ue, emmbuf);
 
     ogs_debug("[EMM] EMM information");
     ogs_debug("    IMSI[%s]", mme_ue->imsi_bcd);
@@ -489,7 +489,7 @@ int emm_handle_tau_request(
         /* Send TAU reject */
         ogs_warn("Cannot find Served TAI[PLMN_ID:%06x,TAC:%d]",
             ogs_plmn_id_hexdump(&mme_ue->tai.plmn_id), mme_ue->tai.tac);
-        nas_send_tau_reject(mme_ue, EMM_CAUSE_TRACKING_AREA_NOT_ALLOWED);
+        nas_eps_send_tau_reject(mme_ue, EMM_CAUSE_TRACKING_AREA_NOT_ALLOWED);
         return OGS_ERROR;
     }
     ogs_debug("    SERVED_TAI_INDEX[%d]", served_tai_index);
@@ -611,7 +611,7 @@ int emm_handle_extended_service_request(mme_ue_t *mme_ue,
         /* Send TAU reject */
         ogs_warn("Cannot find Served TAI[PLMN_ID:%06x,TAC:%d]",
             ogs_plmn_id_hexdump(&mme_ue->tai.plmn_id), mme_ue->tai.tac);
-        nas_send_tau_reject(mme_ue, EMM_CAUSE_TRACKING_AREA_NOT_ALLOWED);
+        nas_eps_send_tau_reject(mme_ue, EMM_CAUSE_TRACKING_AREA_NOT_ALLOWED);
         return OGS_ERROR;
     }
     ogs_debug("    SERVED_TAI_INDEX[%d]", served_tai_index);

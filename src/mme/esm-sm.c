@@ -113,7 +113,7 @@ void esm_state_inactive(ogs_fsm_t *s, mme_event_t *e)
                 mme_gtp_send_modify_bearer_request(bearer, 0);
             }
 
-            nas_send_activate_all_dedicated_bearers(bearer);
+            nas_eps_send_activate_all_dedicated_bearers(bearer);
             OGS_FSM_TRAN(s, esm_state_active);
             break;
         case OGS_NAS_EPS_ACTIVATE_DEDICATED_EPS_BEARER_CONTEXT_ACCEPT:
@@ -145,11 +145,11 @@ void esm_state_inactive(ogs_fsm_t *s, mme_event_t *e)
                         mme_ue->imsi_bcd);
                 OGS_FSM_TRAN(&bearer->sm, &esm_state_exception);
 
-                nas_send_pdn_connectivity_reject(sess,
+                nas_eps_send_pdn_connectivity_reject(sess,
                     ESM_CAUSE_ESM_INFORMATION_NOT_RECEIVED);
             } else {
                 bearer->t3489.retry_count++;
-                nas_send_esm_information_request(bearer);
+                nas_eps_send_esm_information_request(bearer);
             }
             break;
         default:
@@ -214,7 +214,7 @@ void esm_state_active(ogs_fsm_t *s, mme_event_t *e)
             if (MME_HAVE_SGW_S1U_PATH(sess)) {
                 mme_gtp_send_delete_session_request(sess);
             } else {
-                nas_send_deactivate_bearer_context_request(bearer);
+                nas_eps_send_deactivate_bearer_context_request(bearer);
             }
             OGS_FSM_TRAN(s, esm_state_pdn_will_disconnect);
             break;

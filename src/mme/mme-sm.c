@@ -415,7 +415,7 @@ void mme_state_operational(ogs_fsm_t *s, mme_event_t *e)
             uint8_t emm_cause = emm_cause_from_diameter(
                     s6a_message->err, s6a_message->exp_err);
 
-            nas_send_attach_reject(mme_ue,
+            nas_eps_send_attach_reject(mme_ue,
                 emm_cause, ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
             ogs_warn("EMM_CAUSE : %d", emm_cause);
 
@@ -439,11 +439,11 @@ void mme_state_operational(ogs_fsm_t *s, mme_event_t *e)
 
             if (OGS_FSM_CHECK(&mme_ue->sm, emm_state_initial_context_setup)) {
                 if (mme_ue->nas_eps.type == MME_EPS_TYPE_ATTACH_REQUEST) {
-                    rv = nas_send_emm_to_esm(mme_ue,
+                    rv = nas_eps_send_emm_to_esm(mme_ue,
                             &mme_ue->pdn_connectivity_request);
                     if (rv != OGS_OK) {
-                        ogs_error("nas_send_emm_to_esm() failed");
-                        nas_send_attach_reject(mme_ue,
+                        ogs_error("nas_eps_send_emm_to_esm() failed");
+                        nas_eps_send_attach_reject(mme_ue,
                             EMM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED,
                             ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
                     }
@@ -454,7 +454,7 @@ void mme_state_operational(ogs_fsm_t *s, mme_event_t *e)
             }
             else if (OGS_FSM_CHECK(&mme_ue->sm, emm_state_registered)) {
                 if (mme_ue->nas_eps.type == MME_EPS_TYPE_TAU_REQUEST) {
-                    nas_send_tau_accept(mme_ue,
+                    nas_eps_send_tau_accept(mme_ue,
                             S1AP_ProcedureCode_id_InitialContextSetup);
                 } else if (mme_ue->nas_eps.type ==
                     MME_EPS_TYPE_SERVICE_REQUEST) {

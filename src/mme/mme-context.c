@@ -2852,7 +2852,7 @@ mme_bearer_t *mme_bearer_find_or_add_by_message(
         bearer = mme_bearer_find_by_ue_ebi(mme_ue, ebi);
         if (!bearer) {
             ogs_error("No Bearer : EBI[%d]", ebi);
-            nas_send_attach_reject(mme_ue,
+            nas_eps_send_attach_reject(mme_ue,
                 EMM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED,
                 ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
             return NULL;
@@ -2863,7 +2863,7 @@ mme_bearer_t *mme_bearer_find_or_add_by_message(
 
     if (pti == OGS_NAS_PROCEDURE_TRANSACTION_IDENTITY_UNASSIGNED) {
         ogs_error("Both PTI[%d] and EBI[%d] are 0", pti, ebi);
-        nas_send_attach_reject(mme_ue,
+        nas_eps_send_attach_reject(mme_ue,
             EMM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED,
             ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
         return NULL;
@@ -2880,7 +2880,7 @@ mme_bearer_t *mme_bearer_find_or_add_by_message(
         if (!bearer) {
             ogs_error("No Bearer : Linked-EBI[%d]", 
                     linked_eps_bearer_identity->eps_bearer_identity);
-            nas_send_attach_reject(mme_ue,
+            nas_eps_send_attach_reject(mme_ue,
                 EMM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED,
                 ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
             return NULL;
@@ -2898,7 +2898,7 @@ mme_bearer_t *mme_bearer_find_or_add_by_message(
         if (!bearer) {
             ogs_error("No Bearer : Linked-EBI[%d]", 
                     linked_eps_bearer_identity->eps_bearer_identity);
-            nas_send_attach_reject(mme_ue,
+            nas_eps_send_attach_reject(mme_ue,
                 EMM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED,
                 ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
             return NULL;
@@ -2916,7 +2916,7 @@ mme_bearer_t *mme_bearer_find_or_add_by_message(
         if (!bearer) {
             ogs_error("No Bearer : Linked-EBI[%d]", 
                     linked_eps_bearer_identity->eps_bearer_identity);
-            nas_send_attach_reject(mme_ue,
+            nas_eps_send_attach_reject(mme_ue,
                 EMM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED,
                 ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
             return NULL;
