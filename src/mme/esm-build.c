@@ -28,7 +28,7 @@ ogs_pkbuf_t *esm_build_pdn_connectivity_reject(
         mme_sess_t *sess, ogs_nas_esm_cause_t esm_cause)
 {
     mme_ue_t *mme_ue = NULL;
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_pdn_connectivity_reject_t *pdn_connectivity_reject =
             &message.esm.pdn_connectivity_reject;
 
@@ -56,13 +56,13 @@ ogs_pkbuf_t *esm_build_pdn_connectivity_reject(
     if (OGS_FSM_CHECK(&mme_ue->sm, emm_state_registered)) {
         return nas_security_encode(mme_ue, &message);
     } else {
-        return ogs_nas_plain_encode(&message);
+        return ogs_nas_eps_plain_encode(&message);
     }
 }
 
 ogs_pkbuf_t *esm_build_information_request(mme_bearer_t *bearer)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     mme_ue_t *mme_ue = NULL;
     mme_sess_t *sess = NULL;
 
@@ -91,7 +91,7 @@ ogs_pkbuf_t *esm_build_information_request(mme_bearer_t *bearer)
 ogs_pkbuf_t *esm_build_activate_default_bearer_context_request(
         mme_sess_t *sess)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_activate_default_eps_bearer_context_request_t 
         *activate_default_eps_bearer_context_request =
             &message.esm.activate_default_eps_bearer_context_request;
@@ -238,7 +238,7 @@ ogs_pkbuf_t *esm_build_activate_default_bearer_context_request(
     if (OGS_FSM_CHECK(&mme_ue->sm, emm_state_registered)) {
         return nas_security_encode(mme_ue, &message);
     } else {
-        return ogs_nas_plain_encode(&message);
+        return ogs_nas_eps_plain_encode(&message);
     }
 }
 
@@ -248,7 +248,7 @@ ogs_pkbuf_t *esm_build_activate_dedicated_bearer_context_request(
     mme_ue_t *mme_ue = NULL;
     mme_bearer_t *linked_bearer = NULL;
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_activate_dedicated_eps_bearer_context_request_t 
         *activate_dedicated_eps_bearer_context_request =
             &message.esm.activate_dedicated_eps_bearer_context_request;
@@ -299,7 +299,7 @@ ogs_pkbuf_t *esm_build_modify_bearer_context_request(
     mme_ue_t *mme_ue = NULL;
     mme_sess_t *sess = NULL;
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_modify_eps_bearer_context_request_t 
         *modify_eps_bearer_context_request =
             &message.esm.modify_eps_bearer_context_request;
@@ -353,7 +353,7 @@ ogs_pkbuf_t *esm_build_deactivate_bearer_context_request(
     mme_ue_t *mme_ue = NULL;
     mme_sess_t *sess = NULL;
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_deactivate_eps_bearer_context_request_t 
         *deactivate_eps_bearer_context_request =
             &message.esm.deactivate_eps_bearer_context_request;
@@ -389,7 +389,7 @@ ogs_pkbuf_t *esm_build_bearer_resource_allocation_reject(
     mme_ue_t *mme_ue = NULL;
     mme_sess_t *sess = NULL;
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_bearer_resource_allocation_reject_t
         *bearer_resource_allocation_reject =
             &message.esm.bearer_resource_allocation_reject;
@@ -421,7 +421,7 @@ ogs_pkbuf_t *esm_build_bearer_resource_allocation_reject(
     if (OGS_FSM_CHECK(&mme_ue->sm, emm_state_registered)) {
         return nas_security_encode(mme_ue, &message);
     } else {
-        return ogs_nas_plain_encode(&message);
+        return ogs_nas_eps_plain_encode(&message);
     }
 }
 
@@ -431,7 +431,7 @@ ogs_pkbuf_t *esm_build_bearer_resource_modification_reject(
     mme_ue_t *mme_ue = NULL;
     mme_sess_t *sess = NULL;
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_bearer_resource_modification_reject_t
         *bearer_resource_modification_reject =
             &message.esm.bearer_resource_modification_reject;
@@ -463,6 +463,6 @@ ogs_pkbuf_t *esm_build_bearer_resource_modification_reject(
     if (OGS_FSM_CHECK(&mme_ue->sm, emm_state_registered)) {
         return nas_security_encode(mme_ue, &message);
     } else {
-        return ogs_nas_plain_encode(&message);
+        return ogs_nas_eps_plain_encode(&message);
     }
 }

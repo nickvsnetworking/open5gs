@@ -151,7 +151,7 @@ int esm_handle_information_response(mme_sess_t *sess,
 }
 
 int esm_handle_bearer_resource_allocation_request(
-        mme_bearer_t *bearer, ogs_nas_message_t *message)
+        mme_bearer_t *bearer, ogs_nas_eps_message_t *message)
 {
     ogs_assert(bearer);
     nas_send_bearer_resource_allocation_reject(
@@ -161,7 +161,7 @@ int esm_handle_bearer_resource_allocation_request(
 }
 
 int esm_handle_bearer_resource_modification_request(
-        mme_bearer_t *bearer, ogs_nas_message_t *message)
+        mme_bearer_t *bearer, ogs_nas_eps_message_t *message)
 {
     mme_ue_t *mme_ue = NULL;
 

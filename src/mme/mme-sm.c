@@ -107,7 +107,7 @@ void mme_state_operational(ogs_fsm_t *s, mme_event_t *e)
     ogs_pkbuf_t *pkbuf = NULL;
     int rc;
 
-    ogs_nas_message_t nas_message;
+    ogs_nas_eps_message_t nas_message;
     enb_ue_t *enb_ue = NULL;
     mme_ue_t *mme_ue = NULL;
 

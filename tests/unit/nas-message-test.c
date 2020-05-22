@@ -20,7 +20,7 @@
 #include "core/abts.h"
 #include "mme/nas-security.h"
 
-static void ogs_nas_message_test1(abts_case *tc, void *data)
+static void ogs_nas_eps_message_test1(abts_case *tc, void *data)
 {
     /* Attach Request */
     const char *payload = 
@@ -29,7 +29,7 @@ static void ogs_nas_message_test1(abts_case *tc, void *data)
         "30395c0a003103e5e0349011035758a6"
         "5d0100e0c1";
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_pkbuf_t *pkbuf;
     int rv;
     char hexbuf[OGS_MAX_SDU_LEN];
@@ -46,7 +46,7 @@ static void ogs_nas_message_test1(abts_case *tc, void *data)
     ogs_pkbuf_free(pkbuf);
 }
 
-static void ogs_nas_message_test2(abts_case *tc, void *data)
+static void ogs_nas_eps_message_test2(abts_case *tc, void *data)
 {
     /* Attach Accept */
     const char *payload = 
@@ -65,7 +65,7 @@ static void ogs_nas_message_test2(abts_case *tc, void *data)
         "a801";
     char esm_buffer[50];
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_attach_accept_t *attach_accept = &message.emm.attach_accept;
     tai0_list_t tai0_list;
     tai2_list_t tai2_list;
@@ -123,7 +123,7 @@ static void ogs_nas_message_test2(abts_case *tc, void *data)
     attach_accept->eps_network_feature_support.emc_bs = 1;
     attach_accept->eps_network_feature_support.ims_vops = 1;
 
-    pkbuf = ogs_nas_plain_encode(&message);
+    pkbuf = ogs_nas_eps_plain_encode(&message);
     ABTS_INT_EQUAL(tc, sizeof(buffer), pkbuf->len);
     ogs_log_hexdump(OGS_LOG_DEBUG, pkbuf->data, pkbuf->len);
     ABTS_TRUE(tc, memcmp(OGS_HEX(payload, strlen(payload), buffer),
@@ -132,11 +132,11 @@ static void ogs_nas_message_test2(abts_case *tc, void *data)
     ogs_pkbuf_free(pkbuf);
 }
 
-static void ogs_nas_message_test3(abts_case *tc, void *data)
+static void ogs_nas_eps_message_test3(abts_case *tc, void *data)
 {
     const char *payload = "074300035200c2";
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_pkbuf_t *pkbuf;
     int rv;
     char hexbuf[OGS_MAX_SDU_LEN];
@@ -153,13 +153,13 @@ static void ogs_nas_message_test3(abts_case *tc, void *data)
     ogs_pkbuf_free(pkbuf);
 }
 
-static void ogs_nas_message_test4(abts_case *tc, void *data)
+static void ogs_nas_eps_message_test4(abts_case *tc, void *data)
 {
     /* Attach Reject */
     const char *payload = "074411";
     char buffer[3];
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_attach_reject_t *attach_reject = &message.emm.attach_reject;
 
     ogs_pkbuf_t *pkbuf = NULL;
@@ -170,7 +170,7 @@ static void ogs_nas_message_test4(abts_case *tc, void *data)
     message.emm.h.message_type = OGS_NAS_ATTACH_REJECT;
     attach_reject->emm_cause = EMM_CAUSE_NETWORK_FAILURE; 
 
-    pkbuf = ogs_nas_plain_encode(&message);
+    pkbuf = ogs_nas_eps_plain_encode(&message);
     ABTS_INT_EQUAL(tc, sizeof(buffer), pkbuf->len);
     ABTS_TRUE(tc, memcmp(OGS_HEX(payload, strlen(payload), buffer),
             pkbuf->data, pkbuf->len) == 0);
@@ -178,7 +178,7 @@ static void ogs_nas_message_test4(abts_case *tc, void *data)
     ogs_pkbuf_free(pkbuf);
 }
 
-static void ogs_nas_message_test5(abts_case *tc, void *data)
+static void ogs_nas_eps_message_test5(abts_case *tc, void *data)
 {
     mme_ue_t ue;
 
@@ -192,13 +192,13 @@ static void ogs_nas_message_test5(abts_case *tc, void *data)
     ABTS_INT_EQUAL(tc, 0xabcdef, ue.ul_count.i32);
 }
 
-static void ogs_nas_message_test6(abts_case *tc, void *data)
+static void ogs_nas_eps_message_test6(abts_case *tc, void *data)
 {
     /* Identity Request */
     const char *payload = "075501";
     char hexbuf[OGS_MAX_SDU_LEN];
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_identity_request_t *identity_request = &message.emm.identity_request;
     ogs_pkbuf_t *pkbuf;
     int rv;
@@ -221,13 +221,13 @@ static void ogs_nas_message_test6(abts_case *tc, void *data)
     ogs_pkbuf_free(pkbuf);
 }
 
-static void ogs_nas_message_test7(abts_case *tc, void *data)
+static void ogs_nas_eps_message_test7(abts_case *tc, void *data)
 {
     /* Identity Response */
     const char *payload = "0756080910101032548651";
     char buffer[11];
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_identity_response_t *identity_response = &message.emm.identity_response;
 
     ogs_pkbuf_t *pkbuf = NULL;
@@ -257,7 +257,7 @@ static void ogs_nas_message_test7(abts_case *tc, void *data)
     identity_response->mobile_identity.imsi.digit14 = 1;
     identity_response->mobile_identity.imsi.digit15 = 5;
 
-    pkbuf = ogs_nas_plain_encode(&message);
+    pkbuf = ogs_nas_eps_plain_encode(&message);
     ABTS_INT_EQUAL(tc, sizeof(buffer), pkbuf->len);
     ABTS_TRUE(tc, memcmp(OGS_HEX(payload, strlen(payload), buffer),
             pkbuf->data, pkbuf->len) == 0);
@@ -265,13 +265,13 @@ static void ogs_nas_message_test7(abts_case *tc, void *data)
     ogs_pkbuf_free(pkbuf);
 }
 
-static void ogs_nas_message_test8(abts_case *tc, void *data)
+static void ogs_nas_eps_message_test8(abts_case *tc, void *data)
 {
     /* Security Request */
     const char *payload = "c7a8640c";
     char buffer[4];
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_pkbuf_t *pkbuf;
     int rv;
     char hexbuf[OGS_MAX_SDU_LEN];
@@ -304,7 +304,7 @@ static void ogs_nas_message_test8(abts_case *tc, void *data)
     ksi_and_sequence_number->sequence_number = 8;
     service_request->message_authentication_code = 0x640c;
 
-    pkbuf = ogs_nas_plain_encode(&message);
+    pkbuf = ogs_nas_eps_plain_encode(&message);
     ABTS_INT_EQUAL(tc, sizeof(buffer), pkbuf->len);
     ABTS_TRUE(tc, memcmp(OGS_HEX(payload, strlen(payload), buffer),
             pkbuf->data, pkbuf->len) == 0);
@@ -316,14 +316,14 @@ abts_suite *test_nas_message(abts_suite *suite)
 {
     suite = ADD_SUITE(suite)
 
-    abts_run_test(suite, ogs_nas_message_test1, NULL);
-    abts_run_test(suite, ogs_nas_message_test2, NULL);
-    abts_run_test(suite, ogs_nas_message_test3, NULL);
-    abts_run_test(suite, ogs_nas_message_test4, NULL);
-    abts_run_test(suite, ogs_nas_message_test5, NULL);
-    abts_run_test(suite, ogs_nas_message_test6, NULL);
-    abts_run_test(suite, ogs_nas_message_test7, NULL);
-    abts_run_test(suite, ogs_nas_message_test8, NULL);
+    abts_run_test(suite, ogs_nas_eps_message_test1, NULL);
+    abts_run_test(suite, ogs_nas_eps_message_test2, NULL);
+    abts_run_test(suite, ogs_nas_eps_message_test3, NULL);
+    abts_run_test(suite, ogs_nas_eps_message_test4, NULL);
+    abts_run_test(suite, ogs_nas_eps_message_test5, NULL);
+    abts_run_test(suite, ogs_nas_eps_message_test6, NULL);
+    abts_run_test(suite, ogs_nas_eps_message_test7, NULL);
+    abts_run_test(suite, ogs_nas_eps_message_test8, NULL);
 
     return suite;
 }

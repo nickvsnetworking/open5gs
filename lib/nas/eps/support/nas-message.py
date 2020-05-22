@@ -549,12 +549,12 @@ ED2(uint8_t eps_bearer_identity:4;,
     uint8_t message_type;
 } __attribute__ ((packed)) ogs_nas_esm_header_t;
 
-typedef struct ogs_nas_security_header_s {
+typedef struct ogs_nas_eps_security_header_s {
 ED2(uint8_t security_header_type:4;,
     uint8_t protocol_discriminator:4;)
     uint32_t message_authentication_code;
     uint8_t sequence_number;
-} __attribute__ ((packed)) ogs_nas_security_header_t;
+} __attribute__ ((packed)) ogs_nas_eps_security_header_t;
 
 """)
 
@@ -629,19 +629,19 @@ for (k, v) in sorted_msg_list:
 f.write("""    };
 } ogs_nas_esm_message_t;
 
-typedef struct ogs_nas_message_s {
-    ogs_nas_security_header_t h;
+typedef struct ogs_nas_eps_message_s {
+    ogs_nas_eps_security_header_t h;
     union {
         ogs_nas_emm_message_t emm;
         ogs_nas_esm_message_t esm;
     };
-} ogs_nas_message_t;
+} ogs_nas_eps_message_t;
 
-ogs_pkbuf_t *ogs_nas_emm_encode(ogs_nas_message_t *message);
-ogs_pkbuf_t *ogs_nas_esm_encode(ogs_nas_message_t *message);
-int ogs_nas_emm_decode(ogs_nas_message_t *message, ogs_pkbuf_t *pkbuf);
-int ogs_nas_esm_decode(ogs_nas_message_t *message, ogs_pkbuf_t *pkbuf);
-ogs_pkbuf_t *ogs_nas_plain_encode(ogs_nas_message_t *message);
+ogs_pkbuf_t *ogs_nas_emm_encode(ogs_nas_eps_message_t *message);
+ogs_pkbuf_t *ogs_nas_esm_encode(ogs_nas_eps_message_t *message);
+int ogs_nas_emm_decode(ogs_nas_eps_message_t *message, ogs_pkbuf_t *pkbuf);
+int ogs_nas_esm_decode(ogs_nas_eps_message_t *message, ogs_pkbuf_t *pkbuf);
+ogs_pkbuf_t *ogs_nas_eps_plain_encode(ogs_nas_eps_message_t *message);
 
 #ifdef __cplusplus
 }
@@ -665,7 +665,7 @@ for (k, v) in sorted_msg_list:
         continue
     if len(msg_list[k]["ies"]) == 0:
         continue
-    f.write("int ogs_nas_decode_%s(ogs_nas_message_t *message, ogs_pkbuf_t *pkbuf);\n" % v_lower(k))
+    f.write("int ogs_nas_decode_%s(ogs_nas_eps_message_t *message, ogs_pkbuf_t *pkbuf);\n" % v_lower(k))
 
 for (k, v) in sorted_msg_list:
     if "ies" not in msg_list[k]:
@@ -673,7 +673,7 @@ for (k, v) in sorted_msg_list:
     if len(msg_list[k]["ies"]) == 0:
         continue
 
-    f.write("int ogs_nas_decode_%s(ogs_nas_message_t *message, ogs_pkbuf_t *pkbuf)\n{\n" % v_lower(k))
+    f.write("int ogs_nas_decode_%s(ogs_nas_eps_message_t *message, ogs_pkbuf_t *pkbuf)\n{\n" % v_lower(k))
     if float(msg_list[k]["type"]) < 192:
         f.write("    ogs_nas_%s_t *%s = &message->emm.%s;\n" % (v_lower(k), v_lower(k), v_lower(k)))
     else:
@@ -722,7 +722,7 @@ for (k, v) in sorted_msg_list:
 
 """)
 
-f.write("""int ogs_nas_emm_decode(ogs_nas_message_t *message, ogs_pkbuf_t *pkbuf)
+f.write("""int ogs_nas_emm_decode(ogs_nas_eps_message_t *message, ogs_pkbuf_t *pkbuf)
 {
     int size = 0;
     uint16_t decoded = 0;
@@ -731,7 +731,7 @@ f.write("""int ogs_nas_emm_decode(ogs_nas_message_t *message, ogs_pkbuf_t *pkbuf
     ogs_assert(pkbuf->data);
     ogs_assert(pkbuf->len);
 
-    memset(message, 0, sizeof(ogs_nas_message_t));
+    memset(message, 0, sizeof(ogs_nas_eps_message_t));
 
     size = sizeof(ogs_nas_emm_header_t);
     ogs_assert(ogs_pkbuf_pull(pkbuf, size));
@@ -775,7 +775,7 @@ out:
 }
 """)
 
-f.write("""int ogs_nas_esm_decode(ogs_nas_message_t *message, ogs_pkbuf_t *pkbuf)
+f.write("""int ogs_nas_esm_decode(ogs_nas_eps_message_t *message, ogs_pkbuf_t *pkbuf)
 {
     int size = 0;
     uint16_t decoded = 0;
@@ -784,7 +784,7 @@ f.write("""int ogs_nas_esm_decode(ogs_nas_message_t *message, ogs_pkbuf_t *pkbuf
     ogs_assert(pkbuf->data);
     ogs_assert(pkbuf->len);
 
-    memset(message, 0, sizeof(ogs_nas_message_t));
+    memset(message, 0, sizeof(ogs_nas_eps_message_t));
 
     size = sizeof(ogs_nas_esm_header_t);
     ogs_assert(ogs_pkbuf_pull(pkbuf, size));
@@ -830,7 +830,7 @@ for (k, v) in sorted_msg_list:
         continue;
     if len(msg_list[k]["ies"]) == 0:
         continue
-    f.write("int ogs_nas_encode_%s(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);\n" % v_lower(k))
+    f.write("int ogs_nas_encode_%s(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);\n" % v_lower(k))
 
 for (k, v) in sorted_msg_list:
     if "ies" not in msg_list[k]:
@@ -838,7 +838,7 @@ for (k, v) in sorted_msg_list:
     if len(msg_list[k]["ies"]) == 0:
         continue
 
-    f.write("int ogs_nas_encode_%s(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)\n{\n" % v_lower(k))
+    f.write("int ogs_nas_encode_%s(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)\n{\n" % v_lower(k))
     if float(msg_list[k]["type"]) < 192:
         f.write("    ogs_nas_%s_t *%s = &message->emm.%s;\n" % (v_lower(k), v_lower(k), v_lower(k)))
     else:
@@ -873,7 +873,7 @@ for (k, v) in sorted_msg_list:
 """)
 
 
-f.write("""ogs_pkbuf_t *ogs_nas_emm_encode(ogs_nas_message_t *message)
+f.write("""ogs_pkbuf_t *ogs_nas_emm_encode(ogs_nas_eps_message_t *message)
 {
     ogs_pkbuf_t *pkbuf = NULL;
     int size = 0;
@@ -936,7 +936,7 @@ out:
 
 """)
 
-f.write("""ogs_pkbuf_t *ogs_nas_esm_encode(ogs_nas_message_t *message)
+f.write("""ogs_pkbuf_t *ogs_nas_esm_encode(ogs_nas_eps_message_t *message)
 {
     ogs_pkbuf_t *pkbuf = NULL;
     int size = 0;
@@ -983,7 +983,7 @@ f.write("""   default:
     return pkbuf;
 }
 
-ogs_pkbuf_t *ogs_nas_plain_encode(ogs_nas_message_t *message)
+ogs_pkbuf_t *ogs_nas_eps_plain_encode(ogs_nas_eps_message_t *message)
 {
     ogs_assert(message);
 

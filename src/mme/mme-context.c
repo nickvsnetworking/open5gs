@@ -2332,7 +2332,7 @@ mme_ue_t *mme_ue_find_by_teid(uint32_t teid)
     return ogs_pool_find(&mme_ue_pool, teid);
 }
 
-mme_ue_t *mme_ue_find_by_message(ogs_nas_message_t *message)
+mme_ue_t *mme_ue_find_by_message(ogs_nas_eps_message_t *message)
 {
     mme_ue_t *mme_ue = NULL;
     ogs_nas_attach_request_t *attach_request = NULL;
@@ -2831,7 +2831,7 @@ mme_bearer_t *mme_bearer_find_by_ue_ebi(mme_ue_t *mme_ue, uint8_t ebi)
 }
 
 mme_bearer_t *mme_bearer_find_or_add_by_message(
-        mme_ue_t *mme_ue, ogs_nas_message_t *message)
+        mme_ue_t *mme_ue, ogs_nas_eps_message_t *message)
 {
     uint8_t pti = OGS_NAS_PROCEDURE_TRANSACTION_IDENTITY_UNASSIGNED;
     uint8_t ebi = OGS_NAS_EPS_BEARER_IDENTITY_UNASSIGNED;

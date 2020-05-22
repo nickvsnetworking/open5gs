@@ -28,62 +28,62 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.1.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-21 20:07:15.961620 by acetcom
+ * Created on: 2020-05-22 15:02:57.138339 by acetcom
  * from 24301-d80.docx
  ******************************************************************************/
 
 #include "ogs-nas-eps.h"
 
-int ogs_nas_encode_attach_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_attach_accept(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_attach_complete(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_attach_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_detach_request_from_ue(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_detach_request_to_ue(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_tracking_area_update_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_tracking_area_update_accept(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_tracking_area_update_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_extended_service_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_service_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_service_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_guti_reallocation_command(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_authentication_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_authentication_response(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_identity_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_identity_response(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_authentication_failure(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_security_mode_command(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_security_mode_complete(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_security_mode_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_emm_status(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_emm_information(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_downlink_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_uplink_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_cs_service_notification(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_uplink_generic_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_downlink_generic_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_activate_default_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_activate_default_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_activate_default_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_activate_dedicated_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_activate_dedicated_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_activate_dedicated_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_modify_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_modify_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_modify_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_deactivate_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_deactivate_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_pdn_connectivity_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_pdn_connectivity_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_pdn_disconnect_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_pdn_disconnect_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_bearer_resource_allocation_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_bearer_resource_allocation_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_bearer_resource_modification_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_bearer_resource_modification_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_esm_information_response(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_esm_status(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message);
-int ogs_nas_encode_attach_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_attach_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_attach_accept(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_attach_complete(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_attach_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_detach_request_from_ue(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_detach_request_to_ue(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_tracking_area_update_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_tracking_area_update_accept(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_tracking_area_update_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_extended_service_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_service_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_service_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_guti_reallocation_command(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_authentication_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_authentication_response(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_identity_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_identity_response(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_authentication_failure(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_security_mode_command(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_security_mode_complete(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_security_mode_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_emm_status(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_emm_information(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_downlink_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_uplink_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_cs_service_notification(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_uplink_generic_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_downlink_generic_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_activate_default_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_activate_default_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_activate_default_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_activate_dedicated_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_activate_dedicated_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_activate_dedicated_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_modify_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_modify_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_modify_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_deactivate_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_deactivate_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_pdn_connectivity_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_pdn_connectivity_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_pdn_disconnect_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_pdn_disconnect_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_bearer_resource_allocation_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_bearer_resource_allocation_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_bearer_resource_modification_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_bearer_resource_modification_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_esm_information_response(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_esm_status(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message);
+int ogs_nas_encode_attach_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_attach_request_t *attach_request = &message->emm.attach_request;
     int encoded = 0;
@@ -290,7 +290,7 @@ int ogs_nas_encode_attach_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message
     return encoded;
 }
 
-int ogs_nas_encode_attach_accept(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_attach_accept(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_attach_accept_t *attach_accept = &message->emm.attach_accept;
     int encoded = 0;
@@ -445,7 +445,7 @@ int ogs_nas_encode_attach_accept(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
     return encoded;
 }
 
-int ogs_nas_encode_attach_complete(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_attach_complete(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_attach_complete_t *attach_complete = &message->emm.attach_complete;
     int encoded = 0;
@@ -460,7 +460,7 @@ int ogs_nas_encode_attach_complete(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *messag
     return encoded;
 }
 
-int ogs_nas_encode_attach_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_attach_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_attach_reject_t *attach_reject = &message->emm.attach_reject;
     int encoded = 0;
@@ -513,7 +513,7 @@ int ogs_nas_encode_attach_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
     return encoded;
 }
 
-int ogs_nas_encode_detach_request_from_ue(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_detach_request_from_ue(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_detach_request_from_ue_t *detach_request_from_ue = &message->emm.detach_request_from_ue;
     int encoded = 0;
@@ -532,7 +532,7 @@ int ogs_nas_encode_detach_request_from_ue(ogs_pkbuf_t *pkbuf, ogs_nas_message_t 
     return encoded;
 }
 
-int ogs_nas_encode_detach_request_to_ue(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_detach_request_to_ue(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_detach_request_to_ue_t *detach_request_to_ue = &message->emm.detach_request_to_ue;
     int encoded = 0;
@@ -557,7 +557,7 @@ int ogs_nas_encode_detach_request_to_ue(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *m
     return encoded;
 }
 
-int ogs_nas_encode_tracking_area_update_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_tracking_area_update_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_tracking_area_update_request_t *tracking_area_update_request = &message->emm.tracking_area_update_request;
     int encoded = 0;
@@ -810,7 +810,7 @@ int ogs_nas_encode_tracking_area_update_request(ogs_pkbuf_t *pkbuf, ogs_nas_mess
     return encoded;
 }
 
-int ogs_nas_encode_tracking_area_update_accept(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_tracking_area_update_accept(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_tracking_area_update_accept_t *tracking_area_update_accept = &message->emm.tracking_area_update_accept;
     int encoded = 0;
@@ -993,7 +993,7 @@ int ogs_nas_encode_tracking_area_update_accept(ogs_pkbuf_t *pkbuf, ogs_nas_messa
     return encoded;
 }
 
-int ogs_nas_encode_tracking_area_update_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_tracking_area_update_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_tracking_area_update_reject_t *tracking_area_update_reject = &message->emm.tracking_area_update_reject;
     int encoded = 0;
@@ -1026,7 +1026,7 @@ int ogs_nas_encode_tracking_area_update_reject(ogs_pkbuf_t *pkbuf, ogs_nas_messa
     return encoded;
 }
 
-int ogs_nas_encode_extended_service_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_extended_service_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_extended_service_request_t *extended_service_request = &message->emm.extended_service_request;
     int encoded = 0;
@@ -1071,7 +1071,7 @@ int ogs_nas_encode_extended_service_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_
     return encoded;
 }
 
-int ogs_nas_encode_service_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_service_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_service_request_t *service_request = &message->emm.service_request;
     int encoded = 0;
@@ -1090,7 +1090,7 @@ int ogs_nas_encode_service_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *messag
     return encoded;
 }
 
-int ogs_nas_encode_service_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_service_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_service_reject_t *service_reject = &message->emm.service_reject;
     int encoded = 0;
@@ -1115,7 +1115,7 @@ int ogs_nas_encode_service_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message
     return encoded;
 }
 
-int ogs_nas_encode_guti_reallocation_command(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_guti_reallocation_command(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_guti_reallocation_command_t *guti_reallocation_command = &message->emm.guti_reallocation_command;
     int encoded = 0;
@@ -1140,7 +1140,7 @@ int ogs_nas_encode_guti_reallocation_command(ogs_pkbuf_t *pkbuf, ogs_nas_message
     return encoded;
 }
 
-int ogs_nas_encode_authentication_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_authentication_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_authentication_request_t *authentication_request = &message->emm.authentication_request;
     int encoded = 0;
@@ -1163,7 +1163,7 @@ int ogs_nas_encode_authentication_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t 
     return encoded;
 }
 
-int ogs_nas_encode_authentication_response(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_authentication_response(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_authentication_response_t *authentication_response = &message->emm.authentication_response;
     int encoded = 0;
@@ -1178,7 +1178,7 @@ int ogs_nas_encode_authentication_response(ogs_pkbuf_t *pkbuf, ogs_nas_message_t
     return encoded;
 }
 
-int ogs_nas_encode_identity_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_identity_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_identity_request_t *identity_request = &message->emm.identity_request;
     int encoded = 0;
@@ -1193,7 +1193,7 @@ int ogs_nas_encode_identity_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *messa
     return encoded;
 }
 
-int ogs_nas_encode_identity_response(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_identity_response(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_identity_response_t *identity_response = &message->emm.identity_response;
     int encoded = 0;
@@ -1208,7 +1208,7 @@ int ogs_nas_encode_identity_response(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *mess
     return encoded;
 }
 
-int ogs_nas_encode_authentication_failure(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_authentication_failure(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_authentication_failure_t *authentication_failure = &message->emm.authentication_failure;
     int encoded = 0;
@@ -1233,7 +1233,7 @@ int ogs_nas_encode_authentication_failure(ogs_pkbuf_t *pkbuf, ogs_nas_message_t 
     return encoded;
 }
 
-int ogs_nas_encode_security_mode_command(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_security_mode_command(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_security_mode_command_t *security_mode_command = &message->emm.security_mode_command;
     int encoded = 0;
@@ -1284,7 +1284,7 @@ int ogs_nas_encode_security_mode_command(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *
     return encoded;
 }
 
-int ogs_nas_encode_security_mode_complete(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_security_mode_complete(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_security_mode_complete_t *security_mode_complete = &message->emm.security_mode_complete;
     int encoded = 0;
@@ -1305,7 +1305,7 @@ int ogs_nas_encode_security_mode_complete(ogs_pkbuf_t *pkbuf, ogs_nas_message_t 
     return encoded;
 }
 
-int ogs_nas_encode_security_mode_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_security_mode_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_security_mode_reject_t *security_mode_reject = &message->emm.security_mode_reject;
     int encoded = 0;
@@ -1320,7 +1320,7 @@ int ogs_nas_encode_security_mode_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *m
     return encoded;
 }
 
-int ogs_nas_encode_emm_status(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_emm_status(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_emm_status_t *emm_status = &message->emm.emm_status;
     int encoded = 0;
@@ -1335,7 +1335,7 @@ int ogs_nas_encode_emm_status(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
     return encoded;
 }
 
-int ogs_nas_encode_emm_information(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_emm_information(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_emm_information_t *emm_information = &message->emm.emm_information;
     int encoded = 0;
@@ -1396,7 +1396,7 @@ int ogs_nas_encode_emm_information(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *messag
     return encoded;
 }
 
-int ogs_nas_encode_downlink_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_downlink_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_downlink_nas_transport_t *downlink_nas_transport = &message->emm.downlink_nas_transport;
     int encoded = 0;
@@ -1411,7 +1411,7 @@ int ogs_nas_encode_downlink_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_message_t 
     return encoded;
 }
 
-int ogs_nas_encode_uplink_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_uplink_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_uplink_nas_transport_t *uplink_nas_transport = &message->emm.uplink_nas_transport;
     int encoded = 0;
@@ -1426,7 +1426,7 @@ int ogs_nas_encode_uplink_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *m
     return encoded;
 }
 
-int ogs_nas_encode_cs_service_notification(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_cs_service_notification(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_cs_service_notification_t *cs_service_notification = &message->emm.cs_service_notification;
     int encoded = 0;
@@ -1481,7 +1481,7 @@ int ogs_nas_encode_cs_service_notification(ogs_pkbuf_t *pkbuf, ogs_nas_message_t
     return encoded;
 }
 
-int ogs_nas_encode_uplink_generic_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_uplink_generic_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_uplink_generic_nas_transport_t *uplink_generic_nas_transport = &message->emm.uplink_generic_nas_transport;
     int encoded = 0;
@@ -1510,7 +1510,7 @@ int ogs_nas_encode_uplink_generic_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_mess
     return encoded;
 }
 
-int ogs_nas_encode_downlink_generic_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_downlink_generic_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_downlink_generic_nas_transport_t *downlink_generic_nas_transport = &message->emm.downlink_generic_nas_transport;
     int encoded = 0;
@@ -1539,7 +1539,7 @@ int ogs_nas_encode_downlink_generic_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_me
     return encoded;
 }
 
-int ogs_nas_encode_activate_default_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_activate_default_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_activate_default_eps_bearer_context_request_t *activate_default_eps_bearer_context_request = &message->esm.activate_default_eps_bearer_context_request;
     int encoded = 0;
@@ -1704,7 +1704,7 @@ int ogs_nas_encode_activate_default_eps_bearer_context_request(ogs_pkbuf_t *pkbu
     return encoded;
 }
 
-int ogs_nas_encode_activate_default_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_activate_default_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_activate_default_eps_bearer_context_accept_t *activate_default_eps_bearer_context_accept = &message->esm.activate_default_eps_bearer_context_accept;
     int encoded = 0;
@@ -1735,7 +1735,7 @@ int ogs_nas_encode_activate_default_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf
     return encoded;
 }
 
-int ogs_nas_encode_activate_default_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_activate_default_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_activate_default_eps_bearer_context_reject_t *activate_default_eps_bearer_context_reject = &message->esm.activate_default_eps_bearer_context_reject;
     int encoded = 0;
@@ -1770,7 +1770,7 @@ int ogs_nas_encode_activate_default_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf
     return encoded;
 }
 
-int ogs_nas_encode_activate_dedicated_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_activate_dedicated_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_activate_dedicated_eps_bearer_context_request_t *activate_dedicated_eps_bearer_context_request = &message->esm.activate_dedicated_eps_bearer_context_request;
     int encoded = 0;
@@ -1879,7 +1879,7 @@ int ogs_nas_encode_activate_dedicated_eps_bearer_context_request(ogs_pkbuf_t *pk
     return encoded;
 }
 
-int ogs_nas_encode_activate_dedicated_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_activate_dedicated_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_activate_dedicated_eps_bearer_context_accept_t *activate_dedicated_eps_bearer_context_accept = &message->esm.activate_dedicated_eps_bearer_context_accept;
     int encoded = 0;
@@ -1920,7 +1920,7 @@ int ogs_nas_encode_activate_dedicated_eps_bearer_context_accept(ogs_pkbuf_t *pkb
     return encoded;
 }
 
-int ogs_nas_encode_activate_dedicated_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_activate_dedicated_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_activate_dedicated_eps_bearer_context_reject_t *activate_dedicated_eps_bearer_context_reject = &message->esm.activate_dedicated_eps_bearer_context_reject;
     int encoded = 0;
@@ -1965,7 +1965,7 @@ int ogs_nas_encode_activate_dedicated_eps_bearer_context_reject(ogs_pkbuf_t *pkb
     return encoded;
 }
 
-int ogs_nas_encode_modify_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_modify_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_modify_eps_bearer_context_request_t *modify_eps_bearer_context_request = &message->esm.modify_eps_bearer_context_request;
     int encoded = 0;
@@ -2092,7 +2092,7 @@ int ogs_nas_encode_modify_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas
     return encoded;
 }
 
-int ogs_nas_encode_modify_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_modify_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_modify_eps_bearer_context_accept_t *modify_eps_bearer_context_accept = &message->esm.modify_eps_bearer_context_accept;
     int encoded = 0;
@@ -2133,7 +2133,7 @@ int ogs_nas_encode_modify_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_
     return encoded;
 }
 
-int ogs_nas_encode_modify_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_modify_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_modify_eps_bearer_context_reject_t *modify_eps_bearer_context_reject = &message->esm.modify_eps_bearer_context_reject;
     int encoded = 0;
@@ -2178,7 +2178,7 @@ int ogs_nas_encode_modify_eps_bearer_context_reject(ogs_pkbuf_t *pkbuf, ogs_nas_
     return encoded;
 }
 
-int ogs_nas_encode_deactivate_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_deactivate_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_deactivate_eps_bearer_context_request_t *deactivate_eps_bearer_context_request = &message->esm.deactivate_eps_bearer_context_request;
     int encoded = 0;
@@ -2241,7 +2241,7 @@ int ogs_nas_encode_deactivate_eps_bearer_context_request(ogs_pkbuf_t *pkbuf, ogs
     return encoded;
 }
 
-int ogs_nas_encode_deactivate_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_deactivate_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_deactivate_eps_bearer_context_accept_t *deactivate_eps_bearer_context_accept = &message->esm.deactivate_eps_bearer_context_accept;
     int encoded = 0;
@@ -2272,7 +2272,7 @@ int ogs_nas_encode_deactivate_eps_bearer_context_accept(ogs_pkbuf_t *pkbuf, ogs_
     return encoded;
 }
 
-int ogs_nas_encode_pdn_connectivity_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_pdn_connectivity_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_pdn_connectivity_request_t *pdn_connectivity_request = &message->esm.pdn_connectivity_request;
     int encoded = 0;
@@ -2353,7 +2353,7 @@ int ogs_nas_encode_pdn_connectivity_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_
     return encoded;
 }
 
-int ogs_nas_encode_pdn_connectivity_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_pdn_connectivity_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_pdn_connectivity_reject_t *pdn_connectivity_reject = &message->esm.pdn_connectivity_reject;
     int encoded = 0;
@@ -2418,7 +2418,7 @@ int ogs_nas_encode_pdn_connectivity_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t
     return encoded;
 }
 
-int ogs_nas_encode_pdn_disconnect_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_pdn_disconnect_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_pdn_disconnect_request_t *pdn_disconnect_request = &message->esm.pdn_disconnect_request;
     int encoded = 0;
@@ -2453,7 +2453,7 @@ int ogs_nas_encode_pdn_disconnect_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t 
     return encoded;
 }
 
-int ogs_nas_encode_pdn_disconnect_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_pdn_disconnect_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_pdn_disconnect_reject_t *pdn_disconnect_reject = &message->esm.pdn_disconnect_reject;
     int encoded = 0;
@@ -2488,7 +2488,7 @@ int ogs_nas_encode_pdn_disconnect_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *
     return encoded;
 }
 
-int ogs_nas_encode_bearer_resource_allocation_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_bearer_resource_allocation_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_bearer_resource_allocation_request_t *bearer_resource_allocation_request = &message->esm.bearer_resource_allocation_request;
     int encoded = 0;
@@ -2549,7 +2549,7 @@ int ogs_nas_encode_bearer_resource_allocation_request(ogs_pkbuf_t *pkbuf, ogs_na
     return encoded;
 }
 
-int ogs_nas_encode_bearer_resource_allocation_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_bearer_resource_allocation_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_bearer_resource_allocation_reject_t *bearer_resource_allocation_reject = &message->esm.bearer_resource_allocation_reject;
     int encoded = 0;
@@ -2614,7 +2614,7 @@ int ogs_nas_encode_bearer_resource_allocation_reject(ogs_pkbuf_t *pkbuf, ogs_nas
     return encoded;
 }
 
-int ogs_nas_encode_bearer_resource_modification_request(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_bearer_resource_modification_request(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_bearer_resource_modification_request_t *bearer_resource_modification_request = &message->esm.bearer_resource_modification_request;
     int encoded = 0;
@@ -2701,7 +2701,7 @@ int ogs_nas_encode_bearer_resource_modification_request(ogs_pkbuf_t *pkbuf, ogs_
     return encoded;
 }
 
-int ogs_nas_encode_bearer_resource_modification_reject(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_bearer_resource_modification_reject(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_bearer_resource_modification_reject_t *bearer_resource_modification_reject = &message->esm.bearer_resource_modification_reject;
     int encoded = 0;
@@ -2766,7 +2766,7 @@ int ogs_nas_encode_bearer_resource_modification_reject(ogs_pkbuf_t *pkbuf, ogs_n
     return encoded;
 }
 
-int ogs_nas_encode_esm_information_response(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_esm_information_response(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_esm_information_response_t *esm_information_response = &message->esm.esm_information_response;
     int encoded = 0;
@@ -2807,7 +2807,7 @@ int ogs_nas_encode_esm_information_response(ogs_pkbuf_t *pkbuf, ogs_nas_message_
     return encoded;
 }
 
-int ogs_nas_encode_esm_status(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
+int ogs_nas_encode_esm_status(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_t *message)
 {
     ogs_nas_esm_status_t *esm_status = &message->esm.esm_status;
     int encoded = 0;
@@ -2822,7 +2822,7 @@ int ogs_nas_encode_esm_status(ogs_pkbuf_t *pkbuf, ogs_nas_message_t *message)
     return encoded;
 }
 
-ogs_pkbuf_t *ogs_nas_emm_encode(ogs_nas_message_t *message)
+ogs_pkbuf_t *ogs_nas_emm_encode(ogs_nas_eps_message_t *message)
 {
     ogs_pkbuf_t *pkbuf = NULL;
     int size = 0;
@@ -3008,7 +3008,7 @@ out:
     return pkbuf;
 }
 
-ogs_pkbuf_t *ogs_nas_esm_encode(ogs_nas_message_t *message)
+ogs_pkbuf_t *ogs_nas_esm_encode(ogs_nas_eps_message_t *message)
 {
     ogs_pkbuf_t *pkbuf = NULL;
     int size = 0;
@@ -3149,7 +3149,7 @@ ogs_pkbuf_t *ogs_nas_esm_encode(ogs_nas_message_t *message)
     return pkbuf;
 }
 
-ogs_pkbuf_t *ogs_nas_plain_encode(ogs_nas_message_t *message)
+ogs_pkbuf_t *ogs_nas_eps_plain_encode(ogs_nas_eps_message_t *message)
 {
     ogs_assert(message);
 

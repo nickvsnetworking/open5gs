@@ -53,7 +53,7 @@ void esm_state_inactive(ogs_fsm_t *s, mme_event_t *e)
     mme_ue_t *mme_ue = NULL;
     mme_sess_t *sess = NULL;
     mme_bearer_t *bearer = NULL;
-    ogs_nas_message_t *message = NULL;
+    ogs_nas_eps_message_t *message = NULL;
 
     ogs_assert(s);
     ogs_assert(e);
@@ -170,7 +170,7 @@ void esm_state_active(ogs_fsm_t *s, mme_event_t *e)
     mme_ue_t *mme_ue = NULL;
     mme_sess_t *sess = NULL;
     mme_bearer_t *bearer = NULL;
-    ogs_nas_message_t *message = NULL;
+    ogs_nas_eps_message_t *message = NULL;
 
     ogs_assert(s);
     ogs_assert(e);
@@ -262,7 +262,7 @@ void esm_state_pdn_will_disconnect(ogs_fsm_t *s, mme_event_t *e)
     mme_ue_t *mme_ue = NULL;
     mme_sess_t *sess = NULL;
     mme_bearer_t *bearer = NULL;
-    ogs_nas_message_t *message = NULL;
+    ogs_nas_eps_message_t *message = NULL;
 
     ogs_assert(s);
     ogs_assert(e);

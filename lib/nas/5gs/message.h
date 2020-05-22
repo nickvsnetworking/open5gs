@@ -28,7 +28,7 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.2.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-21 21:20:09.032866 by acetcom
+ * Created on: 2020-05-22 15:09:57.084922 by acetcom
  * from 24501-g41.docx
  ******************************************************************************/
 
@@ -73,12 +73,12 @@ typedef struct ogs_nas_5gsm_header_s {
     uint8_t message_type;
 } __attribute__ ((packed)) ogs_nas_5gsm_header_t;
 
-typedef struct ogs_nas_security_header_s {
+typedef struct ogs_nas_5gs_security_header_s {
     uint8_t extended_protocol_discriminator;
     uint8_t security_header_type;
     uint32_t message_authentication_code;
     uint8_t sequence_number;
-} __attribute__ ((packed)) ogs_nas_security_header_t;
+} __attribute__ ((packed)) ogs_nas_5gs_security_header_t;
 
 #define OGS_NAS_REGISTRATION_REQUEST 65
 #define OGS_NAS_REGISTRATION_ACCEPT 66
@@ -1363,19 +1363,19 @@ typedef struct ogs_nas_5gsm_message_s {
     };
 } ogs_nas_5gsm_message_t;
 
-typedef struct ogs_nas_message_s {
-    ogs_nas_security_header_t h;
+typedef struct ogs_nas_5gs_message_s {
+    ogs_nas_5gs_security_header_t h;
     union {
         ogs_nas_5gmm_message_t gmm;
         ogs_nas_5gsm_message_t gsm;
     };
-} ogs_nas_message_t;
+} ogs_nas_5gs_message_t;
 
-ogs_pkbuf_t *ogs_nas_5gmm_encode(ogs_nas_message_t *message);
-ogs_pkbuf_t *ogs_nas_5gsm_encode(ogs_nas_message_t *message);
-int ogs_nas_5gmm_decode(ogs_nas_message_t *message, ogs_pkbuf_t *pkbuf);
-int ogs_nas_5gsm_decode(ogs_nas_message_t *message, ogs_pkbuf_t *pkbuf);
-ogs_pkbuf_t *ogs_nas_plain_encode(ogs_nas_message_t *message);
+ogs_pkbuf_t *ogs_nas_5gmm_encode(ogs_nas_5gs_message_t *message);
+ogs_pkbuf_t *ogs_nas_5gsm_encode(ogs_nas_5gs_message_t *message);
+int ogs_nas_5gmm_decode(ogs_nas_5gs_message_t *message, ogs_pkbuf_t *pkbuf);
+int ogs_nas_5gsm_decode(ogs_nas_5gs_message_t *message, ogs_pkbuf_t *pkbuf);
+ogs_pkbuf_t *ogs_nas_5gs_plain_encode(ogs_nas_5gs_message_t *message);
 
 #ifdef __cplusplus
 }

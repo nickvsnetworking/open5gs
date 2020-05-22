@@ -28,7 +28,7 @@
 ogs_pkbuf_t *emm_build_attach_accept(
         mme_ue_t *mme_ue, ogs_pkbuf_t *esmbuf)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_pkbuf_t *pkbuf = NULL;
     ogs_nas_attach_accept_t *attach_accept = &message.emm.attach_accept;
     ogs_nas_eps_attach_result_t *eps_attach_result = 
@@ -139,7 +139,7 @@ ogs_pkbuf_t *emm_build_attach_accept(
 ogs_pkbuf_t *emm_build_attach_reject(
         ogs_nas_emm_cause_t emm_cause, ogs_pkbuf_t *esmbuf)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_pkbuf_t *pkbuf = NULL;
     ogs_nas_attach_reject_t *attach_reject = &message.emm.attach_reject;
 
@@ -156,7 +156,7 @@ ogs_pkbuf_t *emm_build_attach_reject(
         attach_reject->esm_message_container.length = esmbuf->len;
     }
 
-    pkbuf = ogs_nas_plain_encode(&message);
+    pkbuf = ogs_nas_eps_plain_encode(&message);
     if (esmbuf)
         ogs_pkbuf_free(esmbuf);
 
@@ -165,7 +165,7 @@ ogs_pkbuf_t *emm_build_attach_reject(
 
 ogs_pkbuf_t *emm_build_identity_request(mme_ue_t *mme_ue)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_identity_request_t *identity_request = 
         &message.emm.identity_request;
 
@@ -179,13 +179,13 @@ ogs_pkbuf_t *emm_build_identity_request(mme_ue_t *mme_ue)
     ogs_debug("    Identity Type 2 : IMSI");
     identity_request->identity_type.type = OGS_NAS_IDENTITY_TYPE_2_IMSI;
 
-    return ogs_nas_plain_encode(&message);
+    return ogs_nas_eps_plain_encode(&message);
 }
 
 ogs_pkbuf_t *emm_build_authentication_request(
         ogs_diam_e_utran_vector_t *e_utran_vector)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_authentication_request_t *authentication_request = 
         &message.emm.authentication_request;
 
@@ -202,24 +202,24 @@ ogs_pkbuf_t *emm_build_authentication_request(
     authentication_request->authentication_parameter_autn.length = 
             OGS_AUTN_LEN;
 
-    return ogs_nas_plain_encode(&message);
+    return ogs_nas_eps_plain_encode(&message);
 }
 
 ogs_pkbuf_t *emm_build_authentication_reject(void)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
 
     memset(&message, 0, sizeof(message));
 
     message.emm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_EMM;
     message.emm.h.message_type = OGS_NAS_AUTHENTICATION_REJECT;
 
-    return ogs_nas_plain_encode(&message);
+    return ogs_nas_eps_plain_encode(&message);
 }
 
 ogs_pkbuf_t *emm_build_security_mode_command(mme_ue_t *mme_ue)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_security_mode_command_t *security_mode_command = 
         &message.emm.security_mode_command;
     ogs_nas_security_algorithms_t *selected_nas_security_algorithms =
@@ -310,7 +310,7 @@ ogs_pkbuf_t *emm_build_security_mode_command(mme_ue_t *mme_ue)
 
 ogs_pkbuf_t *emm_build_detach_accept(mme_ue_t *mme_ue)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
 
     ogs_assert(mme_ue);
 
@@ -330,7 +330,7 @@ ogs_pkbuf_t *emm_build_detach_accept(mme_ue_t *mme_ue)
 
 ogs_pkbuf_t *emm_build_tau_accept(mme_ue_t *mme_ue)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_tracking_area_update_accept_t *tau_accept = 
         &message.emm.tracking_area_update_accept;
     int served_tai_index = 0;
@@ -427,7 +427,7 @@ ogs_pkbuf_t *emm_build_tau_accept(mme_ue_t *mme_ue)
 ogs_pkbuf_t *emm_build_tau_reject(
         ogs_nas_emm_cause_t emm_cause, mme_ue_t *mme_ue)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_tracking_area_update_reject_t *tau_reject = 
         &message.emm.tracking_area_update_reject;
 
@@ -443,13 +443,13 @@ ogs_pkbuf_t *emm_build_tau_reject(
 
     tau_reject->emm_cause = emm_cause;
 
-    return ogs_nas_plain_encode(&message);
+    return ogs_nas_eps_plain_encode(&message);
 }
 
 ogs_pkbuf_t *emm_build_service_reject(
         ogs_nas_emm_cause_t emm_cause, mme_ue_t *mme_ue)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_service_reject_t *service_reject = &message.emm.service_reject;
 
     ogs_assert(mme_ue);
@@ -463,12 +463,12 @@ ogs_pkbuf_t *emm_build_service_reject(
 
     service_reject->emm_cause = emm_cause;
 
-    return ogs_nas_plain_encode(&message);
+    return ogs_nas_eps_plain_encode(&message);
 }
 
 ogs_pkbuf_t *emm_build_cs_service_notification(mme_ue_t *mme_ue)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_cs_service_notification_t *cs_service_notification = 
         &message.emm.cs_service_notification;
     ogs_nas_paging_identity_t *paging_identity =
@@ -496,7 +496,7 @@ ogs_pkbuf_t *emm_build_cs_service_notification(mme_ue_t *mme_ue)
 ogs_pkbuf_t *emm_build_downlink_nas_transport(
         mme_ue_t *mme_ue, uint8_t *buffer, uint8_t length)
 {
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_downlink_nas_transport_t *downlink_nas_transport = 
         &message.emm.downlink_nas_transport;
     ogs_nas_message_container_t *nas_message_container =

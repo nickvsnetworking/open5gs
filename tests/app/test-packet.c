@@ -2471,7 +2471,7 @@ static void build_bearer_resource_modification_request(ogs_pkbuf_t **pkbuf,
     int rv;
     ogs_pkbuf_t *emmbuf = NULL;
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_bearer_resource_modification_request_t
         *req = &message.esm.bearer_resource_modification_request;
     ogs_nas_traffic_flow_aggregate_description_t *tad =
@@ -2646,7 +2646,7 @@ static void build_bearer_resource_modification_request(ogs_pkbuf_t **pkbuf,
         qos->dl_gbr = dl_gbr;
     }
 
-    emmbuf = ogs_nas_plain_encode(&message);
+    emmbuf = ogs_nas_eps_plain_encode(&message);
 
     message.h.security_header_type =
        OGS_NAS_SECURITY_HEADER_INTEGRITY_PROTECTED;
@@ -2654,8 +2654,8 @@ static void build_bearer_resource_modification_request(ogs_pkbuf_t **pkbuf,
     message.h.message_authentication_code = htobe32(mac);
     message.h.sequence_number = seq;
 
-    ogs_assert(ogs_pkbuf_push(emmbuf, sizeof(ogs_nas_security_header_t)));
-    memcpy(emmbuf->data, &message.h, sizeof(ogs_nas_security_header_t));
+    ogs_assert(ogs_pkbuf_push(emmbuf, sizeof(ogs_nas_eps_security_header_t)));
+    memcpy(emmbuf->data, &message.h, sizeof(ogs_nas_eps_security_header_t));
 
     *pkbuf = emmbuf;
 }

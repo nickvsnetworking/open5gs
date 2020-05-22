@@ -28,7 +28,7 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.1.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-21 20:07:15.943424 by acetcom
+ * Created on: 2020-05-22 15:02:57.120263 by acetcom
  * from 24301-d80.docx
  ******************************************************************************/
 
@@ -73,12 +73,12 @@ ED2(uint8_t eps_bearer_identity:4;,
     uint8_t message_type;
 } __attribute__ ((packed)) ogs_nas_esm_header_t;
 
-typedef struct ogs_nas_security_header_s {
+typedef struct ogs_nas_eps_security_header_s {
 ED2(uint8_t security_header_type:4;,
     uint8_t protocol_discriminator:4;)
     uint32_t message_authentication_code;
     uint8_t sequence_number;
-} __attribute__ ((packed)) ogs_nas_security_header_t;
+} __attribute__ ((packed)) ogs_nas_eps_security_header_t;
 
 #define OGS_NAS_ATTACH_REQUEST 65
 #define OGS_NAS_ATTACH_ACCEPT 66
@@ -1407,19 +1407,19 @@ typedef struct ogs_nas_esm_message_s {
     };
 } ogs_nas_esm_message_t;
 
-typedef struct ogs_nas_message_s {
-    ogs_nas_security_header_t h;
+typedef struct ogs_nas_eps_message_s {
+    ogs_nas_eps_security_header_t h;
     union {
         ogs_nas_emm_message_t emm;
         ogs_nas_esm_message_t esm;
     };
-} ogs_nas_message_t;
+} ogs_nas_eps_message_t;
 
-ogs_pkbuf_t *ogs_nas_emm_encode(ogs_nas_message_t *message);
-ogs_pkbuf_t *ogs_nas_esm_encode(ogs_nas_message_t *message);
-int ogs_nas_emm_decode(ogs_nas_message_t *message, ogs_pkbuf_t *pkbuf);
-int ogs_nas_esm_decode(ogs_nas_message_t *message, ogs_pkbuf_t *pkbuf);
-ogs_pkbuf_t *ogs_nas_plain_encode(ogs_nas_message_t *message);
+ogs_pkbuf_t *ogs_nas_emm_encode(ogs_nas_eps_message_t *message);
+ogs_pkbuf_t *ogs_nas_esm_encode(ogs_nas_eps_message_t *message);
+int ogs_nas_emm_decode(ogs_nas_eps_message_t *message, ogs_pkbuf_t *pkbuf);
+int ogs_nas_esm_decode(ogs_nas_eps_message_t *message, ogs_pkbuf_t *pkbuf);
+ogs_pkbuf_t *ogs_nas_eps_plain_encode(ogs_nas_eps_message_t *message);
 
 #ifdef __cplusplus
 }

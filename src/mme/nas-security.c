@@ -20,12 +20,12 @@
 #include "nas-security.h"
 
 ogs_pkbuf_t *nas_security_encode(
-        mme_ue_t *mme_ue, ogs_nas_message_t *message)
+        mme_ue_t *mme_ue, ogs_nas_eps_message_t *message)
 {
     int integrity_protected = 0;
     int new_security_context = 0;
     int ciphered = 0;
-    ogs_nas_security_header_t h;
+    ogs_nas_eps_security_header_t h;
     ogs_pkbuf_t *new = NULL;
 
     ogs_assert(mme_ue);
@@ -33,7 +33,7 @@ ogs_pkbuf_t *nas_security_encode(
 
     switch (message->h.security_header_type) {
     case OGS_NAS_SECURITY_HEADER_PLAIN_NAS_MESSAGE:
-        return ogs_nas_plain_encode(message);
+        return ogs_nas_eps_plain_encode(message);
     case OGS_NAS_SECURITY_HEADER_INTEGRITY_PROTECTED:
         integrity_protected = 1;
         break;
@@ -71,9 +71,9 @@ ogs_pkbuf_t *nas_security_encode(
     h.protocol_discriminator = message->h.protocol_discriminator;
     h.sequence_number = (mme_ue->dl_count & 0xff);
 
-    new = ogs_nas_plain_encode(message);
+    new = ogs_nas_eps_plain_encode(message);
     if (!new) {
-        ogs_error("ogs_nas_plain_encode() failed");
+        ogs_error("ogs_nas_eps_plain_encode() failed");
         return NULL;
     }
 
@@ -103,7 +103,7 @@ ogs_pkbuf_t *nas_security_encode(
 
     /* encode all security header */
     ogs_assert(ogs_pkbuf_push(new, 5));
-    memcpy(new->data, &h, sizeof(ogs_nas_security_header_t));
+    memcpy(new->data, &h, sizeof(ogs_nas_eps_security_header_t));
 
     mme_ue->security_context_available = 1;
 
@@ -182,11 +182,11 @@ int nas_security_decode(mme_ue_t *mme_ue,
 
     if (security_header_type.ciphered || 
         security_header_type.integrity_protected) {
-        ogs_nas_security_header_t *h = NULL;
+        ogs_nas_eps_security_header_t *h = NULL;
 
         /* NAS Security Header */
         ogs_assert(ogs_pkbuf_push(pkbuf, 6));
-        h = (ogs_nas_security_header_t *)pkbuf->data;
+        h = (ogs_nas_eps_security_header_t *)pkbuf->data;
 
         /* NAS Security Header.Sequence_Number */
         ogs_assert(ogs_pkbuf_pull(pkbuf, 5));

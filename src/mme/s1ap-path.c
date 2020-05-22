@@ -157,7 +157,7 @@ int s1ap_send_to_esm(mme_ue_t *mme_ue, ogs_pkbuf_t *esmbuf)
 int s1ap_send_to_nas(enb_ue_t *enb_ue,
         S1AP_ProcedureCode_t procedureCode, S1AP_NAS_PDU_t *nasPdu)
 {
-    ogs_nas_security_header_t *sh = NULL;
+    ogs_nas_eps_security_header_t *sh = NULL;
     nas_security_header_type_t security_header_type;
 
     ogs_nas_emm_header_t *h = NULL;
@@ -173,7 +173,7 @@ int s1ap_send_to_nas(enb_ue_t *enb_ue,
     ogs_pkbuf_reserve(nasbuf, OGS_NAS_HEADROOM);
     ogs_pkbuf_put_data(nasbuf, nasPdu->buf, nasPdu->size);
 
-    sh = (ogs_nas_security_header_t *)nasbuf->data;
+    sh = (ogs_nas_eps_security_header_t *)nasbuf->data;
     ogs_assert(sh);
 
     memset(&security_header_type, 0, sizeof(nas_security_header_type_t));

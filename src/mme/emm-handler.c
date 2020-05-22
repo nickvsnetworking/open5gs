@@ -195,7 +195,7 @@ int emm_handle_attach_complete(
     int rv;
     ogs_pkbuf_t *emmbuf = NULL;
 
-    ogs_nas_message_t message;
+    ogs_nas_eps_message_t message;
     ogs_nas_emm_information_t *emm_information = &message.emm.emm_information;
     ogs_nas_time_zone_and_time_t *universal_time_and_local_time_zone =
         &emm_information->universal_time_and_local_time_zone;

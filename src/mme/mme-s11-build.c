@@ -737,7 +737,7 @@ ogs_pkbuf_t *mme_s11_build_create_indirect_data_forwarding_tunnel_request(
 }
 
 ogs_pkbuf_t *mme_s11_build_bearer_resource_command(
-        uint8_t type, mme_bearer_t *bearer, ogs_nas_message_t *nas_message)
+        uint8_t type, mme_bearer_t *bearer, ogs_nas_eps_message_t *nas_message)
 {
     ogs_gtp_message_t gtp_message;
     ogs_gtp_bearer_resource_command_t *cmd =

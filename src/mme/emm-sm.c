@@ -96,7 +96,7 @@ static void common_register_state(ogs_fsm_t *s, mme_event_t *e)
 
     mme_ue_t *mme_ue = NULL;
     enb_ue_t *enb_ue = NULL;
-    ogs_nas_message_t *message = NULL;
+    ogs_nas_eps_message_t *message = NULL;
     S1AP_ProcedureCode_t procedureCode;
     
     ogs_assert(e);
@@ -488,7 +488,7 @@ void emm_state_authentication(ogs_fsm_t *s, mme_event_t *e)
 {
     int rv;
     mme_ue_t *mme_ue = NULL;
-    ogs_nas_message_t *message = NULL;
+    ogs_nas_eps_message_t *message = NULL;
 
     ogs_assert(s);
     ogs_assert(e);
@@ -649,7 +649,7 @@ void emm_state_security_mode(ogs_fsm_t *s, mme_event_t *e)
 {
     int rv;
     mme_ue_t *mme_ue = NULL;
-    ogs_nas_message_t *message = NULL;
+    ogs_nas_eps_message_t *message = NULL;
     nas_security_header_type_t h;
 
     ogs_assert(s);
@@ -818,7 +818,7 @@ void emm_state_initial_context_setup(ogs_fsm_t *s, mme_event_t *e)
 {
     int rv;
     mme_ue_t *mme_ue = NULL;
-    ogs_nas_message_t *message = NULL;
+    ogs_nas_eps_message_t *message = NULL;
 
     ogs_assert(s);
     ogs_assert(e);
