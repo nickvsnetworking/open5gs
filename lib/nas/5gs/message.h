@@ -28,7 +28,7 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.2.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-22 15:09:57.084922 by acetcom
+ * Created on: 2020-05-22 15:32:28.052751 by acetcom
  * from 24501-g41.docx
  ******************************************************************************/
 
@@ -43,22 +43,10 @@
 extern "C" {
 #endif
 
-/* The Packet Buffer(ogs_pkbuf_t) for NAS message MUST make a HEADROOM. 
- * When calculating AES_CMAC, we need to use the headroom of the packet. */
-#define OGS_NAS_HEADROOM 16
-
-#define OGS_NAS_SECURITY_HEADER_PLAIN_NAS_MESSAGE 0
-#define OGS_NAS_SECURITY_HEADER_INTEGRITY_PROTECTED 1
-#define OGS_NAS_SECURITY_HEADER_INTEGRITY_PROTECTED_AND_CIPHERED 2
-#define OGS_NAS_SECURITY_HEADER_INTEGRITY_PROTECTED_AND_NEW_SECURITY_CONTEXT 3
-#define OGS_NAS_SECURITY_HEADER_INTEGRITY_PROTECTED_AND_CIPHTERD_WITH_NEW_INTEGRITY_CONTEXT 4
-#define OGS_NAS_SECURITY_HEADER_INTEGRITY_PROTECTED_AND_PARTICALLY_CIPHTERD 5
-
 #define OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_ESM 0x2e
 #define OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_EMM 0x7e
 
 #define OGS_NAS_PDU_SESSION_IDENTITY_UNASSIGNED 0
-#define OGS_NAS_PROCEDURE_TRANSACTION_IDENTITY_UNASSIGNED 0
 
 typedef struct ogs_nas_5gmm_header_s {
     uint8_t extended_protocol_discriminator;

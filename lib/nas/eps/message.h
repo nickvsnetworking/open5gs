@@ -28,7 +28,7 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.1.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-22 15:02:57.120263 by acetcom
+ * Created on: 2020-05-22 15:32:38.144037 by acetcom
  * from 24301-d80.docx
  ******************************************************************************/
 
@@ -42,18 +42,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/* The Packet Buffer(ogs_pkbuf_t) for NAS message MUST make a HEADROOM. 
- * When calculating AES_CMAC, we need to use the headroom of the packet. */
-#define OGS_NAS_HEADROOM 16
-
-#define OGS_NAS_SECURITY_HEADER_PLAIN_NAS_MESSAGE 0
-#define OGS_NAS_SECURITY_HEADER_INTEGRITY_PROTECTED 1
-#define OGS_NAS_SECURITY_HEADER_INTEGRITY_PROTECTED_AND_CIPHERED 2
-#define OGS_NAS_SECURITY_HEADER_INTEGRITY_PROTECTED_AND_NEW_SECURITY_CONTEXT 3
-#define OGS_NAS_SECURITY_HEADER_INTEGRITY_PROTECTED_AND_CIPHTERD_WITH_NEW_INTEGRITY_CONTEXT 4
-#define OGS_NAS_SECURITY_HEADER_INTEGRITY_PROTECTED_AND_PARTICALLY_CIPHTERD 5
-#define OGS_NAS_SECURITY_HEADER_FOR_SERVICE_REQUEST_MESSAGE 12
 
 #define OGS_NAS_PROTOCOL_DISCRIMINATOR_ESM 0x2
 #define OGS_NAS_PROTOCOL_DISCRIMINATOR_EMM 0x7
