@@ -111,7 +111,7 @@ typedef struct ogs_nas_detach_type_s {
 ED4(uint8_t tsc:1;,
     uint8_t nas_key_set_identifier:3;,
     uint8_t switch_off:1;,
-    uint8_t detach_type:3;)
+    uint8_t value:3;)
 } __attribute__ ((packed)) ogs_nas_detach_type_t;
 
 /* 9.9.3.8 DRX parameter
@@ -210,7 +210,7 @@ typedef struct ogs_nas_eps_attach_type_s {
 ED4(uint8_t tsc:1;,
     uint8_t nas_key_set_identifier:3;,
     uint8_t spare:1;,
-    uint8_t attach_type:3;)
+    uint8_t value:3;)
 } __attribute__ ((packed)) ogs_nas_eps_attach_type_t;
 
 /* 9.9.3.12 EPS mobile identity
@@ -277,7 +277,7 @@ typedef struct ogs_nas_eps_update_type_s {
 ED4(uint8_t tsc:1;,
     uint8_t nas_key_set_identifier:3;,
     uint8_t active_flag:1;,
-    uint8_t update_type:3;)
+    uint8_t value:3;)
 } __attribute__ ((packed)) ogs_nas_eps_update_type_t;
 
 /* 9.9.3.15 ESM message container
@@ -416,7 +416,7 @@ ED4(uint8_t type:4;,
 typedef struct ogs_nas_service_type_s {
 ED3(uint8_t tsc:1;,
     uint8_t nas_key_set_identifier:3;,
-    uint8_t service_type:4;)
+    uint8_t value:4;)
 } __attribute__ ((packed)) ogs_nas_service_type_t;
 
 /* 9.9.3.28 Short MAC

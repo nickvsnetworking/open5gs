@@ -349,7 +349,7 @@ int emm_handle_detach_request(
     ogs_debug("    OGS_NAS_EPS TYPE[%d] KSI[%d] DETACH[0x%x]",
             mme_ue->nas_eps.type, mme_ue->nas_eps.ksi, mme_ue->nas_eps.data);
 
-    switch (detach_request->detach_type.detach_type) {
+    switch (detach_request->detach_type.value) {
     /* 0 0 1 : EPS detach */
     case OGS_NAS_DETACH_TYPE_FROM_UE_EPS_DETACH: 
         ogs_debug("    EPS Detach");
@@ -361,7 +361,7 @@ int emm_handle_detach_request(
     case 6: /* 1 1 0 : reserved */
     case 7: /* 1 1 1 : reserved */
         ogs_warn("Unknown Detach type[%d]",
-            detach_request->detach_type.detach_type);
+            detach_request->detach_type.value);
         break;
     /* 0 1 1 : combined EPS/IMSI detach */
     case OGS_NAS_DETACH_TYPE_FROM_UE_COMBINED_EPS_IMSI_DETACH: 

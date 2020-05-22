@@ -426,21 +426,21 @@ static void common_register_state(ogs_fsm_t *s, mme_event_t *e)
 
         if (procedureCode == S1AP_ProcedureCode_id_initialUEMessage) {
             ogs_debug("    Initial UE Message");
-            if (mme_ue->nas_eps.service.service_type ==
+            if (mme_ue->nas_eps.service.value ==
                     OGS_NAS_SERVICE_TYPE_CS_FALLBACK_FROM_UE ||
-                mme_ue->nas_eps.service.service_type ==
+                mme_ue->nas_eps.service.value ==
                     OGS_NAS_SERVICE_TYPE_CS_FALLBACK_EMERGENCY_CALL_FROM_UE) {
                 ogs_debug("    MO-CSFB-INDICATION[%d]",
-                        mme_ue->nas_eps.service.service_type);
+                        mme_ue->nas_eps.service.value);
                 sgsap_send_mo_csfb_indication(mme_ue);
-            } else if (mme_ue->nas_eps.service.service_type ==
+            } else if (mme_ue->nas_eps.service.value ==
                     OGS_NAS_SERVICE_TYPE_CS_FALLBACK_TO_UE) {
                 ogs_debug("    SERVICE_REQUEST[%d]",
-                        mme_ue->nas_eps.service.service_type);
+                        mme_ue->nas_eps.service.value);
                 sgsap_send_service_request(mme_ue, SGSAP_EMM_IDLE_MODE);
             } else {
                 ogs_warn(" Unknown CSFB Service Type[%d]",
-                        mme_ue->nas_eps.service.service_type);
+                        mme_ue->nas_eps.service.value);
                 nas_eps_send_service_reject(mme_ue,
                     EMM_CAUSE_UE_IDENTITY_CANNOT_BE_DERIVED_BY_THE_NETWORK);
                 OGS_FSM_TRAN(s, &emm_state_exception);
@@ -451,21 +451,21 @@ static void common_register_state(ogs_fsm_t *s, mme_event_t *e)
 
         } else if (procedureCode == S1AP_ProcedureCode_id_uplinkNASTransport) {
             ogs_debug("    Uplink NAS Transport");
-            if (mme_ue->nas_eps.service.service_type ==
+            if (mme_ue->nas_eps.service.value ==
                     OGS_NAS_SERVICE_TYPE_CS_FALLBACK_FROM_UE ||
-                mme_ue->nas_eps.service.service_type ==
+                mme_ue->nas_eps.service.value ==
                     OGS_NAS_SERVICE_TYPE_CS_FALLBACK_EMERGENCY_CALL_FROM_UE) {
                 ogs_debug("    MO-CSFB-INDICATION[%d]",
-                        mme_ue->nas_eps.service.service_type);
+                        mme_ue->nas_eps.service.value);
                 sgsap_send_mo_csfb_indication(mme_ue);
-            } else if (mme_ue->nas_eps.service.service_type ==
+            } else if (mme_ue->nas_eps.service.value ==
                     OGS_NAS_SERVICE_TYPE_CS_FALLBACK_TO_UE) {
                 ogs_debug("    SERVICE_REQUEST[%d]",
-                        mme_ue->nas_eps.service.service_type);
+                        mme_ue->nas_eps.service.value);
                 sgsap_send_service_request(mme_ue, SGSAP_EMM_CONNECTED_MODE);
             } else {
                 ogs_warn(" Unknown CSFB Service Type[%d]",
-                        mme_ue->nas_eps.service.service_type);
+                        mme_ue->nas_eps.service.value);
                 nas_eps_send_service_reject(mme_ue,
                     EMM_CAUSE_UE_IDENTITY_CANNOT_BE_DERIVED_BY_THE_NETWORK);
                 OGS_FSM_TRAN(s, &emm_state_exception);

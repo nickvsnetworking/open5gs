@@ -57,7 +57,7 @@ ogs_pkbuf_t *emm_build_attach_accept(
     message.emm.h.message_type = OGS_NAS_EPS_ATTACH_ACCEPT;
 
     /* Set T3412 */
-    eps_attach_result->result = mme_ue->nas_eps.attach.attach_type;
+    eps_attach_result->result = mme_ue->nas_eps.attach.value;
     t3412_value->unit = OGS_NAS_GRPS_TIMER_UNIT_MULTIPLES_OF_DECI_HH;
     t3412_value->value = 9;
 
@@ -347,7 +347,7 @@ ogs_pkbuf_t *emm_build_tau_accept(mme_ue_t *mme_ue)
     message.emm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_EMM;
     message.emm.h.message_type = OGS_NAS_EPS_TRACKING_AREA_UPDATE_ACCEPT;
 
-    tau_accept->eps_update_result.result = mme_ue->nas_eps.update.update_type;
+    tau_accept->eps_update_result.result = mme_ue->nas_eps.update.value;
 
     /* Set T3412 */
     tau_accept->presencemask |=
