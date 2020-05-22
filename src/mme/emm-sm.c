@@ -650,7 +650,7 @@ void emm_state_security_mode(ogs_fsm_t *s, mme_event_t *e)
     int rv;
     mme_ue_t *mme_ue = NULL;
     ogs_nas_eps_message_t *message = NULL;
-    nas_security_header_type_t h;
+    ogs_nas_security_header_type_t h;
 
     ogs_assert(s);
     ogs_assert(e);

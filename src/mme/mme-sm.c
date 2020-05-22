@@ -285,14 +285,14 @@ void mme_state_operational(ogs_fsm_t *s, mme_event_t *e)
                  * TRACKING_AREA_UPDATE_REQUEST message
                  *
                  * Now, We will check the MAC in the NAS message*/
-                nas_security_header_type_t h;
+                ogs_nas_security_header_type_t h;
                 h.type = e->nas_type;
                 if (h.integrity_protected) {
                     /* Decryption was performed in S1AP handler.
                      * So, we disabled 'ciphered' 
                      * not to decrypt NAS message */
                     h.ciphered = 0;
-                    if (nas_security_decode(mme_ue, h, pkbuf) != OGS_OK) {
+                    if (nas_eps_security_decode(mme_ue, h, pkbuf) != OGS_OK) {
                         ogs_error("nas_security_decode() failed");
                         ogs_pkbuf_free(pkbuf);
                         return;

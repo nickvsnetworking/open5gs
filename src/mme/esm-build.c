@@ -54,7 +54,7 @@ ogs_pkbuf_t *esm_build_pdn_connectivity_reject(
     pdn_connectivity_reject->esm_cause = esm_cause;
 
     if (OGS_FSM_CHECK(&mme_ue->sm, emm_state_registered)) {
-        return nas_security_encode(mme_ue, &message);
+        return nas_eps_security_encode(mme_ue, &message);
     } else {
         return ogs_nas_eps_plain_encode(&message);
     }
@@ -85,7 +85,7 @@ ogs_pkbuf_t *esm_build_information_request(mme_bearer_t *bearer)
     message.esm.h.procedure_transaction_identity = sess->pti;
     message.esm.h.message_type = OGS_NAS_EPS_ESM_INFORMATION_REQUEST;
 
-    return nas_security_encode(mme_ue, &message);
+    return nas_eps_security_encode(mme_ue, &message);
 }
 
 ogs_pkbuf_t *esm_build_activate_default_bearer_context_request(
@@ -236,7 +236,7 @@ ogs_pkbuf_t *esm_build_activate_default_bearer_context_request(
     }
 
     if (OGS_FSM_CHECK(&mme_ue->sm, emm_state_registered)) {
-        return nas_security_encode(mme_ue, &message);
+        return nas_eps_security_encode(mme_ue, &message);
     } else {
         return ogs_nas_eps_plain_encode(&message);
     }
@@ -290,7 +290,7 @@ ogs_pkbuf_t *esm_build_activate_dedicated_bearer_context_request(
     ogs_assert(bearer->tft.data);
     memcpy(tft->buffer, bearer->tft.data, tft->length);
 
-    return nas_security_encode(mme_ue, &message);
+    return nas_eps_security_encode(mme_ue, &message);
 }
 
 ogs_pkbuf_t *esm_build_modify_bearer_context_request(
@@ -344,7 +344,7 @@ ogs_pkbuf_t *esm_build_modify_bearer_context_request(
         memcpy(tft->buffer, bearer->tft.data, tft->length);
     }
 
-    return nas_security_encode(mme_ue, &message);
+    return nas_eps_security_encode(mme_ue, &message);
 }
 
 ogs_pkbuf_t *esm_build_deactivate_bearer_context_request(
@@ -381,7 +381,7 @@ ogs_pkbuf_t *esm_build_deactivate_bearer_context_request(
 
     deactivate_eps_bearer_context_request->esm_cause = esm_cause;
 
-    return nas_security_encode(mme_ue, &message);
+    return nas_eps_security_encode(mme_ue, &message);
 }
 
 ogs_pkbuf_t *esm_build_bearer_resource_allocation_reject(
@@ -420,7 +420,7 @@ ogs_pkbuf_t *esm_build_bearer_resource_allocation_reject(
     bearer_resource_allocation_reject->esm_cause = esm_cause;
 
     if (OGS_FSM_CHECK(&mme_ue->sm, emm_state_registered)) {
-        return nas_security_encode(mme_ue, &message);
+        return nas_eps_security_encode(mme_ue, &message);
     } else {
         return ogs_nas_eps_plain_encode(&message);
     }
@@ -463,7 +463,7 @@ ogs_pkbuf_t *esm_build_bearer_resource_modification_reject(
     bearer_resource_modification_reject->esm_cause = esm_cause;
 
     if (OGS_FSM_CHECK(&mme_ue->sm, emm_state_registered)) {
-        return nas_security_encode(mme_ue, &message);
+        return nas_eps_security_encode(mme_ue, &message);
     } else {
         return ogs_nas_eps_plain_encode(&message);
     }

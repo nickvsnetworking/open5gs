@@ -67,7 +67,22 @@ extern "C" {
 #define OGS_NAS_KSI_NO_KEY_IS_AVAILABLE             0x7
 
 /**********************************
- * NAS PLMN_ID Structure             */
+ * NAS Security Header Type       */
+typedef struct ogs_nas_security_header_type_s {
+    union {
+        struct {
+        ED5(uint8_t integrity_protected:1;,
+            uint8_t ciphered:1;,
+            uint8_t new_security_context:1;,
+            uint8_t service_request:1;,
+            uint8_t reserved:4;)
+        };
+        uint8_t type;
+    };
+} __attribute__ ((packed)) ogs_nas_security_header_type_t;
+
+/**********************************
+ * NAS PLMN_ID Structure          */
 typedef struct ogs_nas_plmn_id_s {
 ED2(uint8_t mcc2:4;,
     uint8_t mcc1:4;)

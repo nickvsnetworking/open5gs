@@ -277,7 +277,7 @@ int emm_handle_attach_complete(
             &mme_self()->short_name, sizeof(ogs_nas_network_name_t));
     }                
 
-    emmbuf = nas_security_encode(mme_ue, &message);
+    emmbuf = nas_eps_security_encode(mme_ue, &message);
     if (emmbuf) 
         nas_send_to_downlink_nas_transport(mme_ue, emmbuf);
 

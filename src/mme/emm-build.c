@@ -130,7 +130,7 @@ ogs_pkbuf_t *emm_build_attach_accept(
         ogs_debug("    P-TMSI: 0x%08x", tmsi->tmsi);
     }
 
-    pkbuf = nas_security_encode(mme_ue, &message);
+    pkbuf = nas_eps_security_encode(mme_ue, &message);
     ogs_pkbuf_free(esmbuf);
 
     return pkbuf;
@@ -305,7 +305,7 @@ ogs_pkbuf_t *emm_build_security_mode_command(mme_ue_t *mme_ue)
     mme_kdf_nas(MME_KDF_NAS_ENC_ALG, mme_ue->selected_enc_algorithm,
             mme_ue->kasme, mme_ue->knas_enc);
 
-    return nas_security_encode(mme_ue, &message);
+    return nas_eps_security_encode(mme_ue, &message);
 }
 
 ogs_pkbuf_t *emm_build_detach_accept(mme_ue_t *mme_ue)
@@ -325,7 +325,7 @@ ogs_pkbuf_t *emm_build_detach_accept(mme_ue_t *mme_ue)
     message.emm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_EMM;
     message.emm.h.message_type = OGS_NAS_EPS_DETACH_ACCEPT;
 
-    return nas_security_encode(mme_ue, &message);
+    return nas_eps_security_encode(mme_ue, &message);
 }
 
 ogs_pkbuf_t *emm_build_tau_accept(mme_ue_t *mme_ue)
@@ -421,7 +421,7 @@ ogs_pkbuf_t *emm_build_tau_accept(mme_ue_t *mme_ue)
     tau_accept->eps_network_feature_support.length = 1;
     tau_accept->eps_network_feature_support.ims_vops = 1;
 
-    return nas_security_encode(mme_ue, &message);
+    return nas_eps_security_encode(mme_ue, &message);
 }
 
 ogs_pkbuf_t *emm_build_tau_reject(
@@ -490,7 +490,7 @@ ogs_pkbuf_t *emm_build_cs_service_notification(mme_ue_t *mme_ue)
 
     /* FIXME : What optional filed should be included in this message? */  
 
-    return nas_security_encode(mme_ue, &message);
+    return nas_eps_security_encode(mme_ue, &message);
 }
 
 ogs_pkbuf_t *emm_build_downlink_nas_transport(
@@ -515,5 +515,5 @@ ogs_pkbuf_t *emm_build_downlink_nas_transport(
     nas_message_container->length = length;
     memcpy(nas_message_container->buffer, buffer, length);
 
-    return nas_security_encode(mme_ue, &message);
+    return nas_eps_security_encode(mme_ue, &message);
 }

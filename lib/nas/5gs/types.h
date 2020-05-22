@@ -348,14 +348,6 @@ typedef struct ogs_nas_eps_nas_message_container_s {
 
 /* 9.11.3.25 EPS NAS security algorithms
  * O TV 2 */
-#define OGS_NAS_SECURITY_ALGORITHMS_EIA0        0
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EIA1    1
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EIA2    2
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EIA3    3
-#define OGS_NAS_SECURITY_ALGORITHMS_EEA0        0
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EEA1    1
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EEA2    2
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EEA3    3
 typedef struct ogs_nas_eps_nas_security_algorithms_s {
 ED4(uint8_t spare1:1;,
     uint8_t type_of_ciphering_algorithm:3;,
