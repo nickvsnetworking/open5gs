@@ -166,8 +166,7 @@ ogs_pkbuf_t *esm_build_activate_default_bearer_context_request(
      */
 
     pdn_address->pdn_type = pdn->paa.pdn_type;
-    if (sess->request_type.pdn_type ==
-            OGS_NAS_PDN_CONNECTIVITY_PDN_TYPE_IPV4V6) {
+    if (sess->request_type.type == OGS_NAS_EPS_PDN_TYPE_IPV4V6) {
         if (pdn->paa.pdn_type == OGS_GTP_PDN_TYPE_IPV4) {
             pdn_address->pdn_type = OGS_GTP_PDN_TYPE_IPV4;
             activate_default_eps_bearer_context_request->esm_cause =
@@ -181,8 +180,7 @@ ogs_pkbuf_t *esm_build_activate_default_bearer_context_request(
             activate_default_eps_bearer_context_request->presencemask |=
                 OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_ESM_CAUSE_PRESENT;
         }
-    } else if (sess->request_type.pdn_type ==
-            OGS_GTP_PDN_TYPE_IPV4) {
+    } else if (sess->request_type.type == OGS_GTP_PDN_TYPE_IPV4) {
         if (pdn->paa.pdn_type == OGS_GTP_PDN_TYPE_IPV6) {
             pdn_address->pdn_type = OGS_GTP_PDN_TYPE_IPV6;
             activate_default_eps_bearer_context_request->esm_cause =
@@ -190,8 +188,7 @@ ogs_pkbuf_t *esm_build_activate_default_bearer_context_request(
             activate_default_eps_bearer_context_request->presencemask |=
                 OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_ESM_CAUSE_PRESENT;
         }
-    } else if (sess->request_type.pdn_type ==
-            OGS_GTP_PDN_TYPE_IPV6) {
+    } else if (sess->request_type.type == OGS_GTP_PDN_TYPE_IPV6) {
         if (pdn->paa.pdn_type == OGS_GTP_PDN_TYPE_IPV4) {
             pdn_address->pdn_type = OGS_GTP_PDN_TYPE_IPV4;
             activate_default_eps_bearer_context_request->esm_cause =

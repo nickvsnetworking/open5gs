@@ -28,8 +28,8 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.1.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-22 16:44:51.841502 by acetcom
- * from 24501-g41.docx
+ * Created on: 2020-05-22 18:16:04.849851 by acetcom
+ * from 24301-d80.docx
  ******************************************************************************/
 
 #if !defined(OGS_NAS_INSIDE) && !defined(OGS_NAS_COMPILATION)
@@ -699,7 +699,7 @@ typedef struct ogs_nas_eps_emm_information_s {
 
 typedef struct ogs_nas_eps_downlink_nas_transport_s {
     /* Mandatory fields */
-    ogs_nas_message_container_t nas_message_container;
+    ogs_nas_eps_message_container_t nas_message_container;
 } ogs_nas_eps_downlink_nas_transport_t;
 
 
@@ -709,7 +709,7 @@ typedef struct ogs_nas_eps_downlink_nas_transport_s {
 
 typedef struct ogs_nas_eps_uplink_nas_transport_s {
     /* Mandatory fields */
-    ogs_nas_message_container_t nas_message_container;
+    ogs_nas_eps_message_container_t nas_message_container;
 } ogs_nas_eps_uplink_nas_transport_t;
 
 

@@ -28,8 +28,8 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.1.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-22 16:44:51.859259 by acetcom
- * from 24501-g41.docx
+ * Created on: 2020-05-22 18:16:04.867199 by acetcom
+ * from 24301-d80.docx
  ******************************************************************************/
 
 #include "ogs-nas-eps.h"
@@ -1404,7 +1404,7 @@ int ogs_nas_eps_encode_downlink_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_eps_me
 
     ogs_trace("[NAS] Encode DOWNLINK_NAS_TRANSPORT");
 
-    size = ogs_nas_eps_encode_message_container(pkbuf, &downlink_nas_transport->nas_message_container);
+    size = ogs_nas_eps_encode_eps_message_container(pkbuf, &downlink_nas_transport->nas_message_container);
     ogs_assert(size >= 0);
     encoded += size;
 
@@ -1419,7 +1419,7 @@ int ogs_nas_eps_encode_uplink_nas_transport(ogs_pkbuf_t *pkbuf, ogs_nas_eps_mess
 
     ogs_trace("[NAS] Encode UPLINK_NAS_TRANSPORT");
 
-    size = ogs_nas_eps_encode_message_container(pkbuf, &uplink_nas_transport->nas_message_container);
+    size = ogs_nas_eps_encode_eps_message_container(pkbuf, &uplink_nas_transport->nas_message_container);
     ogs_assert(size >= 0);
     encoded += size;
 

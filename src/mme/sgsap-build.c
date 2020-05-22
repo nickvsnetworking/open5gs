@@ -293,8 +293,8 @@ ogs_pkbuf_t *sgsap_build_reset_ack(mme_vlr_t *vlr)
     return pkbuf;
 }
 
-ogs_pkbuf_t *sgsap_build_uplink_unidata(
-        mme_ue_t *mme_ue, ogs_nas_message_container_t *nas_message_container)
+ogs_pkbuf_t *sgsap_build_uplink_unidata(mme_ue_t *mme_ue,
+        ogs_nas_eps_message_container_t *nas_message_container)
 {
     mme_csmap_t *csmap = NULL;
     mme_vlr_t *vlr = NULL;

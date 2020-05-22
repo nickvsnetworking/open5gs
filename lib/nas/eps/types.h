@@ -355,19 +355,10 @@ ED3(uint8_t type:4;,
 /* 9.9.3.22 message container
  * M LV 3-252 */
 #define OGS_NAS_MAX_MESSAGE_CONTAINER_LEN 250
-typedef struct ogs_nas_message_container_s {
+typedef struct ogs_nas_eps_message_container_s {
     uint8_t length;
     uint8_t buffer[OGS_NAS_MAX_MESSAGE_CONTAINER_LEN];
-} __attribute__ ((packed)) ogs_nas_message_container_t;
-
-/* 9.9.3.23 NAS security algorithms
- * M V 1 */
-typedef struct ogs_nas_security_algorithms_s {
-ED4(uint8_t spare1:1;,
-    uint8_t type_of_ciphering_algorithm:3;,
-    uint8_t spare2:1;,
-    uint8_t type_of_integrity_protection_algorithm:3;)
-} __attribute__ ((packed)) ogs_nas_security_algorithms_t;
+} __attribute__ ((packed)) ogs_nas_eps_message_container_t;
 
 /* 9.9.3.24A Network resource identifier container
  * See subclause 10.5.5.31 in 3GPP TS 24.008 [13].
@@ -413,11 +404,6 @@ ED4(uint8_t type:4;,
 #define OGS_NAS_SERVICE_TYPE_CS_FALLBACK_FROM_UE 0
 #define OGS_NAS_SERVICE_TYPE_CS_FALLBACK_TO_UE 1
 #define OGS_NAS_SERVICE_TYPE_CS_FALLBACK_EMERGENCY_CALL_FROM_UE 2
-typedef struct ogs_nas_service_type_s {
-ED3(uint8_t tsc:1;,
-    uint8_t nas_key_set_identifier:3;,
-    uint8_t value:4;)
-} __attribute__ ((packed)) ogs_nas_service_type_t;
 
 /* 9.9.3.28 Short MAC
  * M V 2 */
@@ -439,14 +425,6 @@ ED3(uint8_t type:4;,
     uint8_t spare:3;,
     uint8_t update_needed:1;)
 } __attribute__ ((packed)) ogs_nas_ue_radio_capability_information_update_needed_t;
-
-/* 9.9.3.34 UE network capability
- * M LV  3-14 */
-typedef struct ogs_nas_s1_ue_network_capability_s ogs_nas_ue_network_capability_t;
-
-/* 9.9.3.36 UE security capability
- * M LV 3-6 */
-typedef struct ogs_nas_s1_ue_security_capability_s ogs_nas_ue_security_capability_t;
 
 /* 9.9.3.38 CLI
  * O TLV 3-14 
@@ -660,25 +638,6 @@ typedef struct ogs_nas_quality_of_service_s {
     uint8_t length;
     uint8_t buffer[OGS_NAS_QOS_LEN];
 } __attribute__ ((packed)) ogs_nas_quality_of_service_t;
-
-/* 9.9.4.14 Request type
- * M V 1/2
- * See subclause 10.5.6.17 in 3GPP TS 24.008 [13].
- * 9.9.4.10 PDN type "PDN type
- * M V 1/2 */
-#define OGS_NAS_PDN_CONNECTIVITY_REQUEST_TYPE_INITIAL   1
-#define OGS_NAS_PDN_CONNECTIVITY_REQUEST_TYPE_HANDOVER  2
-#define OGS_NAS_PDN_CONNECTIVITY_REQUEST_TYPE_EMERGENCY 4
-#define OGS_NAS_PDN_CONNECTIVITY_PDN_TYPE_IPV4          1
-#define OGS_NAS_PDN_CONNECTIVITY_PDN_TYPE_IPV6          2
-#define OGS_NAS_PDN_CONNECTIVITY_PDN_TYPE_IPV4V6        3
-#define OGS_NAS_PDN_CONNECTIVITY_PDN_TYPE_NON_IP        5
-typedef struct ogs_nas_request_type_s {
-ED4(uint8_t spare1:1;,
-    uint8_t pdn_type:3;,
-    uint8_t spare2:1;,
-    uint8_t request_type:3;)
-} __attribute__ ((packed)) ogs_nas_request_type_t;
 
 /* 9.9.4.15 Traffic flow aggregate description
  * see subclause 10.5.6.12 in 3GPP TS 24.008 [13]

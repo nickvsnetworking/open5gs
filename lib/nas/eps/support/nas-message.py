@@ -115,6 +115,8 @@ def get_cells(cells):
     iei = cells[0].text.encode('ascii', 'ignore')
     value = re.sub("\s*$", "", re.sub("\s*\n*\s*\([^\)]*\)*", "", re.sub("'s", "", cells[1].text))).encode('ascii', 'ignore')
     type = re.sub("^NAS ", "", re.sub("'s", "", re.sub('\s*\n\s*[a-zA-Z0-9.]*', '', cells[2].text))).encode('ascii', 'ignore')
+    if type == "message container":
+        type = "EPS message container"
     reference = re.sub('[a-zA-Z0-9\'\-\s]*\n\s*', '', cells[2].text).encode('ascii', 'ignore')
     presence = cells[3].text.encode('ascii', 'ignore')
     format = cells[4].text.encode('ascii', 'ignore')

@@ -28,15 +28,6 @@
 extern "C" {
 #endif
 
-#define OGS_NAS_SECURITY_ALGORITHMS_EIA0        0
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EIA1    1
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EIA2    2
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EIA3    3
-#define OGS_NAS_SECURITY_ALGORITHMS_EEA0        0
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EEA1    1
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EEA2    2
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EEA3    3
-
 void ogs_nas_mac_calculate(uint8_t algorithm_identity,
     uint8_t *knas_int, uint32_t count, uint8_t bearer, 
     uint8_t direction, ogs_pkbuf_t *pkbuf, uint8_t *mac);

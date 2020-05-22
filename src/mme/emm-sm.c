@@ -258,8 +258,8 @@ static void common_register_state(ogs_fsm_t *s, mme_event_t *e)
             ogs_debug("[EMM] Uplink NAS Transport");
             ogs_debug("    IMSI[%s]", mme_ue->imsi_bcd);
             if (MME_SGSAP_IS_CONNECTED(mme_ue)) {
-                sgsap_send_uplink_unitdata(mme_ue,
-                    &message->emm.uplink_nas_transport.nas_message_container);
+                sgsap_send_uplink_unitdata(mme_ue, &message->emm.
+                        uplink_nas_transport.nas_message_container);
             } else {
                 S1AP_MME_UE_S1AP_ID_t MME_UE_S1AP_ID;
                 S1AP_ENB_UE_S1AP_ID_t ENB_UE_S1AP_ID;

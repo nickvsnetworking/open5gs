@@ -151,19 +151,16 @@ ogs_pkbuf_t *mme_s11_build_create_session_request(
     req->selection_mode.u8 = 
         OGS_GTP_SELECTION_MODE_MS_OR_NETWORK_PROVIDED_APN | 0xfc;
 
-    ogs_assert(sess->request_type.pdn_type ==
-            OGS_NAS_PDN_CONNECTIVITY_PDN_TYPE_IPV4 ||
-            sess->request_type.pdn_type ==
-            OGS_NAS_PDN_CONNECTIVITY_PDN_TYPE_IPV6 ||
-            sess->request_type.pdn_type ==
-            OGS_NAS_PDN_CONNECTIVITY_PDN_TYPE_IPV4V6);
+    ogs_assert(sess->request_type.type == OGS_NAS_EPS_PDN_TYPE_IPV4 ||
+            sess->request_type.type == OGS_NAS_EPS_PDN_TYPE_IPV6 ||
+            sess->request_type.type == OGS_NAS_EPS_PDN_TYPE_IPV4V6);
     if (pdn->pdn_type == OGS_DIAM_PDN_TYPE_IPV4 ||
         pdn->pdn_type == OGS_DIAM_PDN_TYPE_IPV6 ||
         pdn->pdn_type == OGS_DIAM_PDN_TYPE_IPV4V6) {
-        req->pdn_type.u8 = ((pdn->pdn_type + 1) & sess->request_type.pdn_type);
+        req->pdn_type.u8 = ((pdn->pdn_type + 1) & sess->request_type.type);
         ogs_assert(req->pdn_type.u8 != 0);
     } else if (pdn->pdn_type == OGS_DIAM_PDN_TYPE_IPV4_OR_IPV6) {
-        req->pdn_type.u8 = sess->request_type.pdn_type;
+        req->pdn_type.u8 = sess->request_type.type;
     } else {
         ogs_fatal("Invalid PDN_TYPE[%d]\n", pdn->pdn_type);
         ogs_assert_if_reached();

@@ -28,8 +28,8 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.1.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-22 16:44:51.835164 by acetcom
- * from 24501-g41.docx
+ * Created on: 2020-05-22 18:16:04.844011 by acetcom
+ * from 24301-d80.docx
  ******************************************************************************/
 
 #include "ogs-nas-eps.h"
@@ -975,35 +975,35 @@ int ogs_nas_eps_encode_key_set_identifier(ogs_pkbuf_t *pkbuf, ogs_nas_key_set_id
     return size;
 }
 
-/* 9.9.3.22 message container
+/* 9.9.3.22 EPS message container
  * M LV 3-252 */
-int ogs_nas_eps_decode_message_container(ogs_nas_message_container_t *message_container, ogs_pkbuf_t *pkbuf)
+int ogs_nas_eps_decode_eps_message_container(ogs_nas_eps_message_container_t *eps_message_container, ogs_pkbuf_t *pkbuf)
 {
     uint16_t size = 0;
-    ogs_nas_message_container_t *source = (ogs_nas_message_container_t *)pkbuf->data;
+    ogs_nas_eps_message_container_t *source = (ogs_nas_eps_message_container_t *)pkbuf->data;
 
-    message_container->length = source->length;
-    size = message_container->length + sizeof(message_container->length);
+    eps_message_container->length = source->length;
+    size = eps_message_container->length + sizeof(eps_message_container->length);
 
     ogs_assert(ogs_pkbuf_pull(pkbuf, size));
-    memcpy(message_container, pkbuf->data - size, size);
+    memcpy(eps_message_container, pkbuf->data - size, size);
 
-    ogs_trace("  MESSAGE_CONTAINER - ");
+    ogs_trace("  EPS_MESSAGE_CONTAINER - ");
     ogs_log_hexdump(OGS_LOG_TRACE, pkbuf->data - size, size);
 
     return size;
 }
 
-int ogs_nas_eps_encode_message_container(ogs_pkbuf_t *pkbuf, ogs_nas_message_container_t *message_container)
+int ogs_nas_eps_encode_eps_message_container(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_container_t *eps_message_container)
 {
-    uint16_t size = message_container->length + sizeof(message_container->length);
-    ogs_nas_message_container_t target;
+    uint16_t size = eps_message_container->length + sizeof(eps_message_container->length);
+    ogs_nas_eps_message_container_t target;
 
-    memcpy(&target, message_container, sizeof(ogs_nas_message_container_t));
+    memcpy(&target, eps_message_container, sizeof(ogs_nas_eps_message_container_t));
     ogs_assert(ogs_pkbuf_pull(pkbuf, size));
     memcpy(pkbuf->data - size, &target, size);
 
-    ogs_trace("  MESSAGE_CONTAINER - ");
+    ogs_trace("  EPS_MESSAGE_CONTAINER - ");
     ogs_log_hexdump(OGS_LOG_TRACE, pkbuf->data - size, size);
 
     return size;

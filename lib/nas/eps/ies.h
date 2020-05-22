@@ -28,8 +28,8 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.1.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-22 16:44:51.833111 by acetcom
- * from 24501-g41.docx
+ * Created on: 2020-05-22 18:16:04.841985 by acetcom
+ * from 24301-d80.docx
  ******************************************************************************/
 
 #if !defined(OGS_NAS_INSIDE) && !defined(OGS_NAS_COMPILATION)
@@ -74,7 +74,7 @@ int ogs_nas_eps_decode_authentication_parameter_autn(ogs_nas_authentication_para
 int ogs_nas_eps_decode_ms_network_capability(ogs_nas_ms_network_capability_t *ms_network_capability, ogs_pkbuf_t *pkbuf);
 int ogs_nas_eps_decode_ms_network_feature_support(ogs_nas_ms_network_feature_support_t *ms_network_feature_support, ogs_pkbuf_t *pkbuf);
 int ogs_nas_eps_decode_key_set_identifier(ogs_nas_key_set_identifier_t *key_set_identifier, ogs_pkbuf_t *pkbuf);
-int ogs_nas_eps_decode_message_container(ogs_nas_message_container_t *message_container, ogs_pkbuf_t *pkbuf);
+int ogs_nas_eps_decode_eps_message_container(ogs_nas_eps_message_container_t *eps_message_container, ogs_pkbuf_t *pkbuf);
 int ogs_nas_eps_decode_security_algorithms(ogs_nas_security_algorithms_t *security_algorithms, ogs_pkbuf_t *pkbuf);
 int ogs_nas_eps_decode_network_name(ogs_nas_network_name_t *network_name, ogs_pkbuf_t *pkbuf);
 int ogs_nas_eps_decode_network_resource_identifier_container(ogs_nas_network_resource_identifier_container_t *network_resource_identifier_container, ogs_pkbuf_t *pkbuf);
@@ -165,7 +165,7 @@ int ogs_nas_eps_encode_authentication_parameter_autn(ogs_pkbuf_t *pkbuf, ogs_nas
 int ogs_nas_eps_encode_ms_network_capability(ogs_pkbuf_t *pkbuf, ogs_nas_ms_network_capability_t *ms_network_capability);
 int ogs_nas_eps_encode_ms_network_feature_support(ogs_pkbuf_t *pkbuf, ogs_nas_ms_network_feature_support_t *ms_network_feature_support);
 int ogs_nas_eps_encode_key_set_identifier(ogs_pkbuf_t *pkbuf, ogs_nas_key_set_identifier_t *key_set_identifier);
-int ogs_nas_eps_encode_message_container(ogs_pkbuf_t *pkbuf, ogs_nas_message_container_t *message_container);
+int ogs_nas_eps_encode_eps_message_container(ogs_pkbuf_t *pkbuf, ogs_nas_eps_message_container_t *eps_message_container);
 int ogs_nas_eps_encode_security_algorithms(ogs_pkbuf_t *pkbuf, ogs_nas_security_algorithms_t *security_algorithms);
 int ogs_nas_eps_encode_network_name(ogs_pkbuf_t *pkbuf, ogs_nas_network_name_t *network_name);
 int ogs_nas_eps_encode_network_resource_identifier_container(ogs_pkbuf_t *pkbuf, ogs_nas_network_resource_identifier_container_t *network_resource_identifier_container);

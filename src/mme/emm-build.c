@@ -499,7 +499,7 @@ ogs_pkbuf_t *emm_build_downlink_nas_transport(
     ogs_nas_eps_message_t message;
     ogs_nas_eps_downlink_nas_transport_t *downlink_nas_transport = 
         &message.emm.downlink_nas_transport;
-    ogs_nas_message_container_t *nas_message_container =
+    ogs_nas_eps_message_container_t *nas_message_container =
         &downlink_nas_transport->nas_message_container;
 
     ogs_assert(mme_ue);
