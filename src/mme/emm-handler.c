@@ -118,7 +118,7 @@ int emm_handle_attach_request(
 
     /* Store UE specific information */
     if (attach_request->presencemask &
-        OGS_NAS_ATTACH_REQUEST_LAST_VISITED_REGISTERED_TAI_PRESENT) {
+        OGS_NAS_EPS_ATTACH_REQUEST_LAST_VISITED_REGISTERED_TAI_PRESENT) {
         ogs_nas_tracking_area_identity_t *last_visited_registered_tai = 
             &attach_request->last_visited_registered_tai;
 
@@ -133,7 +133,7 @@ int emm_handle_attach_request(
             sizeof(attach_request->ue_network_capability));
 
     if (attach_request->presencemask &
-            OGS_NAS_ATTACH_REQUEST_MS_NETWORK_CAPABILITY_PRESENT) {
+            OGS_NAS_EPS_ATTACH_REQUEST_MS_NETWORK_CAPABILITY_PRESENT) {
         memcpy(&mme_ue->ms_network_capability, 
                 &attach_request->ms_network_capability,
                 sizeof(attach_request->ms_network_capability));
@@ -232,10 +232,10 @@ int emm_handle_attach_complete(
     message.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_EMM;
 
     message.emm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_EMM;
-    message.emm.h.message_type = OGS_NAS_EMM_INFORMATION;
+    message.emm.h.message_type = OGS_NAS_EPS_EMM_INFORMATION;
 
     emm_information->presencemask |=
-        OGS_NAS_EMM_INFORMATION_UNIVERSAL_TIME_AND_LOCAL_TIME_ZONE_PRESENT;
+        OGS_NAS_EPS_EMM_INFORMATION_UNIVERSAL_TIME_AND_LOCAL_TIME_ZONE_PRESENT;
     universal_time_and_local_time_zone->year = 
                 OGS_OGS_NAS_TIME_TO_BCD(gmt.tm_year % 100);
     universal_time_and_local_time_zone->mon =
@@ -244,8 +244,10 @@ int emm_handle_attach_complete(
                 OGS_OGS_NAS_TIME_TO_BCD(gmt.tm_mday);
     universal_time_and_local_time_zone->hour = 
                 OGS_OGS_NAS_TIME_TO_BCD(gmt.tm_hour);
-    universal_time_and_local_time_zone->min = OGS_OGS_NAS_TIME_TO_BCD(gmt.tm_min);
-    universal_time_and_local_time_zone->sec = OGS_OGS_NAS_TIME_TO_BCD(gmt.tm_sec);
+    universal_time_and_local_time_zone->min =
+                OGS_OGS_NAS_TIME_TO_BCD(gmt.tm_min);
+    universal_time_and_local_time_zone->sec =
+                OGS_OGS_NAS_TIME_TO_BCD(gmt.tm_sec);
     if (local.tm_gmtoff >= 0) {
         universal_time_and_local_time_zone->timezone = 
                     OGS_OGS_NAS_TIME_TO_BCD(local.tm_gmtoff / 900);
@@ -258,19 +260,19 @@ int emm_handle_attach_complete(
         universal_time_and_local_time_zone->timezone);
 
     emm_information->presencemask |=
-        OGS_NAS_EMM_INFORMATION_NETWORK_DAYLIGHT_SAVING_TIME_PRESENT;
+        OGS_NAS_EPS_EMM_INFORMATION_NETWORK_DAYLIGHT_SAVING_TIME_PRESENT;
     network_daylight_saving_time->length = 1;
 
     if (mme_self()->full_name.length) {
         emm_information->presencemask |=
-            OGS_NAS_EMM_INFORMATION_FULL_NAME_FOR_NETWORK_PRESENT;
+            OGS_NAS_EPS_EMM_INFORMATION_FULL_NAME_FOR_NETWORK_PRESENT;
         memcpy(&emm_information->full_name_for_network,
             &mme_self()->full_name, sizeof(ogs_nas_network_name_t));
     }
     
     if (mme_self()->short_name.length) {
         emm_information->presencemask |=
-            OGS_NAS_EMM_INFORMATION_SHORT_NAME_FOR_NETWORK_PRESENT;
+            OGS_NAS_EPS_EMM_INFORMATION_SHORT_NAME_FOR_NETWORK_PRESENT;
         memcpy(&emm_information->short_name_for_network,
             &mme_self()->short_name, sizeof(ogs_nas_network_name_t));
     }                
@@ -494,7 +496,7 @@ int emm_handle_tau_request(
 
     /* Store UE specific information */
     if (tau_request->presencemask &
-        OGS_NAS_TRACKING_AREA_UPDATE_REQUEST_LAST_VISITED_REGISTERED_TAI_PRESENT) {
+        OGS_NAS_EPS_TRACKING_AREA_UPDATE_REQUEST_LAST_VISITED_REGISTERED_TAI_PRESENT) {
         ogs_nas_tracking_area_identity_t *last_visited_registered_tai = 
             &tau_request->last_visited_registered_tai;
 
@@ -505,14 +507,14 @@ int emm_handle_tau_request(
     } 
 
     if (tau_request->presencemask &
-            OGS_NAS_TRACKING_AREA_UPDATE_REQUEST_UE_NETWORK_CAPABILITY_PRESENT) {
+            OGS_NAS_EPS_TRACKING_AREA_UPDATE_REQUEST_UE_NETWORK_CAPABILITY_PRESENT) {
         memcpy(&mme_ue->ue_network_capability, 
                 &tau_request->ue_network_capability,
                 sizeof(tau_request->ue_network_capability));
     }
 
     if (tau_request->presencemask &
-            OGS_NAS_TRACKING_AREA_UPDATE_REQUEST_MS_NETWORK_CAPABILITY_PRESENT) {
+            OGS_NAS_EPS_TRACKING_AREA_UPDATE_REQUEST_MS_NETWORK_CAPABILITY_PRESENT) {
         memcpy(&mme_ue->ms_network_capability, 
                 &tau_request->ms_network_capability,
                 sizeof(tau_request->ms_network_capability));
@@ -638,7 +640,7 @@ int emm_handle_security_mode_complete(mme_ue_t *mme_ue,
     ogs_assert(mme_ue);
 
     if (security_mode_complete->presencemask &
-        OGS_NAS_SECURITY_MODE_COMMAND_IMEISV_REQUEST_PRESENT) {
+        OGS_NAS_EPS_SECURITY_MODE_COMMAND_IMEISV_REQUEST_PRESENT) {
         switch (imeisv->imeisv.type) {
         case OGS_NAS_MOBILE_IDENTITY_IMEISV:
             memcpy(&mme_ue->nas_mobile_identity_imeisv,

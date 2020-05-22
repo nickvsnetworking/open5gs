@@ -548,7 +548,7 @@ ED2(uint8_t security_header_type:4;,
 
 for (k, v) in sorted_msg_list:
     if k.find("TO UE") == -1 and k != "SERVICE REQUEST":
-        f.write("#define OGS_NAS_" + v_upper(k) + " " + v.split('.')[0] + "\n")
+        f.write("#define OGS_NAS_EPS_" + v_upper(k) + " " + v.split('.')[0] + "\n")
 f.write("\n")
 
 for (k, v) in sorted_msg_list:
@@ -562,10 +562,10 @@ for (k, v) in sorted_msg_list:
     f.write(" ******************************************************/")
 
     for i, ie in enumerate([ies for ies in msg_list[k]["ies"] if ies["presence"] == "O"]):
-        f.write("\n#define OGS_NAS_%s_%s_PRESENT (1<<%d)" % (v_upper(k), v_upper(ie["value"]), i))
+        f.write("\n#define OGS_NAS_EPS_%s_%s_PRESENT (1<<%d)" % (v_upper(k), v_upper(ie["value"]), i))
 
     for i, ie in enumerate([ies for ies in msg_list[k]["ies"] if ies["presence"] == "O"]):
-        f.write("\n#define OGS_NAS_%s_%s_TYPE 0x%s" % (v_upper(k), v_upper(ie["value"]), re.sub('-', '0', ie["iei"])))
+        f.write("\n#define OGS_NAS_EPS_%s_%s_TYPE 0x%s" % (v_upper(k), v_upper(ie["value"]), re.sub('-', '0', ie["iei"])))
 
     f.write("\n\ntypedef struct ogs_nas_%s_s {\n" % v_lower(k))
 
@@ -690,10 +690,10 @@ for (k, v) in sorted_msg_list:
 """)
             optional_fields = True;
 
-        f.write("        case OGS_NAS_%s_%s_TYPE:\n" % (v_upper(k), v_upper(ie["value"])))
+        f.write("        case OGS_NAS_EPS_%s_%s_TYPE:\n" % (v_upper(k), v_upper(ie["value"])))
         f.write("            size = ogs_nas_decode_%s(&%s->%s, pkbuf);\n" % (v_lower(ie["type"]), v_lower(k), v_lower(ie["value"])))
         f.write("            ogs_assert(size >= 0);\n")
-        f.write("            %s->presencemask |= OGS_NAS_%s_%s_PRESENT;\n" % (v_lower(k), v_upper(k), v_upper(ie["value"])))
+        f.write("            %s->presencemask |= OGS_NAS_EPS_%s_%s_PRESENT;\n" % (v_lower(k), v_upper(k), v_upper(ie["value"])))
         f.write("            decoded += size;\n")
         f.write("            break;\n")
 
@@ -743,7 +743,7 @@ for (k, v) in sorted_msg_list:
     if "ies" not in msg_list[k]:
         continue;
     if float(msg_list[k]["type"]) < 192 and k.find("TO UE") == -1 and k != "SERVICE REQUEST":
-        f.write("    case OGS_NAS_%s:\n" % v_upper(k))
+        f.write("    case OGS_NAS_EPS_%s:\n" % v_upper(k))
         if len(msg_list[k]["ies"]) != 0:
             f.write("        size = ogs_nas_decode_%s(message, pkbuf);\n" % v_lower(k))
             f.write("        ogs_assert(size >= 0);\n")
@@ -785,7 +785,7 @@ for (k, v) in sorted_msg_list:
     if "ies" not in msg_list[k]:
         continue;
     if float(msg_list[k]["type"]) >= 192:
-        f.write("    case OGS_NAS_%s:\n" % v_upper(k))
+        f.write("    case OGS_NAS_EPS_%s:\n" % v_upper(k))
         if len(msg_list[k]["ies"]) != 0:
             f.write("        size = ogs_nas_decode_%s(message, pkbuf);\n" % v_lower(k))
             f.write("        ogs_assert(size >= 0);\n")
@@ -841,13 +841,13 @@ for (k, v) in sorted_msg_list:
         f.write("    encoded += size;\n\n")
 
     for ie in [ies for ies in msg_list[k]["ies"] if ies["presence"] == "O"]:
-        f.write("    if (%s->presencemask & OGS_NAS_%s_%s_PRESENT) {\n" % (v_lower(k), v_upper(k), v_upper(ie["value"])))
+        f.write("    if (%s->presencemask & OGS_NAS_EPS_%s_%s_PRESENT) {\n" % (v_lower(k), v_upper(k), v_upper(ie["value"])))
         if ie["length"] == "1" and ie["format"] == "TV":
-            f.write("        %s->%s.type = (OGS_NAS_%s_%s_TYPE >> 4);\n\n" % (v_lower(k), v_lower(ie["value"]), v_upper(k), v_upper(ie["value"])))
+            f.write("        %s->%s.type = (OGS_NAS_EPS_%s_%s_TYPE >> 4);\n\n" % (v_lower(k), v_lower(ie["value"]), v_upper(k), v_upper(ie["value"])))
         elif ie["length"] == "1" and ie["format"] == "T":
-            f.write("        %s->%s.type = OGS_NAS_%s_%s_TYPE;\n\n" % (get_value(k), get_value(ie["value"]), v_upper(k), v_upper(ie["value"])))
+            f.write("        %s->%s.type = OGS_NAS_EPS_%s_%s_TYPE;\n\n" % (get_value(k), get_value(ie["value"]), v_upper(k), v_upper(ie["value"])))
         else:
-            f.write("        size = ogs_nas_encode_optional_type(pkbuf, OGS_NAS_%s_%s_TYPE);\n" % (v_upper(k), v_upper(ie["value"])))
+            f.write("        size = ogs_nas_encode_optional_type(pkbuf, OGS_NAS_EPS_%s_%s_TYPE);\n" % (v_upper(k), v_upper(ie["value"])))
             f.write("        ogs_assert(size >= 0);\n")
             f.write("        encoded += size;\n\n")
         f.write("        size = ogs_nas_encode_%s(pkbuf, &%s->%s);\n" % (v_lower(ie["type"]), v_lower(k), v_lower(ie["value"])))
@@ -900,7 +900,7 @@ for (k, v) in sorted_msg_list:
     if "ies" not in msg_list[k]:
         continue;
     if float(msg_list[k]["type"]) < 192 and k.find("FROM UE") == -1 and k != "SERVICE REQUEST":
-        f.write("    case OGS_NAS_%s:\n" % v_upper(k))
+        f.write("    case OGS_NAS_EPS_%s:\n" % v_upper(k))
         if len(msg_list[k]["ies"]) != 0:
             f.write("        size = ogs_nas_encode_%s(pkbuf, message);\n" % v_lower(k))
             f.write("        ogs_assert(size >= 0);\n")
@@ -951,7 +951,7 @@ for (k, v) in sorted_msg_list:
     if "ies" not in msg_list[k]:
         continue;
     if float(msg_list[k]["type"]) >= 192:
-        f.write("    case OGS_NAS_%s:\n" % v_upper(k))
+        f.write("    case OGS_NAS_EPS_%s:\n" % v_upper(k))
         if len(msg_list[k]["ies"]) != 0:
             f.write("        size = ogs_nas_encode_%s(pkbuf, message);\n" % v_lower(k))
             f.write("        ogs_assert(size >= 0);\n")

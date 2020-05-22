@@ -49,7 +49,7 @@ ogs_pkbuf_t *esm_build_pdn_connectivity_reject(
     message.esm.h.eps_bearer_identity = 0;
     message.esm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_ESM;
     message.esm.h.procedure_transaction_identity = sess->pti;
-    message.esm.h.message_type = OGS_NAS_PDN_CONNECTIVITY_REJECT;
+    message.esm.h.message_type = OGS_NAS_EPS_PDN_CONNECTIVITY_REJECT;
 
     pdn_connectivity_reject->esm_cause = esm_cause;
 
@@ -83,7 +83,7 @@ ogs_pkbuf_t *esm_build_information_request(mme_bearer_t *bearer)
 
     message.esm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_ESM;
     message.esm.h.procedure_transaction_identity = sess->pti;
-    message.esm.h.message_type = OGS_NAS_ESM_INFORMATION_REQUEST;
+    message.esm.h.message_type = OGS_NAS_EPS_ESM_INFORMATION_REQUEST;
 
     return nas_security_encode(mme_ue, &message);
 }
@@ -138,7 +138,7 @@ ogs_pkbuf_t *esm_build_activate_default_bearer_context_request(
     message.esm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_ESM;
     message.esm.h.procedure_transaction_identity = sess->pti;
     message.esm.h.message_type =
-        OGS_NAS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST;
+        OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST;
 
     memcpy(&bearer->qos, &pdn->qos, sizeof(ogs_qos_t));
 
@@ -173,13 +173,13 @@ ogs_pkbuf_t *esm_build_activate_default_bearer_context_request(
             activate_default_eps_bearer_context_request->esm_cause =
                 ESM_CAUSE_PDN_TYPE_IPV4_ONLY_ALLOWED;
             activate_default_eps_bearer_context_request->presencemask |=
-                OGS_NAS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_ESM_CAUSE_PRESENT;
+                OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_ESM_CAUSE_PRESENT;
         } else if (pdn->paa.pdn_type == OGS_GTP_PDN_TYPE_IPV6) {
             pdn_address->pdn_type = OGS_GTP_PDN_TYPE_IPV6;
             activate_default_eps_bearer_context_request->esm_cause =
                 ESM_CAUSE_PDN_TYPE_IPV6_ONLY_ALLOWED;
             activate_default_eps_bearer_context_request->presencemask |=
-                OGS_NAS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_ESM_CAUSE_PRESENT;
+                OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_ESM_CAUSE_PRESENT;
         }
     } else if (sess->request_type.pdn_type ==
             OGS_GTP_PDN_TYPE_IPV4) {
@@ -188,7 +188,7 @@ ogs_pkbuf_t *esm_build_activate_default_bearer_context_request(
             activate_default_eps_bearer_context_request->esm_cause =
                 ESM_CAUSE_PDN_TYPE_IPV6_ONLY_ALLOWED;
             activate_default_eps_bearer_context_request->presencemask |=
-                OGS_NAS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_ESM_CAUSE_PRESENT;
+                OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_ESM_CAUSE_PRESENT;
         }
     } else if (sess->request_type.pdn_type ==
             OGS_GTP_PDN_TYPE_IPV6) {
@@ -197,7 +197,7 @@ ogs_pkbuf_t *esm_build_activate_default_bearer_context_request(
             activate_default_eps_bearer_context_request->esm_cause =
                 ESM_CAUSE_PDN_TYPE_IPV4_ONLY_ALLOWED;
             activate_default_eps_bearer_context_request->presencemask |=
-                OGS_NAS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_ESM_CAUSE_PRESENT;
+                OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_ESM_CAUSE_PRESENT;
         }
     }
 
@@ -223,13 +223,13 @@ ogs_pkbuf_t *esm_build_activate_default_bearer_context_request(
 
     if (pdn->ambr.downlink || pdn->ambr.uplink) {
         activate_default_eps_bearer_context_request->presencemask |=
-            OGS_NAS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_APN_AMBR_PRESENT;
+            OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_APN_AMBR_PRESENT;
         apn_ambr_build(apn_ambr, pdn->ambr.downlink, pdn->ambr.uplink);
     }
 
     if (sess->pgw_pco.presence && sess->pgw_pco.len && sess->pgw_pco.data) {
         activate_default_eps_bearer_context_request->presencemask |=
-            OGS_NAS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_PROTOCOL_CONFIGURATION_OPTIONS_PRESENT;
+            OGS_NAS_EPS_ACTIVATE_DEFAULT_EPS_BEARER_CONTEXT_REQUEST_PROTOCOL_CONFIGURATION_OPTIONS_PRESENT;
         protocol_configuration_options->length = sess->pgw_pco.len;
         memcpy(protocol_configuration_options->buffer, 
                 sess->pgw_pco.data, protocol_configuration_options->length);
@@ -278,7 +278,7 @@ ogs_pkbuf_t *esm_build_activate_dedicated_bearer_context_request(
     message.esm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_ESM;
     message.esm.h.procedure_transaction_identity = 0;
     message.esm.h.message_type =
-        OGS_NAS_ACTIVATE_DEDICATED_EPS_BEARER_CONTEXT_REQUEST;
+        OGS_NAS_EPS_ACTIVATE_DEDICATED_EPS_BEARER_CONTEXT_REQUEST;
 
     linked_ebi->eps_bearer_identity = linked_bearer->ebi;
     eps_qos_build(eps_qos, bearer->qos.qci,
@@ -325,11 +325,11 @@ ogs_pkbuf_t *esm_build_modify_bearer_context_request(
     message.esm.h.eps_bearer_identity = bearer->ebi;
     message.esm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_ESM;
     message.esm.h.procedure_transaction_identity = sess->pti;
-    message.esm.h.message_type = OGS_NAS_MODIFY_EPS_BEARER_CONTEXT_REQUEST;
+    message.esm.h.message_type = OGS_NAS_EPS_MODIFY_EPS_BEARER_CONTEXT_REQUEST;
 
     if (qos_presence == 1) {
         modify_eps_bearer_context_request->presencemask |=
-            OGS_NAS_MODIFY_EPS_BEARER_CONTEXT_REQUEST_NEW_EPS_QOS_PRESENT;
+            OGS_NAS_EPS_MODIFY_EPS_BEARER_CONTEXT_REQUEST_NEW_EPS_QOS_PRESENT;
         eps_qos_build(new_eps_qos, bearer->qos.qci,
                 bearer->qos.mbr.downlink, bearer->qos.mbr.uplink,
                 bearer->qos.gbr.downlink, bearer->qos.gbr.uplink);
@@ -337,7 +337,7 @@ ogs_pkbuf_t *esm_build_modify_bearer_context_request(
 
     if (tft_presence == 1) {
         modify_eps_bearer_context_request->presencemask |=
-            OGS_NAS_MODIFY_EPS_BEARER_CONTEXT_REQUEST_TFT_PRESENT;
+            OGS_NAS_EPS_MODIFY_EPS_BEARER_CONTEXT_REQUEST_TFT_PRESENT;
         tft->length = bearer->tft.len;
         ogs_assert(tft->length);
         ogs_assert(bearer->tft.data);
@@ -376,7 +376,8 @@ ogs_pkbuf_t *esm_build_deactivate_bearer_context_request(
     message.esm.h.eps_bearer_identity = bearer->ebi;
     message.esm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_ESM;
     message.esm.h.procedure_transaction_identity = sess->pti;
-    message.esm.h.message_type = OGS_NAS_DEACTIVATE_EPS_BEARER_CONTEXT_REQUEST;
+    message.esm.h.message_type =
+        OGS_NAS_EPS_DEACTIVATE_EPS_BEARER_CONTEXT_REQUEST;
 
     deactivate_eps_bearer_context_request->esm_cause = esm_cause;
 
@@ -414,7 +415,7 @@ ogs_pkbuf_t *esm_build_bearer_resource_allocation_reject(
     message.esm.h.eps_bearer_identity = 0;
     message.esm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_ESM;
     message.esm.h.procedure_transaction_identity = sess->pti;
-    message.esm.h.message_type = OGS_NAS_BEARER_RESOURCE_ALLOCATION_REJECT;
+    message.esm.h.message_type = OGS_NAS_EPS_BEARER_RESOURCE_ALLOCATION_REJECT;
 
     bearer_resource_allocation_reject->esm_cause = esm_cause;
 
@@ -456,7 +457,8 @@ ogs_pkbuf_t *esm_build_bearer_resource_modification_reject(
     message.esm.h.eps_bearer_identity = 0;
     message.esm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_ESM;
     message.esm.h.procedure_transaction_identity = sess->pti;
-    message.esm.h.message_type = OGS_NAS_BEARER_RESOURCE_MODIFICATION_REJECT;
+    message.esm.h.message_type =
+        OGS_NAS_EPS_BEARER_RESOURCE_MODIFICATION_REJECT;
 
     bearer_resource_modification_reject->esm_cause = esm_cause;
 

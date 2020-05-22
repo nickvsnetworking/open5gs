@@ -2488,7 +2488,8 @@ static void build_bearer_resource_modification_request(ogs_pkbuf_t **pkbuf,
     message.esm.h.eps_bearer_identity = 0;
     message.esm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_ESM;
     message.esm.h.procedure_transaction_identity = pti;
-    message.esm.h.message_type = OGS_NAS_BEARER_RESOURCE_MODIFICATION_REQUEST;
+    message.esm.h.message_type =
+        OGS_NAS_EPS_BEARER_RESOURCE_MODIFICATION_REQUEST;
 
     req->eps_bearer_identity_for_packet_filter.eps_bearer_identity = ebi;
 
@@ -2637,7 +2638,8 @@ static void build_bearer_resource_modification_request(ogs_pkbuf_t **pkbuf,
             &tft, tad->buffer, OGS_GTP_MAX_TRAFFIC_FLOW_TEMPLATE);
 
     if (ul_mbr || dl_mbr || ul_gbr || dl_gbr) {
-        req->presencemask |= OGS_NAS_BEARER_RESOURCE_MODIFICATION_REQUEST_REQUIRED_TRAFFIC_FLOW_QOS_PRESENT;
+        req->presencemask |=
+            OGS_NAS_EPS_BEARER_RESOURCE_MODIFICATION_REQUEST_REQUIRED_TRAFFIC_FLOW_QOS_PRESENT;
         qos->length = 5;
         qos->qci = qci;
         qos->ul_mbr = ul_mbr;

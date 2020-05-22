@@ -76,7 +76,7 @@ static void ogs_nas_eps_message_test2(abts_case *tc, void *data)
 
     memset(&message, 0, sizeof(message));
     message.emm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_EMM;
-    message.emm.h.message_type = OGS_NAS_ATTACH_ACCEPT;
+    message.emm.h.message_type = OGS_NAS_EPS_ATTACH_ACCEPT;
     attach_accept->eps_attach_result.result = 
         OGS_NAS_ATTACH_RESULT_COMBINED_EPS_IMSI_ATTACH;
     attach_accept->t3412_value.unit = 
@@ -95,7 +95,7 @@ static void ogs_nas_eps_message_test2(abts_case *tc, void *data)
     attach_accept->esm_message_container.buffer = 
         OGS_HEX(esm_payload, strlen(esm_payload), esm_buffer);
 
-    attach_accept->presencemask |= OGS_NAS_ATTACH_ACCEPT_GUTI_PRESENT;
+    attach_accept->presencemask |= OGS_NAS_EPS_ATTACH_ACCEPT_GUTI_PRESENT;
     attach_accept->guti.length = 11;
     attach_accept->guti.guti.type = OGS_NAS_EPS_MOBILE_IDENTITY_GUTI;
     ogs_nas_from_plmn_id(&attach_accept->guti.guti.nas_plmn_id,
@@ -105,19 +105,21 @@ static void ogs_nas_eps_message_test2(abts_case *tc, void *data)
     attach_accept->guti.guti.m_tmsi = 0x00000456;
 
     attach_accept->presencemask |= 
-        OGS_NAS_ATTACH_ACCEPT_LOCATION_AREA_IDENTIFICATION_PRESENT;
-    ogs_nas_from_plmn_id(&attach_accept->location_area_identification.nas_plmn_id,
-        ogs_plmn_id_build(&plmn_id, 1, 2, 2));
+        OGS_NAS_EPS_ATTACH_ACCEPT_LOCATION_AREA_IDENTIFICATION_PRESENT;
+    ogs_nas_from_plmn_id(
+            &attach_accept->location_area_identification.nas_plmn_id,
+            ogs_plmn_id_build(&plmn_id, 1, 2, 2));
     attach_accept->location_area_identification.lac = 0xfffd;
 
-    attach_accept->presencemask |= OGS_NAS_ATTACH_ACCEPT_MS_IDENTITY_PRESENT;
+    attach_accept->presencemask |=
+        OGS_NAS_EPS_ATTACH_ACCEPT_MS_IDENTITY_PRESENT;
     attach_accept->ms_identity.length = 5;
     attach_accept->ms_identity.tmsi.type = 
         OGS_NAS_MOBILE_IDENTITY_TMSI;
     attach_accept->ms_identity.tmsi.tmsi = 0x00e102d4;
 
     attach_accept->presencemask |= 
-        OGS_NAS_ATTACH_ACCEPT_EPS_NETWORK_FEATURE_SUPPORT_PRESENT;
+        OGS_NAS_EPS_ATTACH_ACCEPT_EPS_NETWORK_FEATURE_SUPPORT_PRESENT;
     attach_accept->eps_network_feature_support.length = 1;
     attach_accept->eps_network_feature_support.esr_ps = 1;
     attach_accept->eps_network_feature_support.emc_bs = 1;
@@ -167,7 +169,7 @@ static void ogs_nas_eps_message_test4(abts_case *tc, void *data)
 
     memset(&message, 0, sizeof(message));
     message.emm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_EMM;
-    message.emm.h.message_type = OGS_NAS_ATTACH_REJECT;
+    message.emm.h.message_type = OGS_NAS_EPS_ATTACH_REJECT;
     attach_reject->emm_cause = EMM_CAUSE_NETWORK_FAILURE; 
 
     pkbuf = ogs_nas_eps_plain_encode(&message);
@@ -214,7 +216,8 @@ static void ogs_nas_eps_message_test6(abts_case *tc, void *data)
 
     ABTS_INT_EQUAL(tc, OGS_NAS_PROTOCOL_DISCRIMINATOR_EMM, 
             message.emm.h.protocol_discriminator);
-    ABTS_INT_EQUAL(tc, OGS_NAS_IDENTITY_REQUEST, message.emm.h.message_type);
+    ABTS_INT_EQUAL(tc, OGS_NAS_EPS_IDENTITY_REQUEST,
+            message.emm.h.message_type);
     ABTS_INT_EQUAL(tc, OGS_NAS_IDENTITY_TYPE_2_IMSI, 
             identity_request->identity_type.type);
 
@@ -235,7 +238,7 @@ static void ogs_nas_eps_message_test7(abts_case *tc, void *data)
 
     memset(&message, 0, sizeof(message));
     message.emm.h.protocol_discriminator = OGS_NAS_PROTOCOL_DISCRIMINATOR_EMM;
-    message.emm.h.message_type = OGS_NAS_IDENTITY_RESPONSE;
+    message.emm.h.message_type = OGS_NAS_EPS_IDENTITY_RESPONSE;
 
     identity_response->mobile_identity.length = 8;
     identity_response->mobile_identity.imsi.digit1 = 0;

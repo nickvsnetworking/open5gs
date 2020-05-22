@@ -763,15 +763,15 @@ ogs_pkbuf_t *mme_s11_build_bearer_resource_command(
 
     ogs_assert(nas_message);
         switch (nas_message->esm.h.message_type) {
-        case OGS_NAS_BEARER_RESOURCE_ALLOCATION_REQUEST:
+        case OGS_NAS_EPS_BEARER_RESOURCE_ALLOCATION_REQUEST:
             allocation = &nas_message->esm.bearer_resource_allocation_request;
             qos = &allocation->required_traffic_flow_qos;
             tad = &allocation->traffic_flow_aggregate;
             break;
-        case OGS_NAS_BEARER_RESOURCE_MODIFICATION_REQUEST:
+        case OGS_NAS_EPS_BEARER_RESOURCE_MODIFICATION_REQUEST:
             modification = &nas_message->esm.bearer_resource_modification_request;
             if (modification->presencemask &
-                OGS_NAS_BEARER_RESOURCE_MODIFICATION_REQUEST_REQUIRED_TRAFFIC_FLOW_QOS_PRESENT) {
+                OGS_NAS_EPS_BEARER_RESOURCE_MODIFICATION_REQUEST_REQUIRED_TRAFFIC_FLOW_QOS_PRESENT) {
                 qos = &modification->required_traffic_flow_qos;
             }
             tad = &modification->traffic_flow_aggregate;

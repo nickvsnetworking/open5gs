@@ -50,7 +50,7 @@ int esm_handle_pdn_connectivity_request(mme_bearer_t *bearer,
 
     security_protected_required = 0;
     if (req->presencemask &
-        OGS_NAS_PDN_CONNECTIVITY_REQUEST_ESM_INFORMATION_TRANSFER_FLAG_PRESENT) {
+        OGS_NAS_EPS_PDN_CONNECTIVITY_REQUEST_ESM_INFORMATION_TRANSFER_FLAG_PRESENT) {
         ogs_nas_esm_information_transfer_flag_t *esm_information_transfer_flag =
             &req->esm_information_transfer_flag;
         security_protected_required = 
@@ -60,7 +60,7 @@ int esm_handle_pdn_connectivity_request(mme_bearer_t *bearer,
     }
 
     if (req->presencemask &
-            OGS_NAS_PDN_CONNECTIVITY_REQUEST_ACCESS_POINT_NAME_PRESENT) {
+            OGS_NAS_EPS_PDN_CONNECTIVITY_REQUEST_ACCESS_POINT_NAME_PRESENT) {
         sess->pdn = mme_pdn_find_by_apn(mme_ue, req->access_point_name.apn);
         if (!sess->pdn) {
             /* Invalid APN */
@@ -71,7 +71,7 @@ int esm_handle_pdn_connectivity_request(mme_bearer_t *bearer,
     }
 
     if (req->presencemask &
-        OGS_NAS_PDN_CONNECTIVITY_REQUEST_PROTOCOL_CONFIGURATION_OPTIONS_PRESENT) {
+        OGS_NAS_EPS_PDN_CONNECTIVITY_REQUEST_PROTOCOL_CONFIGURATION_OPTIONS_PRESENT) {
         ogs_nas_protocol_configuration_options_t
             *protocol_configuration_options = 
             &req->protocol_configuration_options;
@@ -115,12 +115,12 @@ int esm_handle_information_response(mme_sess_t *sess,
     ogs_assert(rsp);
 
     if (rsp->presencemask &
-            OGS_NAS_ESM_INFORMATION_RESPONSE_ACCESS_POINT_NAME_PRESENT) {
+            OGS_NAS_EPS_ESM_INFORMATION_RESPONSE_ACCESS_POINT_NAME_PRESENT) {
         sess->pdn = mme_pdn_find_by_apn(mme_ue, rsp->access_point_name.apn);
     }
 
     if (rsp->presencemask &
-        OGS_NAS_ESM_INFORMATION_RESPONSE_PROTOCOL_CONFIGURATION_OPTIONS_PRESENT) {
+        OGS_NAS_EPS_ESM_INFORMATION_RESPONSE_PROTOCOL_CONFIGURATION_OPTIONS_PRESENT) {
         ogs_nas_protocol_configuration_options_t
             *protocol_configuration_options = 
                 &rsp->protocol_configuration_options;
