@@ -35,6 +35,7 @@ endif
 
 example_conf = '''
     5gc.yaml
+    minimal.yaml
     epc.yaml
     epc-fdconf.yaml
     epc-custom.yaml

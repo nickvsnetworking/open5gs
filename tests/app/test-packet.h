@@ -22,7 +22,6 @@
 
 #include "ogs-s1ap.h"
 #include "mme/s1ap-build.h"
-#include "core/abts.h"
 
 #include "test-common.h"
 

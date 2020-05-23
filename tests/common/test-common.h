@@ -10,6 +10,8 @@ extern "C" {
 #include "ogs-sctp.h"
 #include "ogs-diameter-common.h"
 
+#include "core/abts.h"
+
 #define OGS_TEST_INSIDE
 
 #include "common/application.h"

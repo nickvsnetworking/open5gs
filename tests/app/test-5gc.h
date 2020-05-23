@@ -11,7 +11,9 @@ extern "C" {
 #endif
 
 void test_5gc_init(void);
+#if 0
 #define test_5gc_run test_app_run
+#endif
 #define test_5gc_final ogs_mongoc_final
 
 #ifdef __cplusplus

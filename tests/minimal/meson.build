@@ -15,17 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-testinc = include_directories('.')
+testminimal_sources = files('''
+    abts-main.c
+    minimal-test.c
+'''.split())
 
-subdir('core')
-subdir('crypt')
-subdir('sctp')
-subdir('common')
-subdir('app')
-subdir('unit')
-subdir('epc-simple')
-subdir('mnc3')
-subdir('volte')
-subdir('csfb')
-subdir('cups')
-subdir('minimal')
+testminimal_exe = executable('minimal',
+    sources : testminimal_sources,
+    c_args : testcore_cc_flags,
+    dependencies : libtest5gc_dep)
+
+test('minimal', testminimal_exe, is_parallel : false, suite: '5gc')
