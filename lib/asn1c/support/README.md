@@ -23,6 +23,24 @@ user@host ~/Documents/git/open5gs/lib/asn1c/s1ap$ \
     -fcompound-names -findirect-choice -fno-include-deps \
     ../support/ngap-r16.1.0/38413-g10.asn
 
+Fix NGAP_ProtocolExtensionField.c
+===========================================
+diff --git a/lib/asn1c/ngap/NGAP_ProtocolExtensionField.c b/lib/asn1c/ngap/NGAP_ProtocolExtensionField.c
+index 26da1b34..940db758 100644
+--- a/lib/asn1c/ngap/NGAP_ProtocolExtensionField.c
++++ b/lib/asn1c/ngap/NGAP_ProtocolExtensionField.c
+@@ -27671,7 +27671,11 @@ static asn_TYPE_member_t asn_MBR_NGAP_extensionValue_396[] = {
+                0,
+                &asn_DEF_OCTET_STRING,
+                0,
++#if 0 /* modified by acetcom */
+                { &asn_OER_memb_NGAP_OCTET_STRING_CONTAINING_PDUSessionResourceReleaseResponseTransfer__constr_17, &asn_PER_memb_NGAP_OCTET_STRING_CONTAINING_PDUSessionResourceReleaseResponseTransfer__constr_17,  memb_NGAP_OCTET_STRING_CONTAINING_PDUSessionResourceReleaseResponseTransfer__constraint_396 },
++#else
++               { 0, 0,  memb_NGAP_OCTET_STRING_CONTAINING_PDUSessionResourceReleaseResponseTransfer__constraint_396 },
++#endif
+                0, 0, /* No default value */
+                "OCTET STRING (CONTAINING PDUSessionResourceReleaseResponseTransfer)"
+                },
 
 Update Files
 ===========================================
