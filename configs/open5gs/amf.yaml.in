@@ -41,9 +41,9 @@ logger:
 #          key: amf.key
 #          pem: amf.pem
 #
-#  o SBI Server(https://127.0.0.3:443, http://[::1]:80)
+#  o SBI Server(https://127.0.0.2:443, http://[::1]:80)
 #    sbi:
-#      - addr: 127.0.0.3
+#      - addr: 127.0.0.2
 #        tls:
 #          key: amf.key
 #          pem: amf.pem
@@ -53,9 +53,9 @@ logger:
 #    sbi:
 #      name: amf.open5gs.org
 #
-#  o SBI Server(http://127.0.0.3:7777)
+#  o SBI Server(http://127.0.0.2:7777)
 #    sbi:
-#      - addr: 127.0.0.3
+#      - addr: 127.0.0.2
 #        port: 7777
 #
 #  o SBI Server(http://<eth0 IP address>:80)
@@ -64,7 +64,7 @@ logger:
 #
 amf:
     sbi:
-      - addr: 127.0.0.3
+      - addr: 127.0.0.2
         port: 7777
 
 #

@@ -153,18 +153,8 @@ bool amf_nnrf_handle_nf_status_notify(ogs_sbi_server_t *server,
         if (!nf_instance) {
             nf_instance = ogs_sbi_nf_instance_add(NFProfile->nf_instance_id);
             ogs_assert(nf_instance);
+
             amf_nf_fsm_init(nf_instance);
-
-            client = ogs_sbi_nf_instance_find_client(nf_instance);
-            if (!client) {
-                ogs_error("Cannot find client [%s]", nf_instance->id);
-                ogs_sbi_server_send_error(session,
-                        OGS_SBI_HTTP_STATUS_BAD_REQUEST,
-                        message, "Cannot find client", nf_instance->id);
-                return false;
-            }
-            amf_sbi_nf_associate_client(nf_instance, client);
-
             ogs_info("(NRF-notify) NF registered [%s]", nf_instance->id);
         } else
             ogs_warn("(NRF-notify) NF [%s] has already been added",
@@ -176,6 +166,15 @@ bool amf_nnrf_handle_nf_status_notify(ogs_sbi_server_t *server,
 
         ogs_info("(NRF-notify) NF Profile updated [%s]", nf_instance->id);
 
+        client = ogs_sbi_nf_instance_find_client(nf_instance);
+        if (!client) {
+            ogs_error("Cannot find client [%s]", nf_instance->id);
+            ogs_sbi_server_send_error(session,
+                    OGS_SBI_HTTP_STATUS_BAD_REQUEST,
+                    message, "Cannot find client", nf_instance->id);
+            return false;
+        }
+        amf_sbi_nf_associate_client(nf_instance, client);
 
     } else if (NotificationData->event ==
             OpenAPI_notification_event_type_NF_DEREGISTERED) {
@@ -235,15 +234,8 @@ void amf_nnrf_handle_nf_discover(ogs_sbi_message_t *message)
         if (!nf_instance) {
             nf_instance = ogs_sbi_nf_instance_add(NFProfile->nf_instance_id);
             ogs_assert(nf_instance);
+
             amf_nf_fsm_init(nf_instance);
-
-            client = ogs_sbi_nf_instance_find_client(nf_instance);
-            if (!client) {
-                ogs_error("Cannot find client [%s]", nf_instance->id);
-                continue;
-            }
-            amf_sbi_nf_associate_client(nf_instance, client);
-
             ogs_info("(NF-Discover) NF registered [%s]", nf_instance->id);
         } else
             ogs_warn("(NF-Discover) NF [%s] has already been added",
