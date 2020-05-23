@@ -29,7 +29,7 @@ libtestcommon_inc = include_directories('.')
 libtestcommon = static_library('testcomon',
     sources : libtestcommon_sources,
     c_args : testcore_cc_flags,
-    include_directories : libtestcommon_inc,
+    include_directories : [libtestcommon_inc, testinc],
     dependencies : [libcore_dep,
                     libapp_dep,
                     libdiameter_common_dep],
@@ -37,7 +37,7 @@ libtestcommon = static_library('testcomon',
 
 libtestcommon_dep = declare_dependency(
     link_with : libtestcommon,
-    include_directories : libtestcommon_inc,
+    include_directories : [libtestcommon_inc, testinc],
     dependencies : [libcore_dep,
                     libapp_dep,
                     libdiameter_common_dep])

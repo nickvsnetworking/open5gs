@@ -20,7 +20,6 @@ libtestepc_cc_args = '-DDEFAULT_CONFIG_FILENAME="@0@/configs/simple.yaml"'.forma
 
 libtestepc_sources = files('''
     test-packet.c
-    test-epc.c
     app-init.c
 '''.split())
 
