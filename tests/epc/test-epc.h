@@ -5,7 +5,7 @@
 #include "ogs-dbi.h"
 #include "mme/mme-context.h"
 
-#include "test-app.h"
+#include "test-common.h"
 #include "test-packet.h"
 
 #ifdef __cplusplus

@@ -7,7 +7,6 @@ extern "C" {
 
 #include "ogs-app.h"
 #include "ogs-diameter-common.h"
-#include "core/abts.h"
 
 void test_app_run(int argc, const char *const argv[],
         const char *name, void (*init)(const char * const argv[]));

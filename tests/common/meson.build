@@ -21,7 +21,7 @@ configure_file(output : 'test-config-private.h',
                configuration : libtestcommon_conf)
 
 libtestcommon_sources = files('''
-    test-app.c
+    application.c
 '''.split())
 
 libtestcommon_inc = include_directories('.')

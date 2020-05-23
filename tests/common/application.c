@@ -17,8 +17,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "test-app.h"
+#include "core/abts.h"
 #include "test-config-private.h"
+
+#include "test-common.h"
 
 static int connected_count = 0;
 static void test_diam_logger_handler(enum fd_hook_type type, struct msg * msg, 
