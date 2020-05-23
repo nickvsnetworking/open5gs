@@ -1,9 +1,9 @@
 #ifndef TEST_EPC_H
 #define TEST_EPC_H
 
-#include "mme/mme-context.h"
-
 #include "test-packet.h"
+
+#include "mme/mme-context.h"
 
 #ifdef __cplusplus
 extern "C" {

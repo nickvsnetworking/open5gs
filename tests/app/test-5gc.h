@@ -4,7 +4,10 @@
 #include "test-common.h"
 
 #include "ogs-ngap.h"
+#include "ogs-sbi.h"
 #include "ogs-nas-5gs.h"
+
+#include "amf/context.h"
 
 #ifdef __cplusplus
 extern "C" {

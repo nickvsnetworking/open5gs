@@ -21,18 +21,14 @@
 
 static void test1_func(abts_case *tc, void *data)
 {
-#if 0
     int rv;
-    ogs_socknode_t *s1ap;
+    ogs_socknode_t *ngap;
     ogs_socknode_t *gtpu;
     ogs_pkbuf_t *sendbuf;
     ogs_pkbuf_t *recvbuf;
-    ogs_s1ap_message_t message;
+    ogs_ngap_message_t message;
     int i;
-    int msgindex = 15;
-    enb_ue_t *enb_ue = NULL;
-    mme_ue_t *mme_ue = NULL;
-    uint32_t m_tmsi = 0;
+    int msgindex = 0;
 
     uint8_t tmp[OGS_MAX_SDU_LEN];
     const char *_authentication_request = 
@@ -103,27 +99,28 @@ static void test1_func(abts_case *tc, void *data)
         "\"__v\" : 0 "
       "}";
 
+#if 0
     /* eNB connects to MME */
-    s1ap = testenb_s1ap_client("127.0.0.1");
-    ABTS_PTR_NOTNULL(tc, s1ap);
+    ngap = testenb_ngap_client("127.0.0.1");
+    ABTS_PTR_NOTNULL(tc, ngap);
 
     /* eNB connects to SGW */
     gtpu = testenb_gtpu_server("127.0.0.5");
     ABTS_PTR_NOTNULL(tc, gtpu);
 
     /* Send S1-Setup Reqeust */
-    rv = tests1ap_build_setup_req(
+    rv = testngap_build_setup_req(
             &sendbuf, S1AP_ENB_ID_PR_macroENB_ID, 0x54f64, 51, 310, 14, 3);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_s1ap_send(s1ap, sendbuf);
+    rv = testenb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     /* Receive S1-Setup Response */
-    recvbuf = testenb_s1ap_read(s1ap);
+    recvbuf = testenb_ngap_read(ngap);
     ABTS_PTR_NOTNULL(tc, recvbuf);
-    rv = ogs_s1ap_decode(&message, recvbuf);
+    rv = ogs_ngap_decode(&message, recvbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    ogs_s1ap_free(&message);
+    ogs_ngap_free(&message);
     ogs_pkbuf_free(recvbuf);
 
     collection = mongoc_client_get_collection(
@@ -145,14 +142,14 @@ static void test1_func(abts_case *tc, void *data)
     } while (count == 0);
     bson_destroy(doc);
 
-    mme_self()->mme_ue_s1ap_id = 27263233;
-    rv = tests1ap_build_initial_ue_msg(&sendbuf, msgindex);
+    mme_self()->mme_ue_ngap_id = 27263233;
+    rv = testngap_build_initial_ue_msg(&sendbuf, msgindex);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_s1ap_send(s1ap, sendbuf);
+    rv = testenb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     /* Receive Authentication Request */
-    recvbuf = testenb_s1ap_read(s1ap);
+    recvbuf = testenb_ngap_read(ngap);
     ABTS_PTR_NOTNULL(tc, recvbuf);
     ABTS_TRUE(tc, memcmp(recvbuf->data, 
         OGS_HEX(_authentication_request, strlen(_authentication_request), tmp),
@@ -160,13 +157,13 @@ static void test1_func(abts_case *tc, void *data)
     ogs_pkbuf_free(recvbuf);
 
     /* Send Authentication Response */
-    rv = tests1ap_build_authentication_response(&sendbuf, msgindex);
+    rv = testngap_build_authentication_response(&sendbuf, msgindex);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_s1ap_send(s1ap, sendbuf);
+    rv = testenb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     /* Receive Security mode Command */
-    recvbuf = testenb_s1ap_read(s1ap);
+    recvbuf = testenb_ngap_read(ngap);
     ABTS_PTR_NOTNULL(tc, recvbuf);
     ABTS_TRUE(tc, memcmp(recvbuf->data,
         OGS_HEX(_security_mode_command, strlen(_security_mode_command), tmp),
@@ -174,13 +171,13 @@ static void test1_func(abts_case *tc, void *data)
     ogs_pkbuf_free(recvbuf);
 
     /* Send Security mode Complete */
-    rv = tests1ap_build_security_mode_complete(&sendbuf, msgindex);
+    rv = testngap_build_security_mode_complete(&sendbuf, msgindex);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_s1ap_send(s1ap, sendbuf);
+    rv = testenb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     /* Receive ESM Information Request */
-    recvbuf = testenb_s1ap_read(s1ap);
+    recvbuf = testenb_ngap_read(ngap);
     ABTS_PTR_NOTNULL(tc, recvbuf);
     ABTS_TRUE(tc, memcmp(recvbuf->data, 
         OGS_HEX(_esm_information_request, strlen(_security_mode_command), tmp),
@@ -188,15 +185,15 @@ static void test1_func(abts_case *tc, void *data)
     ogs_pkbuf_free(recvbuf);
 
     /* Send ESM Information Response */
-    rv = tests1ap_build_esm_information_response(&sendbuf, msgindex);
+    rv = testngap_build_esm_information_response(&sendbuf, msgindex);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_s1ap_send(s1ap, sendbuf);
+    rv = testenb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     /* Receive Initial Context Setup Request + 
      * Attach Accept + 
      * Activate Default Bearer Context Request */
-    recvbuf = testenb_s1ap_read(s1ap);
+    recvbuf = testenb_ngap_read(ngap);
     ABTS_PTR_NOTNULL(tc, recvbuf);
     OGS_HEX(_initial_context_setup_request,
             strlen(_initial_context_setup_request), tmp);
@@ -206,30 +203,30 @@ static void test1_func(abts_case *tc, void *data)
     ogs_pkbuf_free(recvbuf);
 
     /* Send UE Capability Info Indication */
-    rv = tests1ap_build_ue_capability_info_indication(&sendbuf, msgindex);
+    rv = testngap_build_ue_capability_info_indication(&sendbuf, msgindex);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_s1ap_send(s1ap, sendbuf);
+    rv = testenb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     ogs_msleep(50);
 
     /* Send Initial Context Setup Response */
-    rv = tests1ap_build_initial_context_setup_response(&sendbuf,
+    rv = testngap_build_initial_context_setup_response(&sendbuf,
             27263233, 24, 5, 1, "127.0.0.5");
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_s1ap_send(s1ap, sendbuf);
+    rv = testenb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     /* Send Attach Complete + Activate default EPS bearer cotext accept */
-    rv = tests1ap_build_attach_complete(&sendbuf, msgindex);
+    rv = testngap_build_attach_complete(&sendbuf, msgindex);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_s1ap_send(s1ap, sendbuf);
+    rv = testenb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     ogs_msleep(50);
 
     /* Receive EMM information */
-    recvbuf = testenb_s1ap_read(s1ap);
+    recvbuf = testenb_ngap_read(ngap);
     ABTS_PTR_NOTNULL(tc, recvbuf);
     OGS_HEX(_emm_information, strlen(_emm_information), tmp);
     ABTS_TRUE(tc, memcmp(recvbuf->data, tmp, 28) == 0);
@@ -257,7 +254,7 @@ static void test1_func(abts_case *tc, void *data)
     mongoc_collection_destroy(collection);
 
     /* eNB disonncect from MME */
-    testenb_s1ap_close(s1ap);
+    testenb_ngap_close(ngap);
 
     /* eNB disonncect from SGW */
     testenb_gtpu_close(gtpu);

@@ -35,6 +35,7 @@ libamf = static_library('amf',
     link_with : libipfw,
     dependencies : [libapp_dep,
                     libdbi_dep,
+                    libngap_dep,
                     libsbi_dep],
     install : false)
 
@@ -42,6 +43,7 @@ libamf_dep = declare_dependency(
     link_with : libamf,
     dependencies : [libapp_dep,
                     libdbi_dep,
+                    libngap_dep,
                     libsbi_dep])
 
 amf_sources = files('''

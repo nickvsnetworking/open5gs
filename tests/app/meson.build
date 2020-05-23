@@ -68,9 +68,9 @@ libtest5gc = static_library('test5gc',
     sources : [libtest5gc_sources],
     c_args : libtest5gc_cc_args,
     include_directories : [libtestapp_inc, srcinc],
-#    link_with : [libmme, libhss, libsgw, libpgw, libpcrf],
+    link_with : libamf,
     dependencies : [libtestcommon_dep,
-                    libngap_dep,
+                    libamf_dep,
                     libnas_5gs_dep],
     install : false)
 
@@ -78,7 +78,7 @@ libtest5gc_dep = declare_dependency(
     link_with : libtest5gc,
     include_directories : [libtestapp_inc, srcinc],
     dependencies : [libtestcommon_dep,
-                    libngap_dep,
+                    libamf_dep,
                     libnas_5gs_dep])
 
 test5gc_sources = files('''

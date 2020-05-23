@@ -24,5 +24,3 @@ testminimal_exe = executable('minimal',
     sources : testminimal_sources,
     c_args : testcore_cc_flags,
     dependencies : libtest5gc_dep)
-
-test('minimal', testminimal_exe, is_parallel : false, suite: '5gc')
