@@ -18,7 +18,7 @@
 subdir('core')
 subdir('crypt')
 subdir('sctp')
-subdir('app')
+subdir('common')
 subdir('epc')
 subdir('unit')
 subdir('simple')

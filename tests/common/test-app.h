@@ -1,5 +1,5 @@
-#ifndef TEST_APP_H
-#define TEST_APP_H
+#ifndef TEST_COMMON_H
+#define TEST_COMMON_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,4 +18,4 @@ ogs_thread_t *test_child_create(const char *name, const char *const argv[]);
 }
 #endif
 
-#endif /* TEST_APP_H */
+#endif /* TEST_COMMON_H */
