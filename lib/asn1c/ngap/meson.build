@@ -616,10 +616,7 @@ libasn1c_ngap_sources = files('''
 	NGAP_ProtocolIE-Container.c
 	NGAP_ProtocolIE-SingleContainer.c
 	NGAP_ProtocolIE-Field.c
-	NGAP_ProtocolIE-ContainerPair.c
-	NGAP_ProtocolIE-FieldPair.c
 	NGAP_ProtocolIE-ContainerList.c
-	NGAP_ProtocolIE-ContainerPairList.c
 	NGAP_ProtocolExtensionContainer.c
 	NGAP_ProtocolExtensionField.c
 	NGAP_PrivateIE-Container.c

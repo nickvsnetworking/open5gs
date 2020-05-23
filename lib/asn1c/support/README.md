@@ -42,25 +42,37 @@ index 26da1b34..940db758 100644
                 "OCTET STRING (CONTAINING PDUSessionResourceReleaseResponseTransfer)"
                 },
 
-Update Files
+Check common file
 ===========================================
-user@host ~/Documents/git/open5gs/lib/s1ap/s1ap/asn1c$ \
-    diff Makefile.am Makefile.am.libasncodec
+user@host ~/Documents/git/open5gs/lib/asn1c/common$ \
+    ls
 
-user@host ~/Documents/git/open5gs/lib/s1ap/asn1c$ \
+user@host ~/Documents/git/open5gs/lib/asn1c/common$ \
     git diff asn_internal.h
+
+Check meson.build
+===========================================
+user@host ~/Documents/git/open5gs/lib/asn1c/s1ap$ \
+    cat Makefile.am.libasncodec
+
+user@host ~/Documents/git/open5gs/lib/asn1c/ngap$ \
+    cat Makefile.am.libasncodec
 
 Remove unnecessary files
 ===========================================
-user@host ~/Documents/git/open5gs/lib/s1ap/s1ap/asn1c$ \
+user@host ~/Documents/git/open5gs/lib/asn1c/s1ap$ \
     rm -f S1AP_E-RAB-IE-ContainerPairList.c \
     S1AP_ProtocolError-IE-ContainerList.c \
     S1AP_ProtocolIE-ContainerPair.c S1AP_ProtocolIE-FieldPair.c \
     S1AP_ProtocolIE-ContainerPairList.c
 
-user@host ~/Documents/git/open5gs/lib/s1ap/asn1c$ \
+user@host ~/Documents/git/open5gs/lib/asn1c/ngap$ \
+    rm -f NGAP_ProtocolIE-ContainerPair.c NGAP_ProtocolIE-FieldPair.c \
+    NGAP_ProtocolIE-ContainerPairList.c
+
+user@host ~/Documents/git/open5gs/lib/asn1c/s1ap$ \
     rm -f Makefile.am.asn1convert Makefile.am.libasncodec
 
-user@host ~/Documents/git/open5gs/lib/s1ap/asn1c$ \
+user@host ~/Documents/git/open5gs/lib/asn1c/s1ap$ \
     rm -f converter-example.mk converter-example.c pdu_collection.c
 
