@@ -17,7 +17,12 @@ ASN.1 encoder/decoder
 user@host ~/Documents/git/open5gs/lib/asn1c/s1ap$ \
     ASN1C_PREFIX=S1AP_ ../../../../my/asn1c/asn1c/asn1c -pdu=all \
     -fcompound-names -findirect-choice -fno-include-deps \
-    ../support/s1ap-r14.4.0/36413-e40.as
+    ../support/s1ap-r14.4.0/36413-e40.asn
+
+    ASN1C_PREFIX=NGAP_ ../../../../my/asn1c/asn1c/asn1c -pdu=all \
+    -fcompound-names -findirect-choice -fno-include-deps \
+    ../support/ngap-r16.1.0/38413-g10.asn
+
 
 Update Files
 ===========================================
