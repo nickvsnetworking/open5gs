@@ -15,6 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+libtestapp_conf = configuration_data()
+libtestapp_conf.set_quoted('MESON_BUILD_ROOT', meson.build_root())
+configure_file(output : 'test-config-private.h',
+               configuration : libtestapp_conf)
+
 libtestapp_sources = files('''
     test-app.c
 '''.split())
@@ -25,10 +30,14 @@ libtestapp = static_library('testapp',
     sources : libtestapp_sources,
     c_args : testcore_cc_flags,
     include_directories : libtestapp_inc,
-    dependencies : libtestepc_dep,
+    dependencies : [libcore_dep,
+                    libapp_dep,
+                    libdiameter_common_dep],
     install : false)
 
 libtestapp_dep = declare_dependency(
     link_with : libtestapp,
     include_directories : libtestapp_inc,
-    dependencies : libtestepc_dep)
+    dependencies : [libcore_dep,
+                    libapp_dep,
+                    libdiameter_common_dep])

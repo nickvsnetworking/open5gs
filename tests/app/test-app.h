@@ -5,21 +5,14 @@
 extern "C" {
 #endif
 
-#include "ogs-diameter-common.h"
-#include "ogs-sctp.h"
-#include "ogs-dbi.h"
 #include "ogs-app.h"
-#include "mme/mme-context.h"
+#include "ogs-diameter-common.h"
 #include "core/abts.h"
-
-#include "test-epc.h"
-#include "test-packet.h"
 
 void test_app_run(int argc, const char *const argv[],
         const char *name, void (*init)(const char * const argv[]));
-
-void test_app_init(void);
-#define test_app_final ogs_mongoc_final
+void test_child_terminate(void);
+ogs_thread_t *test_child_create(const char *name, const char *const argv[]);
 
 #ifdef __cplusplus
 }

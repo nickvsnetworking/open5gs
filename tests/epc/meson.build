@@ -16,14 +16,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-testepc_conf = configuration_data()
-testepc_conf.set_quoted('MESON_BUILD_ROOT', meson.build_root())
-configure_file(output : 'test-config-private.h', configuration : testepc_conf)
-
-testepc_cc_args = '-DDEFAULT_CONFIG_FILENAME="@0@/configs/simple.yaml"'.format(meson.build_root())
+libtestepc_cc_args = '-DDEFAULT_CONFIG_FILENAME="@0@/configs/simple.yaml"'.format(meson.build_root())
 
 libtestepc_sources = files('''
     test-packet.c
+    test-epc.c
     app-init.c
 '''.split())
 
@@ -31,10 +28,11 @@ libtestepc_inc = include_directories('.')
 
 libtestepc = static_library('epc',
     sources : [libtestepc_sources],
-    c_args : testepc_cc_args,
+    c_args : libtestepc_cc_args,
     include_directories : [libtestepc_inc, srcinc],
     link_with : [libmme, libhss, libsgw, libpgw, libpcrf],
-    dependencies : [libmme_dep,
+    dependencies : [libtestapp_dep,
+                    libmme_dep,
                     libhss_dep,
                     libsgw_dep,
                     libpgw_dep,
@@ -44,7 +42,8 @@ libtestepc = static_library('epc',
 libtestepc_dep = declare_dependency(
     link_with : libtestepc,
     include_directories : [libtestepc_inc, srcinc],
-    dependencies : [libmme_dep,
+    dependencies : [libtestapp_dep,
+                    libmme_dep,
                     libhss_dep,
                     libsgw_dep,
                     libpgw_dep,
@@ -56,6 +55,6 @@ testepc_sources = files('''
 
 executable('epc',
     sources : [testepc_sources],
-    c_args : testepc_cc_args,
+    c_args : libtestepc_cc_args,
     include_directories : srcinc,
     dependencies : [libtestepc_dep])

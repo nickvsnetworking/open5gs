@@ -28,6 +28,6 @@ testsimple_sources = files('''
 testsimple_exe = executable('simple',
     sources : testsimple_sources,
     c_args : testcore_cc_flags,
-    dependencies : libtestapp_dep)
+    dependencies : libtestepc_dep)
 
 test('simple', testsimple_exe, is_parallel : false, suite: 'system')

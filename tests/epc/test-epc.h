@@ -1,14 +1,19 @@
 #ifndef TEST_EPC_H
 #define TEST_EPC_H
 
+#include "ogs-sctp.h"
+#include "ogs-dbi.h"
+#include "mme/mme-context.h"
+
+#include "test-app.h"
+#include "test-packet.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "ogs-app.h"
-
-void test_child_terminate(void);
-ogs_thread_t *test_child_create(const char *name, const char *const argv[]);
+void test_app_init(void);
+#define test_app_final ogs_mongoc_final
 
 #ifdef __cplusplus
 }

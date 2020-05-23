@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "test-app.h"
+#include "test-epc.h"
 
 abts_suite *test_s1setup(abts_suite *suite);
 abts_suite *test_attach(abts_suite *suite);

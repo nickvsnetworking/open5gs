@@ -28,8 +28,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#define OGS_MAX_FILEPATH_LEN            256
-
 #define OGS_MAX_NUM_OF_SESS             4   /* Num of APN(Session) per UE */
 #define OGS_MAX_NUM_OF_RULE             4   /* Num of Rule per Session */
 
@@ -50,7 +48,6 @@ extern "C" {
 #define OGS_MAX_DNN_LEN                 100
 #define OGS_MAX_PCO_LEN                 251
 #define OGS_MAX_FQDN_LEN                256
-#define OGS_MAX_IFNAME_LEN              32
 
 #define OGS_NEXT_ID(__id, __min, __max) \
     ((__id) = ((__id) == (__max) ? (__min) : ((__id) + 1)))
