@@ -40,8 +40,6 @@ void amf_context_init(void)
 
 void amf_context_final(void)
 {
-    ogs_sbi_nf_instance_t *nf_instance = NULL, *next_nf_instance = NULL;
-
     ogs_assert(context_initialized == 1);
 
     context_initialized = 0;
