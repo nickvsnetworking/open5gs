@@ -185,9 +185,13 @@ bool smf_nnrf_handle_nf_status_notify(ogs_sbi_server_t *server,
             ogs_sbi_nf_instance_remove(nf_instance);
 
             /* FIXME : Remove unnecessary Client */
-        } else
-            ogs_warn("(NRF-notify) NF [%s] has already been removed",
-                    NFProfile->nf_instance_id);
+        } else {
+            ogs_warn("(NRF-notify) Not found [%s]", NFProfile->nf_instance_id);
+            ogs_sbi_server_send_error(session,
+                OGS_SBI_HTTP_STATUS_NOT_FOUND,
+                message, "Not found", message->h.resource.id);
+            return false;
+        }
     } else {
         char *eventstr = OpenAPI_notification_event_type_ToString(
                             NotificationData->event);
