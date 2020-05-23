@@ -15,19 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-libinc = include_directories('.')
+libngap_sources = files('''
+    message.c
+'''.split())
 
-subdir('ipfw')
-subdir('core')
-subdir('crypt')
-subdir('sctp')
-subdir('dbi')
-subdir('app')
-subdir('diameter')
-subdir('asn1c')
-subdir('ngap')
-subdir('s1ap')
-subdir('nas')
-subdir('gtp')
-subdir('pfcp')
-subdir('sbi')
+libngap_inc = include_directories('.')
+
+libngap = library('ogsngap',
+    sources : libngap_sources,
+    version : libogslib_version,
+    c_args : '-DOGS_NGAP_COMPILATION',
+    include_directories : [libngap_inc, libinc],
+    dependencies : libasn1c_ngap_dep,
+    install : true)
+
+libngap_dep = declare_dependency(
+    link_with : libngap,
+    include_directories : [libngap_inc, libinc],
+    dependencies : libasn1c_ngap_dep)
