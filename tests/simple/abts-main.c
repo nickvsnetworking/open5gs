@@ -43,7 +43,7 @@ static void terminate(void)
     test_child_terminate();
     app_terminate();
 
-    test_app_final();
+    test_epc_final();
     ogs_app_terminate();
 }
 
@@ -53,7 +53,7 @@ static void initialize(const char *const argv[])
 
     rv = ogs_app_initialize(NULL, argv);
     ogs_assert(rv == OGS_OK);
-    test_app_init();
+    test_epc_init();
 
     rv = app_initialize(argv);
     ogs_assert(rv == OGS_OK);
@@ -65,7 +65,7 @@ int main(int argc, const char *const argv[])
     abts_suite *suite = NULL;
 
     atexit(terminate);
-    test_app_run(argc, argv, "simple.yaml", initialize);
+    test_epc_run(argc, argv, "simple.yaml", initialize);
 
     for (i = 0; alltests[i].func; i++)
         suite = alltests[i].func(suite);
