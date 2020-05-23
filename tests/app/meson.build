@@ -25,7 +25,7 @@ libtestepc_sources = files('''
 
 libtestepc_inc = include_directories('.')
 
-libtestepc = static_library('epc',
+libtestepc = static_library('testepc',
     sources : [libtestepc_sources],
     c_args : libtestepc_cc_args,
     include_directories : [libtestepc_inc, srcinc],
