@@ -236,9 +236,9 @@ void smf_nnrf_handle_nf_discover(ogs_sbi_message_t *message)
             ogs_assert(nf_instance);
 
             smf_nf_fsm_init(nf_instance);
-            ogs_info("(NF-Discover) NF registered [%s]", nf_instance->id);
+            ogs_info("(NF-discover) NF registered [%s]", nf_instance->id);
         } else
-            ogs_warn("(NF-Discover) NF [%s] has already been added",
+            ogs_warn("(NF-discover) NF [%s] has already been added",
                     NFProfile->nf_instance_id);
 
         if (NF_INSTANCE_IS_OTHERS(nf_instance->id)) {
@@ -268,7 +268,7 @@ void smf_nnrf_handle_nf_discover(ogs_sbi_message_t *message)
             } else
                 ogs_warn("NF Instance validity-time should not 0");
 
-            ogs_info("(NF-Discover) NF Profile updated [%s]", nf_instance->id);
+            ogs_info("(NF-discover) NF Profile updated [%s]", nf_instance->id);
         }
     }
 }
