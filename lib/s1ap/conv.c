@@ -84,30 +84,3 @@ void ogs_s1ap_ENB_ID_to_uint32(S1AP_ENB_ID_t *eNB_ID, uint32_t *uint32)
         ogs_assert_if_reached();
     }
 }
-
-int ogs_s1ap_copy_ie(const asn_TYPE_descriptor_t *td, void *src, void *dst)
-{
-    asn_enc_rval_t enc_ret = {0};
-    asn_dec_rval_t dec_ret = {0};
-    uint8_t buffer[OGS_MAX_SDU_LEN];
-
-    ogs_assert(td);
-    ogs_assert(src);
-    ogs_assert(dst);
-
-    enc_ret = aper_encode_to_buffer(td, NULL, src, buffer, OGS_MAX_SDU_LEN);
-    if (enc_ret.encoded < 0) {
-        ogs_error("aper_encode_to_buffer() failed[%d]", (int)enc_ret.encoded);
-        return OGS_ERROR;
-    }
-
-    dec_ret = aper_decode(NULL, td, (void **)&dst,
-            buffer, ((enc_ret.encoded + 7) / 8), 0, 0);
-
-    if (dec_ret.code != RC_OK) {
-        ogs_error("aper_decode() failed[%d]", dec_ret.code);
-        return OGS_ERROR;
-    }
-
-    return OGS_OK;
-}
