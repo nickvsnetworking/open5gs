@@ -17,60 +17,46 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef OGS_APP_H
-#define OGS_APP_H
+#ifndef AMF_TIMER_H
+#define AMF_TIMER_H
 
 #include "ogs-core.h"
-
-#define OGS_APP_INSIDE
-
-extern int __ogs_app_domain;
-
-#include "app/ogs-yaml.h"
-#include "app/ogs-config.h"
-#include "app/ogs-init.h"
-
-#undef OGS_APP_INSIDE
-
-#undef OGS_LOG_DOMAIN
-#define OGS_LOG_DOMAIN __ogs_app_domain
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int app_initialize(const char *const argv[]);
-void app_terminate(void);
+/* forward declaration */
+typedef enum {
+    AMF_TIMER_BASE = 0,
 
-int mme_initialize(void);
-void mme_terminate(void);
+    AMF_TIMER_NF_INSTANCE_REGISTRATION_INTERVAL,
+    AMF_TIMER_NF_INSTANCE_HEARTBEAT_INTERVAL,
+    AMF_TIMER_NF_INSTANCE_HEARTBEAT,
+    AMF_TIMER_NF_INSTANCE_VALIDITY,
+    AMF_TIMER_SUBSCRIPTION_VALIDITY,
 
-int hss_initialize(void);
-void hss_terminate(void);
+    MAX_NUM_OF_AMF_TIMER,
 
-int sgw_initialize(void);
-void sgw_terminate(void);
+} amf_timer_e;
 
-int pgw_initialize(void);
-void pgw_terminate(void);
+typedef struct amf_timer_cfg_s {
+    int max_count;
+    ogs_time_t duration;
+} amf_timer_cfg_t;
 
-int pcrf_initialize(void);
-void pcrf_terminate(void);
+amf_timer_cfg_t *amf_timer_cfg(amf_timer_e id);
 
-int nrf_initialize(void);
-void nrf_terminate(void);
+const char *amf_timer_get_name(amf_timer_e id);
 
-int upf_initialize(void);
-void upf_terminate(void);
-
-int smf_initialize(void);
-void smf_terminate(void);
-
-int amf_initialize(void);
-void amf_terminate(void);
+void amf_timer_nf_instance_registration_interval(void *data);
+void amf_timer_nf_instance_heartbeat_interval(void *data);
+void amf_timer_nf_instance_heartbeat(void *data);
+void amf_timer_nf_instance_validity(void *data);
+void amf_timer_subscription_validity(void *data);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* OGS_APP_H */
+#endif /* AMF_TIMER_H */
