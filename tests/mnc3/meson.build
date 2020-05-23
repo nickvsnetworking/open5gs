@@ -25,4 +25,4 @@ testmnc3_exe = executable('mnc3',
     c_args : testcore_cc_flags,
     dependencies : libtestepc_dep)
 
-test('mnc3', testmnc3_exe, is_parallel : false, suite: 'system')
+test('mnc3', testmnc3_exe, is_parallel : false, suite: 'epc')

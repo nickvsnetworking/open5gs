@@ -31,4 +31,4 @@ testcsfb_exe = executable('csfb',
     c_args : testcore_cc_flags,
     dependencies : libtestepc_dep)
 
-test('csfb', testcsfb_exe, is_parallel : false, suite: 'system')
+test('csfb', testcsfb_exe, is_parallel : false, suite: 'epc')

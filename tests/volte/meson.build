@@ -29,4 +29,4 @@ testvolte_exe = executable('volte',
         '-DFD_EXT_DIR="@0@"'.format(freediameter_extensions_builddir)],
     dependencies : libtestepc_dep)
 
-test('volte', testvolte_exe, is_parallel : false, suite: 'system')
+test('volte', testvolte_exe, is_parallel : false, suite: 'epc')
