@@ -16,10 +16,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 libtestapp_sources = files('''
-    test-packet.h
-    test-app.h
-
-    test-packet.c
     test-app.c
 '''.split())
 

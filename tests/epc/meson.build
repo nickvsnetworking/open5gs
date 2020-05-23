@@ -23,6 +23,7 @@ configure_file(output : 'test-config-private.h', configuration : testepc_conf)
 testepc_cc_args = '-DDEFAULT_CONFIG_FILENAME="@0@/configs/simple.yaml"'.format(meson.build_root())
 
 libtestepc_sources = files('''
+    test-packet.c
     app-init.c
 '''.split())
 
