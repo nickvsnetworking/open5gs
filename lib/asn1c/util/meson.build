@@ -15,7 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-subdir('common')
-subdir('util')
-subdir('ngap')
-subdir('s1ap')
+libasn1c_util_sources = files('''
+    conv.c
+'''.split())
+
+libasn1c_util_inc = include_directories('.')
+
+libasn1c_util = library('ogsasn1c-util',
+    sources : libasn1c_util_sources,
+    version : libogslib_version,
+    c_args : libasn1c_common_cc_flags,
+    include_directories : libasn1c_util_inc,
+    dependencies : libasn1c_common_dep,
+    install : true)
+
+libasn1c_util_dep = declare_dependency(
+    link_with : libasn1c_util,
+    include_directories : libasn1c_util_inc,
+    dependencies : libasn1c_common_dep)

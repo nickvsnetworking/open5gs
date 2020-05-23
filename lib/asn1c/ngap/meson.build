@@ -630,10 +630,10 @@ libasn1c_ngap = library('ogsasn1c-ngap',
     version : libogslib_version,
     c_args : libasn1c_common_cc_flags,
     include_directories : libasn1c_ngap_inc,
-    dependencies : libasn1c_common_dep,
+    dependencies : [libasn1c_common_dep, libasn1c_util_dep],
     install : true)
 
 libasn1c_ngap_dep = declare_dependency(
     link_with : libasn1c_ngap,
     include_directories : libasn1c_ngap_inc,
-    dependencies : libasn1c_common_dep)
+    dependencies : [libasn1c_common_dep, libasn1c_util_dep])
