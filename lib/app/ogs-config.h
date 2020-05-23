@@ -48,6 +48,11 @@ typedef struct ogs_config_s {
         int no_pgw;
         int no_pcrf;
 
+        int no_amf;
+        int no_smf;
+        int no_upf;
+        int no_nrf;
+
         /* Network */
         int no_ipv4;
         int no_ipv6;

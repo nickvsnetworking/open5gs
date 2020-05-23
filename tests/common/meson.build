@@ -34,6 +34,7 @@ libtestcommon = static_library('testcomon',
     include_directories : [libtestcommon_inc, testinc],
     dependencies : [libcore_dep,
                     libapp_dep,
+                    libdbi_dep,
                     libsctp_dep,
                     libdiameter_common_dep],
     install : false)
@@ -43,5 +44,6 @@ libtestcommon_dep = declare_dependency(
     include_directories : [libtestcommon_inc, testinc],
     dependencies : [libcore_dep,
                     libapp_dep,
+                    libdbi_dep,
                     libsctp_dep,
                     libdiameter_common_dep])

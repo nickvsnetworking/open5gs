@@ -1,8 +1,6 @@
 #ifndef TEST_EPC_H
 #define TEST_EPC_H
 
-#include "ogs-sctp.h"
-#include "ogs-dbi.h"
 #include "mme/mme-context.h"
 
 #include "test-packet.h"

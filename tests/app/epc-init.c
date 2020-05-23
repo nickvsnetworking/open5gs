@@ -17,8 +17,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "ogs-sctp.h"
-
 #include "test-epc.h"
 
 static ogs_thread_t *pcrf_thread = NULL;

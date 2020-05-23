@@ -16,19 +16,19 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+libtestapp_inc = include_directories('.')
+
 libtestepc_cc_args = '-DDEFAULT_CONFIG_FILENAME="@0@/configs/epc.yaml"'.format(meson.build_root())
 
 libtestepc_sources = files('''
     test-packet.c
-    app-init.c
+    epc-init.c
 '''.split())
-
-libtestepc_inc = include_directories('.')
 
 libtestepc = static_library('testepc',
     sources : [libtestepc_sources],
     c_args : libtestepc_cc_args,
-    include_directories : [libtestepc_inc, srcinc],
+    include_directories : [libtestapp_inc, srcinc],
     link_with : [libmme, libhss, libsgw, libpgw, libpcrf],
     dependencies : [libtestcommon_dep,
                     libmme_dep,
@@ -40,7 +40,7 @@ libtestepc = static_library('testepc',
 
 libtestepc_dep = declare_dependency(
     link_with : libtestepc,
-    include_directories : [libtestepc_inc, srcinc],
+    include_directories : [libtestapp_inc, srcinc],
     dependencies : [libtestcommon_dep,
                     libmme_dep,
                     libhss_dep,
@@ -57,3 +57,36 @@ executable('epc',
     c_args : libtestepc_cc_args,
     include_directories : srcinc,
     dependencies : [libtestepc_dep])
+
+libtest5gc_cc_args = '-DDEFAULT_CONFIG_FILENAME="@0@/configs/5gc.yaml"'.format(meson.build_root())
+
+libtest5gc_sources = files('''
+    5gc-init.c
+'''.split())
+
+libtest5gc = static_library('test5gc',
+    sources : [libtest5gc_sources],
+    c_args : libtest5gc_cc_args,
+    include_directories : [libtestapp_inc, srcinc],
+#    link_with : [libmme, libhss, libsgw, libpgw, libpcrf],
+    dependencies : [libtestcommon_dep,
+                    libngap_dep,
+                    libnas_5gs_dep],
+    install : false)
+
+libtest5gc_dep = declare_dependency(
+    link_with : libtest5gc,
+    include_directories : [libtestapp_inc, srcinc],
+    dependencies : [libtestcommon_dep,
+                    libngap_dep,
+                    libnas_5gs_dep])
+
+test5gc_sources = files('''
+    ../../src/main.c
+'''.split())
+
+executable('5gc',
+    sources : [test5gc_sources],
+    c_args : libtest5gc_cc_args,
+    include_directories : srcinc,
+    dependencies : [libtest5gc_dep])

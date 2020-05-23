@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include "ogs-app.h"
+#include "ogs-dbi.h"
 #include "ogs-sctp.h"
 #include "ogs-diameter-common.h"
 
