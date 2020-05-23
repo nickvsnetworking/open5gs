@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-libtestepc_cc_args = '-DDEFAULT_CONFIG_FILENAME="@0@/configs/simple.yaml"'.format(meson.build_root())
+libtestepc_cc_args = '-DDEFAULT_CONFIG_FILENAME="@0@/configs/epc.yaml"'.format(meson.build_root())
 
 libtestepc_sources = files('''
     test-packet.c

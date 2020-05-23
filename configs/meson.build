@@ -34,9 +34,9 @@ else
 endif
 
 example_conf = '''
-    simple.yaml
-    installed.yaml
-    split.yaml
+    epc.yaml
+    epc-fdconf.yaml
+    epc-custom.yaml
     mnc3.yaml
     csfb.yaml
     volte.yaml

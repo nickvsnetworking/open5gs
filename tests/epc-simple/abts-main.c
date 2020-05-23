@@ -65,7 +65,7 @@ int main(int argc, const char *const argv[])
     abts_suite *suite = NULL;
 
     atexit(terminate);
-    test_epc_run(argc, argv, "simple.yaml", initialize);
+    test_epc_run(argc, argv, "epc.yaml", initialize);
 
     for (i = 0; alltests[i].func; i++)
         suite = alltests[i].func(suite);
