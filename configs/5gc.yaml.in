@@ -11,6 +11,11 @@ nrf:
         - ::1
       port: 7777
 
+amf:
+    sbi:
+      - addr: 127.0.0.2
+        port: 7777
+
 smf:
     sbi:
       - addr: 127.0.0.3

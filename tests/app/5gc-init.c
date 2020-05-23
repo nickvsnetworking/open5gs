@@ -22,13 +22,10 @@
 static ogs_thread_t *nrf_thread = NULL;
 static ogs_thread_t *smf_thread = NULL;
 static ogs_thread_t *upf_thread = NULL;
+static ogs_thread_t *amf_thread = NULL;
 
 int app_initialize(const char *const argv[])
 {
-#if 0
-    int rv;
-#endif
-
     const char *argv_out[OGS_ARG_MAX];
     bool user_config = false;
     int i = 0;
@@ -50,30 +47,18 @@ int app_initialize(const char *const argv[])
     if (ogs_config()->parameter.no_nrf == 0)
         nrf_thread = test_child_create("nrf", argv_out);
     if (ogs_config()->parameter.no_upf == 0)
-        smf_thread = test_child_create("upf", argv_out);
+        upf_thread = test_child_create("upf", argv_out);
     if (ogs_config()->parameter.no_smf == 0)
-        upf_thread = test_child_create("smf", argv_out);
-
-#if 0
-    ogs_sctp_init(ogs_config()->usrsctp.udp_port);
-
-    rv = mme_initialize();
-    ogs_assert(rv == OGS_OK);
-    ogs_info("MME initialize...done");
-#endif
+        smf_thread = test_child_create("smf", argv_out);
+    if (ogs_config()->parameter.no_amf == 0)
+        amf_thread = test_child_create("amf", argv_out);
 
     return OGS_OK;;
 }
 
 void app_terminate(void)
 {
-#if 0
-    mme_terminate();
-
-    ogs_sctp_final();
-    ogs_info("MME terminate...done");
-#endif
-
+    if (amf_thread) ogs_thread_destroy(amf_thread);
     if (smf_thread) ogs_thread_destroy(smf_thread);
     if (upf_thread) ogs_thread_destroy(upf_thread);
     if (nrf_thread) ogs_thread_destroy(nrf_thread);
