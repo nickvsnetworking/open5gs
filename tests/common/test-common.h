@@ -6,11 +6,14 @@ extern "C" {
 #endif
 
 #include "ogs-app.h"
+#include "ogs-sctp.h"
 #include "ogs-diameter-common.h"
 
 #define OGS_TEST_INSIDE
 
 #include "common/application.h"
+#include "common/sctp.h"
+#include "common/gtpu.h"
 
 #undef OGS_TEST_INSIDE
 

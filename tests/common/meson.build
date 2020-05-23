@@ -22,6 +22,8 @@ configure_file(output : 'test-config-private.h',
 
 libtestcommon_sources = files('''
     application.c
+    sctp.c
+    gtpu.c
 '''.split())
 
 libtestcommon_inc = include_directories('.')
@@ -32,6 +34,7 @@ libtestcommon = static_library('testcomon',
     include_directories : [libtestcommon_inc, testinc],
     dependencies : [libcore_dep,
                     libapp_dep,
+                    libsctp_dep,
                     libdiameter_common_dep],
     install : false)
 
@@ -40,4 +43,5 @@ libtestcommon_dep = declare_dependency(
     include_directories : [libtestcommon_inc, testinc],
     dependencies : [libcore_dep,
                     libapp_dep,
+                    libsctp_dep,
                     libdiameter_common_dep])
