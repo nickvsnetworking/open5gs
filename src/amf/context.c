@@ -277,6 +277,9 @@ int amf_context_parse_config(void)
                     ogs_yaml_iter_t guami_array, guami_iter;
                     ogs_yaml_iter_recurse(&amf_iter, &guami_array);
                     do {
+                        const char *mcc = NULL, *mnc = NULL;
+                        const char *region = NULL, *set = NULL;
+                        const char *pointer = NULL;
                         served_guami_t *guami = NULL;
                         ogs_assert(self.max_num_of_served_guami <=
                                 MAX_NUM_OF_SERVED_GUAMI);
@@ -305,10 +308,7 @@ int amf_context_parse_config(void)
                                 ogs_yaml_iter_key(&guami_iter);
                             ogs_assert(guami_key);
                             if (!strcmp(guami_key, "plmn_id")) {
-                                const char *mcc = NULL, *mnc = NULL;
                                 ogs_yaml_iter_t plmn_id_iter;
-                                ogs_plmn_id_t *plmn_id = &guami->plmn_id[
-                                        guami->num_of_plmn_id];
 
                                 ogs_yaml_iter_recurse(&guami_iter,
                                         &plmn_id_iter);
@@ -326,16 +326,11 @@ int amf_context_parse_config(void)
                                 }
 
                                 if (mcc && mnc) {
-                                    ogs_plmn_id_build(plmn_id,
+                                    ogs_plmn_id_build(&guami->plmn_id,
                                         atoi(mcc), atoi(mnc), strlen(mnc));
-                                    guami->num_of_plmn_id++;
                                 }
                             } else if (!strcmp(guami_key, "amf_id")) {
-                                const char *region = NULL, *set = NULL;
-                                const char *pointer = NULL;
                                 ogs_yaml_iter_t amf_id_iter;
-                                ogs_amf_id_t *amf_id = &guami->amf_id[
-                                        guami->num_of_amf_id];
 
                                 ogs_yaml_iter_recurse(&guami_iter,
                                         &amf_id_iter);
@@ -356,23 +351,20 @@ int amf_context_parse_config(void)
                                 }
 
                                 if (region && set) {
-                                    ogs_amf_id_build(amf_id,
+                                    ogs_amf_id_build(&guami->amf_id,
                                         atoi(region), atoi(set),
                                         pointer ? atoi(pointer) : 0);
-                                    guami->num_of_amf_id++;
                                 }
                             } else
                                 ogs_warn("unknown key `%s`", guami_key);
                         }
 
-                        if (guami->num_of_plmn_id && guami->num_of_amf_id) {
+                        if (mnc && mcc && region && set) {
                             self.max_num_of_served_guami++;
                         } else {
                             ogs_warn("Ignore guami : "
-                                    "plmn_id(%d), amf_id(%d)",
-                                guami->num_of_plmn_id, guami->num_of_amf_id);
-                            guami->num_of_plmn_id = 0;
-                            guami->num_of_amf_id = 0;
+                                    "mcc(%s), mnc(%s), region(%s), set(%s)",
+                                    mcc, mnc, region, set);
                         }
                     } while (ogs_yaml_iter_type(&guami_array) ==
                             YAML_SEQUENCE_NODE);

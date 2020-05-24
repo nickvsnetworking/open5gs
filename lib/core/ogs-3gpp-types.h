@@ -33,7 +33,6 @@ extern "C" {
 
 #define OGS_MAX_SDU_LEN                 8192
 #define OGS_PLMN_ID_LEN                 3
-#define OGS_MAX_NUM_OF_PLMN_ID          6
 
 #define OGS_BCD_TO_BUFFER_LEN(x)        (((x)+1)/2)
 #define OGS_MAX_IMSI_BCD_LEN            15

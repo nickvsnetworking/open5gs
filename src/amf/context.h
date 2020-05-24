@@ -34,7 +34,6 @@ extern "C" {
 #endif
 
 #define MAX_NUM_OF_SERVED_GUAMI     8
-#define MAX_NUM_OF_AMF_ID           8
 
 extern int __amf_log_domain;
 
@@ -42,11 +41,8 @@ extern int __amf_log_domain;
 #define OGS_LOG_DOMAIN __amf_log_domain
 
 typedef struct served_guami_s {
-    int             num_of_plmn_id;
-    ogs_plmn_id_t   plmn_id[OGS_MAX_NUM_OF_PLMN_ID];
-
-    int             num_of_amf_id;
-    ogs_amf_id_t    amf_id[MAX_NUM_OF_AMF_ID];
+    ogs_plmn_id_t   plmn_id;
+    ogs_amf_id_t    amf_id;
 } served_guami_t;
 
 typedef struct amf_context_s {

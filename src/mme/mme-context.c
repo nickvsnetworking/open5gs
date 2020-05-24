@@ -704,7 +704,7 @@ int mme_context_parse_config()
                                     ogs_plmn_id_t *plmn_id = NULL;
                                     const char *mcc = NULL, *mnc = NULL;
                                     ogs_assert(gummei->num_of_plmn_id <=
-                                            OGS_MAX_NUM_OF_PLMN_ID);
+                                            MAX_NUM_OF_PLMN_ID);
                                     plmn_id = &gummei->plmn_id[
                                         gummei->num_of_plmn_id];
                                     ogs_assert(plmn_id);
