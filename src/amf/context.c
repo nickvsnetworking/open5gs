@@ -541,13 +541,13 @@ int amf_context_parse_config(void)
                                 ogs_yaml_iter_recurse(&plmn_iter,
                                         &snssai_array);
                                 do {
-                                    ogs_snssai_t *snssai = NULL;
+                                    ogs_s_nssai_t *snssai = NULL;
                                     const char *sst = NULL, *sd = NULL;
                                     ogs_assert(
                                         self.plmn_support[
                                             self.num_of_plmn_support].
                                                 num_of_snssai <=
-                                            OGS_MAX_NUM_OF_SNSSAI);
+                                            OGS_MAX_NUM_OF_S_NSSAI);
                                     snssai = &self.plmn_support[
                                             self.num_of_plmn_support].snssai[
                                                 self.plmn_support[
@@ -595,7 +595,7 @@ int amf_context_parse_config(void)
                                                         (char*)sd);
                                         } else {
                                             snssai->sd.v =
-                                                OGS_SNSSAI_NO_SD_VALUE;
+                                                OGS_S_NSSAI_NO_SD_VALUE;
                                         }
 
                                         self.plmn_support[

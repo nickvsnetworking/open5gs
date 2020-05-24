@@ -168,12 +168,12 @@ typedef struct ogs_e_cgi_s {
 
 /************************************
  * S-NSSAI Structure                */
-#define OGS_MAX_NUM_OF_SNSSAI       8
-#define OGS_SNSSAI_NO_SD_VALUE      0xffffff
-typedef struct ogs_snssai_s {
+#define OGS_MAX_NUM_OF_S_NSSAI      8
+#define OGS_S_NSSAI_NO_SD_VALUE     0xffffff
+typedef struct ogs_s_nssai_s {
     uint8_t sst;
     ogs_uint24_t sd;
-} __attribute__ ((packed)) ogs_snssai_t;
+} __attribute__ ((packed)) ogs_s_nssai_t;
 
 /**************************************************
  * Common Structure
