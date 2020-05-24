@@ -75,8 +75,9 @@ typedef struct ogs_uint24_s {
 #define ogs_htobe24(x) htobe32(x)
 #define ogs_be24toh(x) be32toh(x)
 
-/**********************************
- * PLMN_ID Structure             */
+/************************************
+ * PLMN_ID Structure                */
+#define OGS_MAX_NUM_OF_PLMN         6
 typedef struct ogs_plmn_id_s {
 ED2(uint8_t mcc2:4;,
     uint8_t mcc1:4;)
@@ -95,8 +96,8 @@ uint16_t ogs_plmn_id_mnc_len(ogs_plmn_id_t *plmn_id);
 void *ogs_plmn_id_build(ogs_plmn_id_t *plmn_id, 
         uint16_t mcc, uint16_t mnc, uint16_t mnc_len);
 
-/**********************************
- * AMF_ID Structure             */
+/************************************
+ * AMF_ID Structure                 */
 typedef struct ogs_amf_id_s {
     uint8_t region;
     uint8_t set1;
@@ -117,6 +118,8 @@ uint8_t ogs_amf_pointer(ogs_amf_id_t *amf_id);
 ogs_amf_id_t *ogs_amf_id_build(ogs_amf_id_t *amf_id,
         uint8_t region, uint16_t set, uint8_t pointer);
 
+/************************************
+ * TAI Structure                    */
 #define OGS_MAX_NUM_OF_TAI              16
 typedef struct ogs_eps_tai_s {
     ogs_plmn_id_t plmn_id;
@@ -132,6 +135,14 @@ typedef struct ogs_e_cgi_s {
     ogs_plmn_id_t plmn_id;
     uint32_t cell_id; /* 28 bit */
 } __attribute__ ((packed)) ogs_e_cgi_t;
+
+/************************************
+ * S-NSSAI Structure                */
+#define OGS_MAX_NUM_OF_SNSSAI       8
+typedef struct ogs_snssai_s {
+    uint8_t sst;
+    ogs_uint24_t sd;
+} __attribute__ ((packed)) ogs_snssai_t;
 
 /**************************************************
  * Common Structure

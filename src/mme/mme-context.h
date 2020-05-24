@@ -35,7 +35,6 @@
 extern "C" {
 #endif
 
-#define MAX_NUM_OF_PLMN_ID          6
 #define GRP_PER_MME                 256    /* According to spec it is 65535 */
 #define CODE_PER_MME                256    /* According to spec it is 256 */
 
@@ -68,7 +67,7 @@ typedef enum {
 
 typedef struct served_gummei_s {
     uint32_t        num_of_plmn_id;
-    ogs_plmn_id_t   plmn_id[MAX_NUM_OF_PLMN_ID];
+    ogs_plmn_id_t   plmn_id[OGS_MAX_NUM_OF_PLMN];
 
     uint32_t        num_of_mme_gid;
     uint16_t        mme_gid[GRP_PER_MME];

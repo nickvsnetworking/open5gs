@@ -280,12 +280,8 @@ int amf_context_parse_config(void)
                         const char *mcc = NULL, *mnc = NULL;
                         const char *region = NULL, *set = NULL;
                         const char *pointer = NULL;
-                        served_guami_t *guami = NULL;
                         ogs_assert(self.max_num_of_served_guami <=
                                 MAX_NUM_OF_SERVED_GUAMI);
-                        guami = &self.served_guami[
-                            self.max_num_of_served_guami];
-                        ogs_assert(guami);
 
                         if (ogs_yaml_iter_type(&guami_array) ==
                                 YAML_MAPPING_NODE) {
@@ -326,7 +322,10 @@ int amf_context_parse_config(void)
                                 }
 
                                 if (mcc && mnc) {
-                                    ogs_plmn_id_build(&guami->plmn_id,
+                                    ogs_plmn_id_build(
+                                        &self.served_guami[
+                                            self.max_num_of_served_guami].
+                                                plmn_id,
                                         atoi(mcc), atoi(mnc), strlen(mnc));
                                 }
                             } else if (!strcmp(guami_key, "amf_id")) {
@@ -351,7 +350,10 @@ int amf_context_parse_config(void)
                                 }
 
                                 if (region && set) {
-                                    ogs_amf_id_build(&guami->amf_id,
+                                    ogs_amf_id_build(
+                                        &self.served_guami[
+                                            self.max_num_of_served_guami].
+                                                amf_id,
                                         atoi(region), atoi(set),
                                         pointer ? atoi(pointer) : 0);
                                 }

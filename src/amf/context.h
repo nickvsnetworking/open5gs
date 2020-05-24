@@ -40,11 +40,6 @@ extern int __amf_log_domain;
 #undef OGS_LOG_DOMAIN
 #define OGS_LOG_DOMAIN __amf_log_domain
 
-typedef struct served_guami_s {
-    ogs_plmn_id_t   plmn_id;
-    ogs_amf_id_t    amf_id;
-} served_guami_t;
-
 typedef struct amf_context_s {
     ogs_queue_t     *queue;         /* Queue for processing UPF control */
     ogs_timer_mgr_t *timer_mgr;     /* Timer Manager */
@@ -54,7 +49,10 @@ typedef struct amf_context_s {
 
     /* Served GUMME */
     uint8_t         max_num_of_served_guami;
-    served_guami_t  served_guami[MAX_NUM_OF_SERVED_GUAMI];
+    struct {
+        ogs_plmn_id_t   plmn_id;
+        ogs_amf_id_t    amf_id;
+    } served_guami[MAX_NUM_OF_SERVED_GUAMI];
 
     /* Served TAI */
     uint8_t         num_of_served_tai;
@@ -62,6 +60,14 @@ typedef struct amf_context_s {
         ogs_5gs_tai0_list_t list0;
         ogs_5gs_tai2_list_t list2;
     } served_tai[OGS_MAX_NUM_OF_SERVED_TAI];
+
+    /* PLMN Support */
+    uint8_t         num_of_plmn_support;
+    struct {
+        ogs_plmn_id_t   plmn_id;
+        int num_of_snssai;
+        ogs_snssai_t    snsaai[OGS_MAX_NUM_OF_SNSSAI];
+    } plmn_support[OGS_MAX_NUM_OF_PLMN];
 
     /* defined in 'nas_ies.h'
      * #define NAS_SECURITY_ALGORITHMS_EIA0        0

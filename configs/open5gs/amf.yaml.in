@@ -68,17 +68,24 @@ amf:
         port: 7777
     ngap:
     guami: 
-      plmn_id:
-        mcc: 901
-        mnc: 70
-      amf_id:
-        region: 2
-        set: 1
+      - plmn_id:
+          mcc: 901
+          mnc: 70
+        amf_id:
+          region: 2
+          set: 1
     tai:
-      plmn_id:
-        mcc: 901
-        mnc: 70
-      tac: 1
+      - plmn_id:
+          mcc: 901
+          mnc: 70
+        tac: 1
+    plmn:
+      - plmn_id:
+          mcc: 901
+          mnc: 70
+        snssai:
+          - sst: 1
+            sd: 010203
     security:
         integrity_order : [ EIA1, EIA2, EIA0 ]
         ciphering_order : [ EEA0, EEA1, EEA2 ]
