@@ -593,6 +593,9 @@ int amf_context_parse_config(void)
                                             snssai->sd =
                                                 ogs_uint24_from_string(
                                                         (char*)sd);
+                                        } else {
+                                            snssai->sd.v =
+                                                OGS_SNSSAI_NO_SD_VALUE;
                                         }
 
                                         self.plmn_support[
