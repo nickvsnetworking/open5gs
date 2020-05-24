@@ -50,7 +50,7 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
     amf_gnb_t *gnb = NULL;
     uint16_t max_num_of_ostreams = 0;
 
-    ngap_message_t ngap_message;
+    ogs_ngap_message_t ngap_message;
     ogs_pkbuf_t *pkbuf = NULL;
     int rc;
 

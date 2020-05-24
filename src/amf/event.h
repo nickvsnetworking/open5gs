@@ -53,9 +53,8 @@ typedef enum {
 
 typedef struct amf_gnb_s amf_gnb_t;
 typedef struct ogs_nas_5gs_message_s ogs_nas_5gs_message_t;
-typedef struct NGAP_NGAP_PDU ngap_message_t;
+typedef struct NGAP_NGAP_PDU ogs_ngap_message_t;
 typedef long NGAP_ProcedureCode_t;
-typedef struct NGAP_NGAP_PDU ngap_message_t;
 
 typedef struct amf_event_s {
     int id;
@@ -69,7 +68,7 @@ typedef struct amf_event_s {
         uint16_t max_num_of_ostreams;
 
         NGAP_ProcedureCode_t code;
-        ngap_message_t *message;
+        ogs_ngap_message_t *message;
     } ngap;
 
     struct {
