@@ -89,6 +89,7 @@ static int amf_context_validation(void)
         return OGS_RETRY;
     }
 
+#if 0
     if (self.max_num_of_served_guami == 0) {
         ogs_error("No amf.guami in '%s'", ogs_config()->file);
         return OGS_ERROR;
@@ -99,7 +100,6 @@ static int amf_context_validation(void)
         return OGS_ERROR;
     }
 
-#if 0
     if (self.served_guami[0].num_of_amf_gid == 0) {
         ogs_error("No amf.guami.amf_gid in '%s'", ogs_config()->file);
         return OGS_ERROR;
@@ -147,9 +147,6 @@ int amf_context_parse_config(void)
     ogs_assert(document);
 
     rv = amf_context_prepare();
-    if (rv != OGS_OK) return rv;
-
-    rv = amf_context_validation();
     if (rv != OGS_OK) return rv;
 
     ogs_yaml_iter_init(&root_iter, document);
@@ -710,6 +707,9 @@ int amf_context_parse_config(void)
             }
         }
     }
+
+    rv = amf_context_validation();
+    if (rv != OGS_OK) return rv;
 
     return OGS_OK;
 }
