@@ -89,30 +89,23 @@ static int amf_context_validation(void)
         return OGS_RETRY;
     }
 
-#if 0
     if (self.num_of_served_guami == 0) {
         ogs_error("No amf.guami in '%s'", ogs_config()->file);
         return OGS_ERROR;
     }
 
-    if (self.served_guami[0].num_of_plmn_id == 0) {
-        ogs_error("No amf.guami.plmn_id in '%s'", ogs_config()->file);
-        return OGS_ERROR;
-    }
-
-    if (self.served_guami[0].num_of_amf_gid == 0) {
-        ogs_error("No amf.guami.amf_gid in '%s'", ogs_config()->file);
-        return OGS_ERROR;
-    }
-
-    if (self.served_guami[0].num_of_amf_code == 0) {
-        ogs_error("No amf.guami.amf_code in '%s'", ogs_config()->file);
-        return OGS_ERROR;
-    }
-#endif
-
     if (self.num_of_served_tai == 0) {
         ogs_error("No amf.tai in '%s'", ogs_config()->file);
+        return OGS_ERROR;
+    }
+
+    if (self.num_of_plmn_support == 0) {
+        ogs_error("No amf.plmn in '%s'", ogs_config()->file);
+        return OGS_ERROR;
+    }
+
+    if (self.plmn_support[0].num_of_snssai == 0) {
+        ogs_error("No amf.plmn.snssai in '%s'", ogs_config()->file);
         return OGS_ERROR;
     }
 
@@ -596,11 +589,12 @@ int amf_context_parse_config(void)
 
                                     if (sst) {
                                         snssai->sst = atoi(sst);
-                                        if (sd)
-                                            OGS_HEX(sd, strlen(sd),
-                                                    &snssai->sd);
-                                        snssai->sd = ogs_be24toh(
-                                                snssai->sd);
+                                        if (sd) {
+                                            snssai->sd =
+                                                ogs_uint24_from_string(
+                                                        (char*)sd);
+                                        }
+
                                         self.plmn_support[
                                             self.num_of_plmn_support].
                                                 num_of_snssai++;

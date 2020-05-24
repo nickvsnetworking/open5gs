@@ -85,6 +85,26 @@ static ogs_inline ogs_uint24_t ogs_htobe24(ogs_uint24_t x)
     return x;
 }
 
+static ogs_inline ogs_uint24_t ogs_uint24_from_string(char *str)
+{
+    ogs_uint24_t x;
+
+    ogs_assert(str);
+    OGS_HEX(str, strlen(str), &x);
+    return ogs_be24toh(x);
+}
+
+#define OGS_24BITSTRLEN    (sizeof(ogs_uint24_t)*2+1)
+static ogs_inline char *ogs_uint24_to_string(ogs_uint24_t x, char *str)
+{
+    ogs_assert(str);
+
+    x = ogs_htobe24(x);
+    ogs_hex_to_ascii(&x, sizeof(x), str, OGS_24BITSTRLEN);
+
+    return str;
+}
+
 /************************************
  * PLMN_ID Structure                */
 #define OGS_MAX_NUM_OF_PLMN         6
@@ -117,7 +137,7 @@ ED2(uint8_t set2:2;,
 
 uint32_t ogs_amf_id_hexdump(ogs_amf_id_t *amf_id);
 
-#define OGS_AMFIDSTRLEN    sizeof(ogs_amf_id_t)*2+1
+#define OGS_AMFIDSTRLEN    (sizeof(ogs_amf_id_t)*2+1)
 ogs_amf_id_t *ogs_amf_id_from_string(ogs_amf_id_t *amf_id, const char *hex);
 char *ogs_amf_id_to_string(ogs_amf_id_t *amf_id, char *buf);
 
