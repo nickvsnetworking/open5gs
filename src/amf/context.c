@@ -461,7 +461,7 @@ int amf_context_parse_config(void)
                     ogs_yaml_iter_recurse(&amf_iter, &tai_array);
                     do {
                         const char *mcc = NULL, *mnc = NULL;
-                        uint16_t tac[OGS_MAX_NUM_OF_TAI];
+                        ogs_uint24_t tac[OGS_MAX_NUM_OF_TAI];
                         int num_of_tac = 0;
 
                         if (ogs_yaml_iter_type(&tai_array) ==
@@ -518,7 +518,7 @@ int amf_context_parse_config(void)
 
                                     v = ogs_yaml_iter_value(&tac_iter);
                                     if (v) {
-                                        tac[num_of_tac] = atoi(v);
+                                        tac[num_of_tac].v = atoi(v);
                                         num_of_tac++;
                                     }
                                 } while (
@@ -533,7 +533,7 @@ int amf_context_parse_config(void)
                                 ogs_plmn_id_build(
                                     &list2->tai[list2->num].plmn_id,
                                     atoi(mcc), atoi(mnc), strlen(mnc));
-                                list2->tai[list2->num].tac = tac[0];
+                                list2->tai[list2->num].tac.v = tac[0].v;
 
                                 list2->num++;
                                 if (list2->num > 1)
@@ -546,7 +546,8 @@ int amf_context_parse_config(void)
                                     &list0->tai[num_of_list0].plmn_id,
                                     atoi(mcc), atoi(mnc), strlen(mnc));
                                 for (i = 0; i < num_of_tac; i++) {
-                                    list0->tai[num_of_list0].tac[i] = tac[i];
+                                    list0->tai[num_of_list0].tac[i].v =
+                                        tac[i].v;
                                 }
 
                                 list0->tai[num_of_list0].num = num_of_tac;

@@ -216,7 +216,7 @@ ED3(uint8_t type:4;,
  * O TV 6 */
 typedef struct ogs_nas_5gs_tracking_area_identity_s {
     ogs_nas_plmn_id_t nas_plmn_id;
-    uint16_t tac;
+    ogs_uint24_t tac;
 } __attribute__ ((packed)) ogs_nas_5gs_tracking_area_identity_t;
 
 typedef ogs_nas_5gs_tracking_area_identity_t ogs_nas_5gs_tai_t;
@@ -236,7 +236,7 @@ typedef struct ogs_5gs_tai0_list_s {
          * and is sent to the UE.
          */
         ogs_plmn_id_t plmn_id;
-        uint16_t tac[OGS_MAX_NUM_OF_TAI];
+        ogs_uint24_t tac[OGS_MAX_NUM_OF_TAI];
     } __attribute__ ((packed)) tai[OGS_MAX_NUM_OF_TAI];
 } __attribute__ ((packed)) ogs_5gs_tai0_list_t;
 

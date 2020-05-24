@@ -105,7 +105,7 @@ typedef struct ogs_eps_tai_s {
 
 typedef struct ogs_5gs_tai_s {
     ogs_plmn_id_t plmn_id;
-    uint16_t tac;
+    ogs_uint24_t tac;
 } __attribute__ ((packed)) ogs_5gs_tai_t;
 
 typedef struct ogs_e_cgi_s {
