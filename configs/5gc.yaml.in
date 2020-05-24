@@ -6,15 +6,39 @@ parameter:
 
 nrf:
     sbi:
-      addr:
-        - 127.0.0.1
-        - ::1
-      port: 7777
+      - addr:
+          - 127.0.0.1
+          - ::1
+        port: 7777
 
 amf:
     sbi:
       - addr: 127.0.0.2
         port: 7777
+    ngap:
+    guami:
+      - plmn_id:
+          mcc: 208
+          mnc: 93
+        amf_id:
+          region: 202
+          set: 1016
+    tai:
+      - plmn_id:
+          mcc: 901
+          mnc: 70
+        tac: 1
+    plmn:
+      - plmn_id:
+          mcc: 901
+          mnc: 70
+        snssai:
+          - sst: 1
+    security:
+        integrity_order : [ EIA1, EIA2, EIA0 ]
+        ciphering_order : [ EEA0, EEA1, EEA2 ]
+    network_name:
+        full: Open5GS
 
 smf:
     sbi:

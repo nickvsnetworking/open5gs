@@ -228,10 +228,10 @@ smf:
 #
 nrf:
     sbi:
-      addr:
-        - 127.0.0.1
-        - ::1
-      port: 7777
+      - addr:
+          - 127.0.0.1
+          - ::1
+        port: 7777
 
 #
 # upf:
@@ -245,7 +245,7 @@ nrf:
 #
 upf:
     pfcp:
-      addr: 127.0.0.4
+      - addr: 127.0.0.4
 
 #
 # parameter:

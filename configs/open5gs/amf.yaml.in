@@ -67,7 +67,7 @@ amf:
       - addr: 127.0.0.2
         port: 7777
     ngap:
-    guami: 
+    guami:
       - plmn_id:
           mcc: 901
           mnc: 70
@@ -85,7 +85,6 @@ amf:
           mnc: 70
         snssai:
           - sst: 1
-            sd: 010203
     security:
         integrity_order : [ EIA1, EIA2, EIA0 ]
         ciphering_order : [ EEA0, EEA1, EEA2 ]
@@ -120,10 +119,10 @@ amf:
 #
 nrf:
     sbi:
-      addr:
-        - 127.0.0.1
-        - ::1
-      port: 7777
+      - addr:
+          - 127.0.0.1
+          - ::1
+        port: 7777
 
 #
 # parameter:
