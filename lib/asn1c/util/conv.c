@@ -50,6 +50,15 @@ void ogs_asn_uint32_to_OCTET_STRING(
     octet_string->buf[3] = uint32;
 }
 
+void ogs_asn_buffer_to_OCTET_STRING(
+        void *buf, int size, OCTET_STRING_t *octet_string)
+{
+    octet_string->size = size;
+    octet_string->buf = CALLOC(octet_string->size, sizeof(uint8_t));
+
+    memcpy(octet_string->buf, buf, size);
+}
+
 int ogs_asn_BIT_STRING_to_ip(BIT_STRING_t *bit_string, ogs_ip_t *ip)
 {
     char buf[OGS_ADDRSTRLEN], buf2[OGS_ADDRSTRLEN];

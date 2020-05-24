@@ -21,22 +21,24 @@
 #error "This header cannot be included directly."
 #endif
 
-#ifndef OGS_NGAP_MESSAGE_H
-#define OGS_NGAP_MESSAGE_H
+#ifndef OGS_NGAP_CONV_H
+#define OGS_NGAP_CONV_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct NGAP_NGAP_PDU ogs_ngap_message_t;
+#if 0
+void ogs_ngap_buffer_to_OCTET_STRING(
+        void *buf, int size, NGAP_TBCD_STRING_t *tbcd_string);
+#endif
 
-int ogs_ngap_decode(ogs_ngap_message_t *message, ogs_pkbuf_t *pkbuf);
-ogs_pkbuf_t *ogs_ngap_encode(ogs_ngap_message_t *message);
-int ogs_ngap_free(ogs_ngap_message_t *message);
+void ogs_ngap_uint32_to_GNB_ID(uint32_t enb_id, NGAP_GNB_ID_t *eNB_ID);
+void ogs_ngap_GNB_ID_to_uint32(NGAP_GNB_ID_t *eNB_ID, uint32_t *uint32);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif /* OGS_NGAP_CONV_H */
 

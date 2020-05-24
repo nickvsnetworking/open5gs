@@ -28,6 +28,8 @@ extern "C" {
 #include "ogs-dbi.h"
 #include "ogs-sctp.h"
 #include "ogs-diameter-common.h"
+#include "ogs-nas-eps.h"
+#include "ogs-nas-5gs.h"
 
 #include "core/abts.h"
 

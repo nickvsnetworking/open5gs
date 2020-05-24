@@ -24,6 +24,8 @@ libtestcommon_sources = files('''
     application.c
     sctp.c
     gtpu.c
+
+    ngap-build.c
 '''.split())
 
 libtestcommon_inc = include_directories('.')
@@ -36,6 +38,9 @@ libtestcommon = static_library('testcomon',
                     libapp_dep,
                     libdbi_dep,
                     libsctp_dep,
+                    libngap_dep,
+                    libnas_eps_dep,
+                    libnas_5gs_dep,
                     libdiameter_common_dep],
     install : false)
 
@@ -46,4 +51,7 @@ libtestcommon_dep = declare_dependency(
                     libapp_dep,
                     libdbi_dep,
                     libsctp_dep,
+                    libngap_dep,
+                    libnas_eps_dep,
+                    libnas_5gs_dep,
                     libdiameter_common_dep])

@@ -17,26 +17,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#if !defined(OGS_NGAP_INSIDE) && !defined(OGS_NGAP_COMPILATION)
-#error "This header cannot be included directly."
-#endif
-
-#ifndef OGS_NGAP_MESSAGE_H
-#define OGS_NGAP_MESSAGE_H
+#ifndef TEST_NGAP_BUILD_H
+#define TEST_NGAP_BUILD_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct NGAP_NGAP_PDU ogs_ngap_message_t;
-
-int ogs_ngap_decode(ogs_ngap_message_t *message, ogs_pkbuf_t *pkbuf);
-ogs_pkbuf_t *ogs_ngap_encode(ogs_ngap_message_t *message);
-int ogs_ngap_free(ogs_ngap_message_t *message);
+int testngap_build_setup_req(
+        ogs_pkbuf_t **pkbuf, uint32_t gnb_id,
+        int tac, uint16_t mcc, uint16_t mnc, uint16_t mnc_len);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
-
+#endif /* TEST_NGAP_BUILD_H */
