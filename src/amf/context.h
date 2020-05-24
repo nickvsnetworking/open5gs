@@ -48,25 +48,25 @@ typedef struct amf_context_s {
     OpenAPI_nf_type_e   nf_type;
 
     /* Served GUMME */
-    uint8_t         max_num_of_served_guami;
+    uint8_t num_of_served_guami;
     struct {
-        ogs_plmn_id_t   plmn_id;
-        ogs_amf_id_t    amf_id;
+        ogs_plmn_id_t plmn_id;
+        ogs_amf_id_t amf_id;
     } served_guami[MAX_NUM_OF_SERVED_GUAMI];
 
     /* Served TAI */
-    uint8_t         num_of_served_tai;
+    uint8_t num_of_served_tai;
     struct {
         ogs_5gs_tai0_list_t list0;
         ogs_5gs_tai2_list_t list2;
     } served_tai[OGS_MAX_NUM_OF_SERVED_TAI];
 
     /* PLMN Support */
-    uint8_t         num_of_plmn_support;
+    uint8_t num_of_plmn_support;
     struct {
-        ogs_plmn_id_t   plmn_id;
+        ogs_plmn_id_t plmn_id;
         int num_of_snssai;
-        ogs_snssai_t    snsaai[OGS_MAX_NUM_OF_SNSSAI];
+        ogs_snssai_t snssai[OGS_MAX_NUM_OF_SNSSAI];
     } plmn_support[OGS_MAX_NUM_OF_PLMN];
 
     /* defined in 'nas_ies.h'

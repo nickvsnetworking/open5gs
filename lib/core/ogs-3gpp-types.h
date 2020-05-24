@@ -69,11 +69,21 @@ typedef struct ogs_uint24_s {
     uint32_t v:24;
 }  __attribute__ ((packed)) ogs_uint24_t;
 
-#define ogs_htole24(x) htole32(x)
-#define ogs_le24toh(x) le32toh(x)
+static ogs_inline ogs_uint24_t ogs_be24toh(ogs_uint24_t x)
+{
+    uint32_t tmp = x.v;
+    tmp = be32toh(tmp);
+    x.v = tmp >> 8;
+    return x;
+}
 
-#define ogs_htobe24(x) htobe32(x)
-#define ogs_be24toh(x) be32toh(x)
+static ogs_inline ogs_uint24_t ogs_htobe24(ogs_uint24_t x)
+{
+    uint32_t tmp = x.v;
+    tmp = htobe32(tmp);
+    x.v = tmp >> 8;
+    return x;
+}
 
 /************************************
  * PLMN_ID Structure                */
