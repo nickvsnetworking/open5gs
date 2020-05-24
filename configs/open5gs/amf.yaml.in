@@ -66,6 +66,22 @@ amf:
     sbi:
       - addr: 127.0.0.2
         port: 7777
+    ngap:
+    guami: 
+      plmn_id:
+        mcc: 208
+        mnc: 93
+      amf_id: cafe00
+    tai:
+      plmn_id:
+        mcc: 208
+        mnc: 93
+      tac: 1
+    security:
+        integrity_order : [ EIA1, EIA2, EIA0 ]
+        ciphering_order : [ EEA0, EEA1, EEA2 ]
+    network_name:
+        full: Open5GS
 
 #
 # nrf:

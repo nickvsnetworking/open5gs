@@ -373,8 +373,8 @@ int amf_context_parse_config(void)
                             YAML_SEQUENCE_NODE);
                 } else if (!strcmp(amf_key, "tai")) {
                     int num_of_list0 = 0;
-                    tai0_list_t *list0 = NULL;
-                    tai2_list_t *list2 = NULL;
+                    ogs_tai0_list_t *list0 = NULL;
+                    ogs_tai2_list_t *list2 = NULL;
 
                     ogs_assert(self.num_of_served_tai <=
                             OGS_MAX_NUM_OF_SERVED_TAI);
@@ -463,9 +463,9 @@ int amf_context_parse_config(void)
 
                                 list2->num++;
                                 if (list2->num > 1)
-                                    list2->type = TAI2_TYPE;
+                                    list2->type = OGS_TAI2_TYPE;
                                 else
-                                    list2->type = TAI1_TYPE;
+                                    list2->type = OGS_TAI1_TYPE;
                             } else if (num_of_tac > 1) {
                                 int i;
                                 ogs_plmn_id_build(
@@ -476,7 +476,7 @@ int amf_context_parse_config(void)
                                 }
 
                                 list0->tai[num_of_list0].num = num_of_tac;
-                                list0->tai[num_of_list0].type = TAI0_TYPE;
+                                list0->tai[num_of_list0].type = OGS_TAI0_TYPE;
 
                                 num_of_list0++;
                             }
@@ -626,6 +626,8 @@ int amf_context_parse_config(void)
                             network_short_name->coding_scheme = 1;
                         }
                     }
+                } else if (!strcmp(amf_key, "sbi")) {
+                    /* handle config in sbi library */
                 } else
                     ogs_warn("unknown key `%s`", amf_key);
             }

@@ -428,14 +428,13 @@ void eps_qos_build(ogs_nas_eps_quality_of_service_t *eps_qos, uint8_t qci,
     eps_qos->length = length*4+1;
 }
 
-void ogs_nas_tai_list_build(
-        ogs_nas_tracking_area_identity_list_t *target,
-        tai0_list_t *source0, tai2_list_t *source2)
+void ogs_nas_tai_list_build(ogs_nas_tracking_area_identity_list_t *target,
+        ogs_tai0_list_t *source0, ogs_tai2_list_t *source2)
 {
     int i = 0, j = 0, size = 0;
 
-    tai0_list_t target0;
-    tai2_list_t target2;
+    ogs_tai0_list_t target0;
+    ogs_tai2_list_t target2;
     ogs_nas_plmn_id_t ogs_nas_plmn_id;
 
     ogs_assert(target);
@@ -443,11 +442,11 @@ void ogs_nas_tai_list_build(
     ogs_assert(source2);
 
     memset(target, 0, sizeof(ogs_nas_tracking_area_identity_list_t));
-    memset(&target0, 0, sizeof(tai0_list_t));
-    memset(&target2, 0, sizeof(tai2_list_t));
+    memset(&target0, 0, sizeof(ogs_tai0_list_t));
+    memset(&target2, 0, sizeof(ogs_tai2_list_t));
 
     for (i = 0; source0->tai[i].num; i++) {
-        ogs_assert(source0->tai[i].type == TAI0_TYPE);
+        ogs_assert(source0->tai[i].type == OGS_TAI0_TYPE);
         target0.tai[i].type = source0->tai[i].type;
 
         /* <Spec> target->num = source->num - 1 */
@@ -474,7 +473,8 @@ void ogs_nas_tai_list_build(
     if (source2->num) {
         memset(&target2, 0, sizeof(target2));
 
-        ogs_assert(source2->type == TAI1_TYPE || source2->type == TAI2_TYPE);
+        ogs_assert(source2->type == OGS_TAI1_TYPE ||
+                    source2->type == OGS_TAI2_TYPE);
         target2.type = source2->type;
 
         /* <Spec> target->num = source->num - 1 */
@@ -489,7 +489,8 @@ void ogs_nas_tai_list_build(
         }
         for (i = 0; i < source2->num; i++) {
             memcpy(&target2.tai[i].plmn_id,
-                    ogs_nas_from_plmn_id(&ogs_nas_plmn_id, &source2->tai[i].plmn_id),
+                    ogs_nas_from_plmn_id(&ogs_nas_plmn_id,
+                        &source2->tai[i].plmn_id),
                     OGS_PLMN_ID_LEN);
             target2.tai[i].tac = htobe16(source2->tai[i].tac);
         }

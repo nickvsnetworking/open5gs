@@ -833,8 +833,8 @@ int mme_context_parse_config()
                             YAML_SEQUENCE_NODE);
                 } else if (!strcmp(mme_key, "tai")) {
                     int num_of_list0 = 0;
-                    tai0_list_t *list0 = NULL;
-                    tai2_list_t *list2 = NULL;
+                    ogs_tai0_list_t *list0 = NULL;
+                    ogs_tai2_list_t *list2 = NULL;
 
                     ogs_assert(self.num_of_served_tai <=
                             OGS_MAX_NUM_OF_SERVED_TAI);
@@ -923,9 +923,9 @@ int mme_context_parse_config()
 
                                 list2->num++;
                                 if (list2->num > 1)
-                                    list2->type = TAI2_TYPE;
+                                    list2->type = OGS_TAI2_TYPE;
                                 else
-                                    list2->type = TAI1_TYPE;
+                                    list2->type = OGS_TAI1_TYPE;
                             } else if (num_of_tac > 1) {
                                 int i;
                                 ogs_plmn_id_build(
@@ -936,7 +936,7 @@ int mme_context_parse_config()
                                 }
 
                                 list0->tai[num_of_list0].num = num_of_tac;
-                                list0->tai[num_of_list0].type = TAI0_TYPE;
+                                list0->tai[num_of_list0].type = OGS_TAI0_TYPE;
 
                                 num_of_list0++;
                             }
@@ -3086,13 +3086,13 @@ int mme_find_served_tai(ogs_tai_t *tai)
     ogs_assert(tai);
 
     for (i = 0; i < self.num_of_served_tai; i++) {
-        tai0_list_t *list0 = &self.served_tai[i].list0;
+        ogs_tai0_list_t *list0 = &self.served_tai[i].list0;
         ogs_assert(list0);
-        tai2_list_t *list2 = &self.served_tai[i].list2;
+        ogs_tai2_list_t *list2 = &self.served_tai[i].list2;
         ogs_assert(list2);
 
         for (j = 0; list0->tai[j].num; j++) {
-            ogs_assert(list0->tai[j].type == TAI0_TYPE);
+            ogs_assert(list0->tai[j].type == OGS_TAI0_TYPE);
             ogs_assert(list0->tai[j].num < OGS_MAX_NUM_OF_TAI);
 
             for (k = 0; k < list0->tai[j].num; k++) {
@@ -3105,7 +3105,8 @@ int mme_find_served_tai(ogs_tai_t *tai)
         }
 
         if (list2->num) {
-            ogs_assert(list2->type == TAI1_TYPE || list2->type == TAI2_TYPE);
+            ogs_assert(list2->type == OGS_TAI1_TYPE ||
+                        list2->type == OGS_TAI2_TYPE);
             ogs_assert(list2->num < OGS_MAX_NUM_OF_TAI);
 
             for (j = 0; j < list2->num; j++) {
