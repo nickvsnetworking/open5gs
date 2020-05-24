@@ -379,7 +379,7 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
             e->ngap.message = &ngap_message;
             ogs_fsm_dispatch(&gnb->sm, e);
         } else {
-            ogs_warn("Cannot process NGAP message");
+            ogs_error("Cannot decode NGAP message");
 #if 0
             ngap_send_error_indication(
                     gnb, NULL, NULL, NGAP_Cause_PR_protocol, 

@@ -35,6 +35,8 @@ int testngap_build_setup_req(
     NGAP_RANNodeName_t *RANNodeName = NULL;
     NGAP_SupportedTAList_t *SupportedTAList = NULL;
     NGAP_SupportedTAItem_t *SupportedTAItem = NULL;
+    NGAP_BroadcastPLMNItem_t *BroadcastPLMNItem = NULL;
+    NGAP_SliceSupportItem_t *SliceSupportItem = NULL;
     NGAP_PLMNIdentity_t *pLMNIdentity = NULL;
     NGAP_PagingDRX_t *PagingDRX = NULL;
 
@@ -60,6 +62,7 @@ int testngap_build_setup_req(
     ie->value.present = NGAP_NGSetupRequestIEs__value_PR_GlobalRANNodeID;
 
     GlobalRANNodeID = &ie->value.choice.GlobalRANNodeID;
+#endif
 
     ie = CALLOC(1, sizeof(NGAP_NGSetupRequestIEs_t));
     ASN_SEQUENCE_ADD(&NGSetupRequest->protocolIEs, ie);
@@ -69,7 +72,6 @@ int testngap_build_setup_req(
     ie->value.present = NGAP_NGSetupRequestIEs__value_PR_SupportedTAList;
 
     SupportedTAList = &ie->value.choice.SupportedTAList;
-#endif
 
     ie = CALLOC(1, sizeof(NGAP_NGSetupRequestIEs_t));
     ASN_SEQUENCE_ADD(&NGSetupRequest->protocolIEs, ie);
@@ -80,27 +82,34 @@ int testngap_build_setup_req(
 
     PagingDRX = &ie->value.choice.PagingDRX;
 
-#if 0
     ogs_plmn_id_build(&plmn_id, mcc, mnc, mnc_len);
 
+#if 0
     globalGNB_ID = CALLOC(1, sizeof(*globalGNB_ID));
     GlobalRANNodeID->choice.globalGNB_ID = globalGNB_ID;
 
     ogs_ngap_uint32_to_GNB_ID(gnb_id, &globalGNB_ID->gNB_ID);
     ogs_asn_buffer_to_OCTET_STRING(
             &plmn_id, OGS_PLMN_ID_LEN, &globalGNB_ID->pLMNIdentity);
+#endif
 
-    SupportedTAItem = (NGAP_SupportedTAItem_t *)
-        CALLOC(1, sizeof(NGAP_SupportedTAItem_t));
-    ogs_asn_uint16_to_OCTET_STRING(tac, &SupportedTAItem->tAC);
-    pLMNIdentity = (NGAP_PLMNIdentity_t *)
-        CALLOC(1, sizeof(NGAP_PLMNIdentity_t));
+    BroadcastPLMNItem = CALLOC(1, sizeof(NGAP_BroadcastPLMNItem_t));
     ogs_asn_buffer_to_OCTET_STRING(
-            &plmn_id, OGS_PLMN_ID_LEN, pLMNIdentity);
-    ASN_SEQUENCE_ADD(&SupportedTAItem->broadcastPLMNList.list, pLMNIdentity);
+            &plmn_id, OGS_PLMN_ID_LEN, &BroadcastPLMNItem->pLMNIdentity);
+
+    SliceSupportItem = CALLOC(1, sizeof(NGAP_SliceSupportItem_t));
+    char tmp1 = 0x12;
+    ogs_asn_uint8_to_OCTET_STRING(tmp1, &SliceSupportItem->s_NSSAI.sST);
+
+    ASN_SEQUENCE_ADD(&BroadcastPLMNItem->tAISliceSupportList.list,
+            SliceSupportItem);
+
+    SupportedTAItem = CALLOC(1, sizeof(NGAP_SupportedTAItem_t));
+    ogs_asn_buffer_to_OCTET_STRING(&tac, 3, &SupportedTAItem->tAC);
+    ASN_SEQUENCE_ADD(&SupportedTAItem->broadcastPLMNList.list,
+            BroadcastPLMNItem);
 
     ASN_SEQUENCE_ADD(&SupportedTAList->list, SupportedTAItem);
-#endif
 
     *PagingDRX = NGAP_PagingDRX_v64;
 
