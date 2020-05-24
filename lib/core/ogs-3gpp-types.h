@@ -33,6 +33,7 @@ extern "C" {
 
 #define OGS_MAX_SDU_LEN                 8192
 #define OGS_PLMN_ID_LEN                 3
+#define OGS_MAX_NUM_OF_PLMN_ID          6
 
 #define OGS_BCD_TO_BUFFER_LEN(x)        (((x)+1)/2)
 #define OGS_MAX_IMSI_BCD_LEN            15
@@ -48,6 +49,11 @@ extern "C" {
 #define OGS_MAX_DNN_LEN                 100
 #define OGS_MAX_PCO_LEN                 251
 #define OGS_MAX_FQDN_LEN                256
+
+#define OGS_MAX_NUM_OF_SERVED_TAI       16
+#define OGS_MAX_NUM_OF_ALGORITHM        8
+
+#define OGS_MAX_NUM_OF_BPLMN            6
 
 #define OGS_NEXT_ID(__id, __min, __max) \
     ((__id) = ((__id) == (__max) ? (__min) : ((__id) + 1)))

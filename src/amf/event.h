@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 by Sukchan Lee <acetcom@gmail.com>
+ * Copyright (C) 2019,2020 by Sukchan Lee <acetcom@gmail.com>
  *
  * This file is part of Open5GS.
  *
@@ -41,6 +41,12 @@ typedef enum {
     AMF_EVT_SBI_CLIENT,
     AMF_EVT_SBI_TIMER,
 
+    AMF_EVT_NGAP_MESSAGE,
+    AMF_EVT_NGAP_TIMER,
+    AMF_EVT_NGAP_LO_ACCEPT,
+    AMF_EVT_NGAP_LO_SCTP_COMM_UP,
+    AMF_EVT_NGAP_LO_CONNREFUSED,
+
     AMF_EVT_TOP,
 
 } amf_event_e;
@@ -49,6 +55,13 @@ typedef struct amf_event_s {
     int id;
     ogs_pkbuf_t *pkbuf;
     int timer_id;
+
+    struct {
+        ogs_sock_t *sock;
+        ogs_sockaddr_t *addr;
+        uint16_t max_num_of_istreams;
+        uint16_t max_num_of_ostreams;
+    } ngap;
 
     struct {
         /* OGS_EVT_SBI_SERVER */
@@ -72,6 +85,10 @@ amf_event_t *amf_event_new(amf_event_e id);
 void amf_event_free(amf_event_t *e);
 
 const char *amf_event_get_name(amf_event_t *e);
+
+void amf_sctp_event_push(amf_event_e id,
+        void *sock, ogs_sockaddr_t *addr, ogs_pkbuf_t *pkbuf,
+        uint16_t max_num_of_istreams, uint16_t max_num_of_ostreams);
 
 #ifdef __cplusplus
 }

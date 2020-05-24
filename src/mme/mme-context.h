@@ -35,15 +35,10 @@
 extern "C" {
 #endif
 
-#define MAX_PLMN_ID                 6
 #define GRP_PER_MME                 256    /* According to spec it is 65535 */
 #define CODE_PER_MME                256    /* According to spec it is 256 */
 
-#define MAX_NUM_OF_SERVED_TAI       16
 #define MAX_NUM_OF_SERVED_GUMMEI    8
-#define MAX_NUM_OF_ALGORITHM        8
-
-#define MAX_NUM_OF_BPLMN            6
 
 extern int __mme_log_domain;
 extern int __emm_log_domain;
@@ -72,7 +67,7 @@ typedef enum {
 
 typedef struct served_gummei_s {
     uint32_t        num_of_plmn_id;
-    ogs_plmn_id_t   plmn_id[MAX_PLMN_ID];
+    ogs_plmn_id_t   plmn_id[OGS_MAX_NUM_OF_PLMN_ID];
 
     uint32_t        num_of_mme_gid;
     uint16_t        mme_gid[GRP_PER_MME];
@@ -119,7 +114,7 @@ typedef struct mme_context_s {
     struct {
         tai0_list_t list0;
         tai2_list_t list2;
-    } served_tai[MAX_NUM_OF_SERVED_TAI];
+    } served_tai[OGS_MAX_NUM_OF_SERVED_TAI];
 
     /* defined in 'nas_ies.h'
      * #define NAS_SECURITY_ALGORITHMS_EIA0        0
@@ -127,14 +122,14 @@ typedef struct mme_context_s {
      * #define NAS_SECURITY_ALGORITHMS_128_EEA2    2
      * #define NAS_SECURITY_ALGORITHMS_128_EEA3    3 */
     uint8_t         num_of_ciphering_order;
-    uint8_t         ciphering_order[MAX_NUM_OF_ALGORITHM];
+    uint8_t         ciphering_order[OGS_MAX_NUM_OF_ALGORITHM];
     /* defined in 'nas_ies.h'
      * #define NAS_SECURITY_ALGORITHMS_EIA0        0
      * #define NAS_SECURITY_ALGORITHMS_128_EIA1    1
      * #define NAS_SECURITY_ALGORITHMS_128_EIA1    2
      * #define NAS_SECURITY_ALGORITHMS_128_EIA3    3 */
     uint8_t         num_of_integrity_order;
-    uint8_t         integrity_order[MAX_NUM_OF_ALGORITHM];
+    uint8_t         integrity_order[OGS_MAX_NUM_OF_ALGORITHM];
 
     /* S1SetupResponse */
     uint8_t         relative_capacity;
@@ -235,7 +230,7 @@ typedef struct mme_enb_s {
 
 
     uint8_t         num_of_supported_ta_list;
-    ogs_tai_t       supported_ta_list[OGS_MAX_NUM_OF_TAI * MAX_NUM_OF_BPLMN];
+    ogs_tai_t       supported_ta_list[OGS_MAX_NUM_OF_TAI*OGS_MAX_NUM_OF_BPLMN];
 
     ogs_list_t      enb_ue_list;
 

@@ -40,7 +40,8 @@ static bool served_tai_is_found(mme_enb_t *enb)
 
     for (i = 0; i < enb->num_of_supported_ta_list; i++) {
         served_tai_index = mme_find_served_tai(&enb->supported_ta_list[i]);
-        if (served_tai_index >= 0 && served_tai_index < MAX_NUM_OF_SERVED_TAI) {
+        if (served_tai_index >= 0 &&
+                served_tai_index < OGS_MAX_NUM_OF_SERVED_TAI) {
             ogs_debug("    SERVED_TAI_INDEX[%d]", served_tai_index);
             return true;
         }

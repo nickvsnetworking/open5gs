@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 by Sukchan Lee <acetcom@gmail.com>
+ * Copyright (C) 2019,2020 by Sukchan Lee <acetcom@gmail.com>
  *
  * This file is part of Open5GS.
  *
@@ -84,9 +84,56 @@ const char *amf_event_get_name(amf_event_t *e)
     case AMF_EVT_SBI_TIMER:
         return "AMF_EVT_SBI_TIMER";
 
+    case AMF_EVT_NGAP_MESSAGE:
+        return "AMF_EVT_NGAP_MESSAGE";
+    case AMF_EVT_NGAP_TIMER:
+        return "AMF_EVT_NGAP_TIMER";
+    case AMF_EVT_NGAP_LO_ACCEPT:
+        return "AMF_EVT_NGAP_LO_ACCEPT";
+    case AMF_EVT_NGAP_LO_SCTP_COMM_UP:
+        return "AMF_EVT_NGAP_LO_SCTP_COMM_UP";
+    case AMF_EVT_NGAP_LO_CONNREFUSED:
+        return "AMF_EVT_NGAP_LO_CONNREFUSED";
+
     default: 
        break;
     }
 
     return "UNKNOWN_EVENT";
+}
+
+void amf_sctp_event_push(amf_event_e id,
+        void *sock, ogs_sockaddr_t *addr, ogs_pkbuf_t *pkbuf,
+        uint16_t max_num_of_istreams, uint16_t max_num_of_ostreams)
+{
+    amf_event_t *e = NULL;
+    int rv;
+
+    ogs_assert(id);
+    ogs_assert(sock);
+    ogs_assert(addr);
+
+    e = amf_event_new(id);
+    ogs_assert(e);
+
+    e->pkbuf = pkbuf;
+
+    e->ngap.sock = sock;
+    e->ngap.addr = addr;
+    e->ngap.max_num_of_istreams = max_num_of_istreams;
+    e->ngap.max_num_of_ostreams = max_num_of_ostreams;
+
+    rv = ogs_queue_push(amf_self()->queue, e);
+    if (rv != OGS_OK) {
+        ogs_warn("ogs_queue_push() failed:%d", (int)rv);
+        ogs_free(e->ngap.addr);
+        if (e->pkbuf)
+            ogs_pkbuf_free(e->pkbuf);
+        amf_event_free(e);
+    }
+#if HAVE_USRSCTP
+    else {
+        ogs_pollset_notify(amf_self()->pollset);
+    }
+#endif
 }

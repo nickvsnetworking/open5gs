@@ -704,7 +704,7 @@ int mme_context_parse_config()
                                     ogs_plmn_id_t *plmn_id = NULL;
                                     const char *mcc = NULL, *mnc = NULL;
                                     ogs_assert(gummei->num_of_plmn_id <=
-                                            MAX_PLMN_ID);
+                                            OGS_MAX_NUM_OF_PLMN_ID);
                                     plmn_id = &gummei->plmn_id[
                                         gummei->num_of_plmn_id];
                                     ogs_assert(plmn_id);
@@ -837,7 +837,7 @@ int mme_context_parse_config()
                     tai2_list_t *list2 = NULL;
 
                     ogs_assert(self.num_of_served_tai <=
-                            MAX_NUM_OF_SERVED_TAI);
+                            OGS_MAX_NUM_OF_SERVED_TAI);
                     list0 = &self.served_tai[self.num_of_served_tai].list0;
                     ogs_assert(list0);
                     list2 = &self.served_tai[self.num_of_served_tai].list2;
