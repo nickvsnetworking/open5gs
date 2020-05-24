@@ -19,6 +19,7 @@
 
 #include "sbi-path.h"
 #include "nnrf-handler.h"
+#include "ngap-path.h"
 
 void amf_state_initial(ogs_fsm_t *s, amf_event_t *e)
 {
@@ -62,9 +63,17 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
         if (rv != OGS_OK) {
             ogs_fatal("Can't establish SBI path");
         }
+
+        rv = ngap_open();
+        if (rv != OGS_OK) {
+            ogs_error("Can't establish NGAP path");
+            break;
+        }
+
         break;
 
     case OGS_FSM_EXIT_SIG:
+        ngap_close();
         amf_sbi_close();
         break;
 
