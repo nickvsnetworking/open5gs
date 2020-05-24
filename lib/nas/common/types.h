@@ -97,15 +97,6 @@ void *ogs_nas_from_plmn_id(
 void *ogs_nas_to_plmn_id(
         ogs_plmn_id_t *plmn_id, ogs_nas_plmn_id_t *ogs_nas_plmn_id);
 
-/**********************
- * NAS GUTI Structure */
-typedef struct ogs_nas_eps_guti_s {
-    ogs_nas_plmn_id_t nas_plmn_id;
-    uint16_t mme_gid;
-    uint8_t mme_code;
-    uint32_t m_tmsi;
-} __attribute__ ((packed)) ogs_nas_eps_guti_t;
-
 /* 9.9.2.0 Additional information
  * O TLV 3-n */
 #define NAX_MAX_ADDITIONAL_INFORMATION_LEN 255

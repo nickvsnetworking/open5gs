@@ -28,6 +28,15 @@
 extern "C" {
 #endif
 
+/**********************
+ * NAS GUTI Structure */
+typedef struct ogs_nas_eps_guti_s {
+    ogs_nas_plmn_id_t nas_plmn_id;
+    uint16_t mme_gid;
+    uint8_t mme_code;
+    uint32_t m_tmsi;
+} __attribute__ ((packed)) ogs_nas_eps_guti_t;
+
 /* 9.9.2.0A Device properties
  * See subclause 10.5.7.8 in 3GPP TS 24.008 [13].
  * O TV 1 */

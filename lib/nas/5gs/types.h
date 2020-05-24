@@ -30,20 +30,9 @@ extern "C" {
 
 /**********************
  * NAS GUTI Structure */
-#define OGS_NAS_GET_AMF_SET_ID(_iDentity) \
-    ((_iDentity)->amf_set_id2 + ((_iDentity)->amf_set_id1 << 2))
-#define OGS_NAS_SET_AMF_SET_ID(_iDentity, _aMFSetId) \
-    do { \
-        ogs_assert((_iDentity)); \
-        (_iDentity)->amf_set_id1 = (_aMFSetId >> 2) & 0x000f; \
-        (_iDentity)->amf_set_id2 = _aMFSetId & 0x0003; \
-    } while(0)
 typedef struct ogs_nas_5gs_guti_s {
     ogs_nas_plmn_id_t nas_plmn_id;
-    uint8_t amf_region_id;
-    uint8_t amf_set_id1;
-ED2(uint8_t amf_set_id2:2;,
-    uint8_t amf_pointer:6;)
+    ogs_amf_id_t amf_id;
     uint32_t m_tmsi;
 } __attribute__ ((packed)) ogs_nas_5gs_guti_t;
 
