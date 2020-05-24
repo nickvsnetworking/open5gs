@@ -305,143 +305,74 @@ int amf_context_parse_config(void)
                                 ogs_yaml_iter_key(&guami_iter);
                             ogs_assert(guami_key);
                             if (!strcmp(guami_key, "plmn_id")) {
-                                ogs_yaml_iter_t plmn_id_array, plmn_id_iter;
-                                ogs_yaml_iter_recurse(&guami_iter,
-                                        &plmn_id_array);
-                                do {
-                                    ogs_plmn_id_t *plmn_id = NULL;
-                                    const char *mcc = NULL, *mnc = NULL;
-                                    ogs_assert(guami->num_of_plmn_id <=
-                                            OGS_MAX_NUM_OF_PLMN_ID);
-                                    plmn_id = &guami->plmn_id[
+                                const char *mcc = NULL, *mnc = NULL;
+                                ogs_yaml_iter_t plmn_id_iter;
+                                ogs_plmn_id_t *plmn_id = &guami->plmn_id[
                                         guami->num_of_plmn_id];
-                                    ogs_assert(plmn_id);
 
-                                    if (ogs_yaml_iter_type(&plmn_id_array) ==
-                                            YAML_MAPPING_NODE) {
-                                        memcpy(&plmn_id_iter, &plmn_id_array,
-                                                sizeof(ogs_yaml_iter_t));
-                                    } else if (ogs_yaml_iter_type(
-                                                &plmn_id_array) ==
-                                                YAML_SEQUENCE_NODE) {
-                                        if (!ogs_yaml_iter_next(&plmn_id_array))
-                                            break;
-                                        ogs_yaml_iter_recurse(&plmn_id_array,
-                                                &plmn_id_iter);
-                                    } else if (ogs_yaml_iter_type(
-                                                &plmn_id_array) ==
-                                                YAML_SCALAR_NODE) {
-                                        break;
-                                    } else
-                                        ogs_assert_if_reached();
-
-                                    while (ogs_yaml_iter_next(&plmn_id_iter)) {
-                                        const char *plmn_id_key =
-                                            ogs_yaml_iter_key(&plmn_id_iter);
-                                        ogs_assert(plmn_id_key);
-                                        if (!strcmp(plmn_id_key, "mcc"))
-                                        {
-                                            mcc = ogs_yaml_iter_value(
-                                                    &plmn_id_iter);
-                                        } else if (!strcmp(
-                                                    plmn_id_key, "mnc")) {
-                                            mnc = ogs_yaml_iter_value(
-                                                    &plmn_id_iter);
-                                        }
-                                    }
-
-                                    if (mcc && mnc) {
-                                        ogs_plmn_id_build(plmn_id,
-                                            atoi(mcc), atoi(mnc), strlen(mnc));
-                                        guami->num_of_plmn_id++;
-                                    }
-
-                                } while (ogs_yaml_iter_type(&plmn_id_array) ==
-                                        YAML_SEQUENCE_NODE);
-                            } else if (!strcmp(guami_key, "amf_region_id")) {
-                                ogs_yaml_iter_t amf_region_id_iter;
-                                ogs_yaml_iter_recurse(
-                                    &guami_iter, &amf_region_id_iter);
-                                ogs_assert(ogs_yaml_iter_type(
-                                    &amf_region_id_iter) != YAML_MAPPING_NODE);
-
-                                do {
-                                    uint16_t *amf_region_id = NULL;
-                                    const char *v = NULL;
-
-                                    ogs_assert(guami->num_of_amf_region_id <=
-                                            REGION_PER_AMF);
-                                    amf_region_id = &guami->amf_region_id[
-                                        guami->num_of_amf_region_id];
-                                    ogs_assert(amf_region_id);
-
-                                    if (ogs_yaml_iter_type(
-                                            &amf_region_id_iter) ==
-                                            YAML_SEQUENCE_NODE) {
-                                        if (!ogs_yaml_iter_next(
-                                                &amf_region_id_iter))
-                                            break;
-                                    }
-
-                                    v = ogs_yaml_iter_value(
-                                            &amf_region_id_iter);
-                                    if (v) {
-                                        *amf_region_id = atoi(v);
-                                        guami->num_of_amf_region_id++;
-                                    }
-                                } while (
-                                    ogs_yaml_iter_type(&amf_region_id_iter) ==
-                                        YAML_SEQUENCE_NODE);
-                            } else if (!strcmp(guami_key, "amf_set_id")) {
-                                ogs_yaml_iter_t amf_set_id_iter;
                                 ogs_yaml_iter_recurse(&guami_iter,
-                                        &amf_set_id_iter);
-                                ogs_assert(ogs_yaml_iter_type(
-                                        &amf_set_id_iter) != YAML_MAPPING_NODE);
-
-                                do {
-                                    uint16_t *amf_set_id = NULL;
-                                    const char *v = NULL;
-
-                                    ogs_assert(guami->num_of_amf_set_id <=
-                                            SET_PER_AMF);
-                                    amf_set_id = &guami->amf_set_id[
-                                        guami->num_of_amf_set_id];
-                                    ogs_assert(amf_set_id);
-
-                                    if (ogs_yaml_iter_type(&amf_set_id_iter) ==
-                                            YAML_SEQUENCE_NODE) {
-                                        if (!ogs_yaml_iter_next(
-                                                    &amf_set_id_iter))
-                                            break;
+                                        &plmn_id_iter);
+                                while (ogs_yaml_iter_next(&plmn_id_iter)) {
+                                    const char *plmn_id_key =
+                                        ogs_yaml_iter_key(&plmn_id_iter);
+                                    ogs_assert(plmn_id_key);
+                                    if (!strcmp(plmn_id_key, "mcc")) {
+                                        mcc = ogs_yaml_iter_value(
+                                                &plmn_id_iter);
+                                    } else if (!strcmp(plmn_id_key, "mnc")) {
+                                        mnc = ogs_yaml_iter_value(
+                                                &plmn_id_iter);
                                     }
+                                }
 
-                                    v = ogs_yaml_iter_value(&amf_set_id_iter);
-                                    if (v) {
-                                        *amf_set_id = atoi(v);
-                                        guami->num_of_amf_set_id++;
+                                if (mcc && mnc) {
+                                    ogs_plmn_id_build(plmn_id,
+                                        atoi(mcc), atoi(mnc), strlen(mnc));
+                                    guami->num_of_plmn_id++;
+                                }
+                            } else if (!strcmp(guami_key, "amf_id")) {
+                                const char *region = NULL, *set = NULL;
+                                const char *pointer = NULL;
+                                ogs_yaml_iter_t amf_id_iter;
+                                ogs_amf_id_t *amf_id = &guami->amf_id[
+                                        guami->num_of_amf_id];
+
+                                ogs_yaml_iter_recurse(&guami_iter,
+                                        &amf_id_iter);
+                                while (ogs_yaml_iter_next(&amf_id_iter)) {
+                                    const char *amf_id_key =
+                                        ogs_yaml_iter_key(&amf_id_iter);
+                                    ogs_assert(amf_id_key);
+                                    if (!strcmp(amf_id_key, "region")) {
+                                        region = ogs_yaml_iter_value(
+                                                &amf_id_iter);
+                                    } else if (!strcmp(amf_id_key, "set")) {
+                                        set = ogs_yaml_iter_value(
+                                                &amf_id_iter);
+                                    } else if (!strcmp(amf_id_key, "pointer")) {
+                                        pointer = ogs_yaml_iter_value(
+                                                &amf_id_iter);
                                     }
-                                } while (
-                                    ogs_yaml_iter_type(&amf_set_id_iter) ==
-                                        YAML_SEQUENCE_NODE);
+                                }
+
+                                if (region && set) {
+                                    ogs_amf_id_build(amf_id,
+                                        atoi(region), atoi(set),
+                                        pointer ? atoi(pointer) : 0);
+                                    guami->num_of_amf_id++;
+                                }
                             } else
                                 ogs_warn("unknown key `%s`", guami_key);
                         }
 
-                        if (guami->num_of_plmn_id &&
-                            guami->num_of_amf_region_id &&
-                            guami->num_of_amf_set_id) {
+                        if (guami->num_of_plmn_id && guami->num_of_amf_id) {
                             self.max_num_of_served_guami++;
                         } else {
                             ogs_warn("Ignore guami : "
-                                    "plmn_id(%d), amf_region_id(%d),"
-                                    "amf_set_id(%d)",
-                                guami->num_of_plmn_id,
-                                guami->num_of_amf_region_id,
-                                guami->num_of_amf_set_id);
+                                    "plmn_id(%d), amf_id(%d)",
+                                guami->num_of_plmn_id, guami->num_of_amf_id);
                             guami->num_of_plmn_id = 0;
-                            guami->num_of_amf_region_id = 0;
-                            guami->num_of_amf_set_id = 0;
+                            guami->num_of_amf_id = 0;
                         }
                     } while (ogs_yaml_iter_type(&guami_array) ==
                             YAML_SEQUENCE_NODE);

@@ -64,6 +64,18 @@ void *ogs_plmn_id_build(ogs_plmn_id_t *plmn_id,
     return plmn_id;
 }
 
+uint32_t ogs_amf_id_hexdump(ogs_amf_id_t *amf_id)
+{
+    uint32_t hex;
+
+    ogs_assert(amf_id);
+
+    memcpy(&hex, amf_id, sizeof(ogs_amf_id_t));
+    hex = be32toh(hex) >> 8;
+
+    return hex;
+}
+
 ogs_amf_id_t *ogs_amf_id_from_string(ogs_amf_id_t *amf_id, const char *hex)
 {
     char hexbuf[sizeof(ogs_amf_id_t)];
@@ -113,16 +125,19 @@ uint8_t ogs_amf_pointer(ogs_amf_id_t *amf_id)
     return amf_id->pointer;
 }
 
-uint32_t ogs_amf_id_hexdump(ogs_amf_id_t *amf_id)
+ogs_amf_id_t *ogs_amf_id_build(ogs_amf_id_t *amf_id,
+        uint8_t region, uint16_t set, uint8_t pointer)
 {
-    uint32_t hex;
-
     ogs_assert(amf_id);
+    ogs_assert(region);
+    ogs_assert(set);
 
-    memcpy(&hex, amf_id, sizeof(ogs_amf_id_t));
-    hex = be32toh(hex) >> 8;
+    amf_id->region = region;
+    amf_id->set1 = set >> 2;
+    amf_id->set2 = set & 0x3;
+    amf_id->pointer = pointer;
 
-    return hex;
+    return amf_id;
 }
 
 int ogs_fqdn_build(char *dst, char *src, int length)

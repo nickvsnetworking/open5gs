@@ -34,8 +34,7 @@ extern "C" {
 #endif
 
 #define MAX_NUM_OF_SERVED_GUAMI     8
-#define REGION_PER_AMF              256    /* According to spec it is 65535 */
-#define SET_PER_AMF                 256    /* According to spec it is 1024 */
+#define MAX_NUM_OF_AMF_ID           8
 
 extern int __amf_log_domain;
 
@@ -46,10 +45,8 @@ typedef struct served_guami_s {
     int             num_of_plmn_id;
     ogs_plmn_id_t   plmn_id[OGS_MAX_NUM_OF_PLMN_ID];
 
-    int             num_of_amf_region_id;
-    uint16_t        amf_region_id[REGION_PER_AMF];
-    int             num_of_amf_set_id;
-    uint16_t        amf_set_id[SET_PER_AMF];
+    int             num_of_amf_id;
+    ogs_amf_id_t    amf_id[MAX_NUM_OF_AMF_ID];
 } served_guami_t;
 
 typedef struct amf_context_s {

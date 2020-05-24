@@ -21,7 +21,9 @@ amf:
       plmn_id:
         mcc: 208
         mnc: 93
-      amf_id: cafe00
+      amf_id:
+        region: 202
+        set: 1016
     tai:
       plmn_id:
         mcc: 208
