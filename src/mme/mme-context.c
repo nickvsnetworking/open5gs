@@ -2271,10 +2271,10 @@ void mme_ue_remove(mme_ue_t *mme_ue)
     CLEAR_SERVICE_INDICATOR(mme_ue);
 
     /* Free UeRadioCapability */
-    OGS_S1AP_CLEAR_DATA(&mme_ue->ueRadioCapability);
+    OGS_ASN_CLEAR_DATA(&mme_ue->ueRadioCapability);
 
     /* Clear Transparent Container */
-    OGS_S1AP_CLEAR_DATA(&mme_ue->container);
+    OGS_ASN_CLEAR_DATA(&mme_ue->container);
 
     /* Delete All Timers */
     CLEAR_MME_UE_ALL_TIMERS(mme_ue);

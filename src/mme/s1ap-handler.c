@@ -435,7 +435,7 @@ void s1ap_handle_ue_capability_info_indication(
 
     if (enb_ue->mme_ue) {
         ogs_assert(UERadioCapability);
-        OGS_S1AP_STORE_DATA(&enb_ue->mme_ue->ueRadioCapability,
+        OGS_ASN_STORE_DATA(&enb_ue->mme_ue->ueRadioCapability,
                 UERadioCapability);
     }
 }
@@ -1530,7 +1530,7 @@ void s1ap_handle_handover_request_ack(mme_enb_t *enb, ogs_s1ap_message_t *messag
         }
     }
 
-    OGS_S1AP_STORE_DATA(&mme_ue->container,
+    OGS_ASN_STORE_DATA(&mme_ue->container,
             Target_ToSource_TransparentContainer);
 
     if (mme_ue_have_indirect_tunnel(mme_ue) == 1) {

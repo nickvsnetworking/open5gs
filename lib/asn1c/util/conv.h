@@ -30,6 +30,26 @@
 extern "C" {
 #endif
 
+#define OGS_ASN_CLEAR_DATA(__dATA) \
+    do { \
+        ogs_assert((__dATA)); \
+        if ((__dATA)->buf) { \
+            FREEMEM((__dATA)->buf); \
+            (__dATA)->buf = NULL; \
+            (__dATA)->size = 0; \
+        } \
+    } while(0)
+#define OGS_ASN_STORE_DATA(__dST, __sRC) \
+    do { \
+        ogs_assert((__sRC)); \
+        ogs_assert((__sRC)->buf); \
+        ogs_assert((__dST)); \
+        OGS_ASN_CLEAR_DATA(__dST); \
+        (__dST)->size = (__sRC)->size; \
+        (__dST)->buf = CALLOC((__dST)->size, sizeof(uint8_t)); \
+        memcpy((__dST)->buf, (__sRC)->buf, (__dST)->size); \
+    } while(0)
+
 void ogs_asn_uint8_to_OCTET_STRING(
         uint8_t uint8, OCTET_STRING_t *octet_string);
 void ogs_asn_uint16_to_OCTET_STRING(
