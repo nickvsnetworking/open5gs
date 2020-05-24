@@ -502,13 +502,13 @@ ED3(uint8_t spare:1;,
     uint8_t type:2;,
     uint8_t num:5;)
     /*
-     * Do not change 'ogs_tai_t' to 'ogs_nas_tracking_area_identity_t'.
-     * Use 'ogs_tai_t' for easy implementation.
+     * Do not change 'ogs_eps_tai_t' to 'ogs_nas_tracking_area_identity_t'.
+     * Use 'ogs_eps_tai_t' for easy implementation.
      * ogs_nas_tai_list_build() changes to NAS 
      * format(ogs_nas_tracking_area_identity_t)
      * and is sent to the UE.
      */
-    ogs_tai_t tai[OGS_MAX_NUM_OF_TAI];
+    ogs_eps_tai_t tai[OGS_MAX_NUM_OF_TAI];
 } __attribute__ ((packed)) ogs_tai2_list_t;
 
 typedef struct ogs_nas_tracking_area_identity_list_s {

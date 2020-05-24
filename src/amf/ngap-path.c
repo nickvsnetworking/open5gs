@@ -347,7 +347,7 @@ void ngap_send_paging(amf_ue_t *amf_ue, NGAP_CNDomain_t cn_domain)
         for (i = 0; i < enb->num_of_supported_ta_list; i++) {
 
             if (memcmp(&enb->supported_ta_list[i], &amf_ue->tai,
-                        sizeof(ogs_tai_t)) == 0) {
+                        sizeof(ogs_eps_tai_t)) == 0) {
 
                 if (amf_ue->t3413.pkbuf) {
                     ngapbuf = amf_ue->t3413.pkbuf;

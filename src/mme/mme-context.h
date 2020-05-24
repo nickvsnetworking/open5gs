@@ -230,7 +230,7 @@ typedef struct mme_enb_s {
 
 
     uint8_t         num_of_supported_ta_list;
-    ogs_tai_t       supported_ta_list[OGS_MAX_NUM_OF_TAI*OGS_MAX_NUM_OF_BPLMN];
+    ogs_eps_tai_t   supported_ta_list[OGS_MAX_NUM_OF_TAI*OGS_MAX_NUM_OF_BPLMN];
 
     ogs_list_t      enb_ue_list;
 
@@ -256,7 +256,7 @@ struct enb_ue_s {
      * 
      * Save TAI and ECGI. And then, this will copy 'mme_ue_t' context later */
     struct {
-        ogs_tai_t       tai;
+        ogs_eps_tai_t   tai;
         ogs_e_cgi_t     e_cgi;
     } saved;
 
@@ -321,7 +321,7 @@ struct mme_ue_s {
     uint16_t        vlr_ostream_id; /* SCTP output stream id for VLR */
 
     /* UE Info */
-    ogs_tai_t       tai;
+    ogs_eps_tai_t   tai;
     ogs_e_cgi_t     e_cgi;
     ogs_plmn_id_t   last_visited_plmn_id;
 
@@ -654,7 +654,7 @@ mme_csmap_t *mme_csmap_add(mme_vlr_t *vlr);
 void mme_csmap_remove(mme_csmap_t *csmap);
 void mme_csmap_remove_all(void);
 
-mme_csmap_t *mme_csmap_find_by_tai(ogs_tai_t *tai);
+mme_csmap_t *mme_csmap_find_by_tai(ogs_eps_tai_t *tai);
 mme_csmap_t *mme_csmap_find_by_nas_lai(ogs_nas_lai_t *lai);
 
 mme_enb_t *mme_enb_add(ogs_sock_t *sock, ogs_sockaddr_t *addr);
@@ -775,7 +775,7 @@ void mme_pdn_remove_all(mme_ue_t *mme_ue);
 ogs_pdn_t *mme_pdn_find_by_apn(mme_ue_t *mme_ue, char *apn);
 ogs_pdn_t *mme_default_pdn(mme_ue_t *mme_ue);
 
-int mme_find_served_tai(ogs_tai_t *tai);
+int mme_find_served_tai(ogs_eps_tai_t *tai);
 
 int mme_m_tmsi_pool_generate(void);
 mme_m_tmsi_t *mme_m_tmsi_alloc(void);

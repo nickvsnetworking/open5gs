@@ -1839,7 +1839,7 @@ void mme_csmap_remove_all(void)
         mme_csmap_remove(csmap);
 }
 
-mme_csmap_t *mme_csmap_find_by_tai(ogs_tai_t *tai)
+mme_csmap_t *mme_csmap_find_by_tai(ogs_eps_tai_t *tai)
 {
     mme_csmap_t *csmap = NULL;
     ogs_assert(tai);
@@ -3079,7 +3079,7 @@ ogs_pdn_t *mme_default_pdn(mme_ue_t *mme_ue)
     return NULL;
 }
 
-int mme_find_served_tai(ogs_tai_t *tai)
+int mme_find_served_tai(ogs_eps_tai_t *tai)
 {
     int i = 0, j = 0, k = 0;
 

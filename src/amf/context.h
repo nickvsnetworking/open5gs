@@ -122,7 +122,7 @@ typedef struct amf_gnb_s {
 
 
     uint8_t         num_of_supported_ta_list;
-    ogs_tai_t       supported_ta_list[OGS_MAX_NUM_OF_TAI*OGS_MAX_NUM_OF_BPLMN];
+    ogs_eps_tai_t   supported_ta_list[OGS_MAX_NUM_OF_TAI*OGS_MAX_NUM_OF_BPLMN];
 
     ogs_list_t      gnb_ue_list;
 

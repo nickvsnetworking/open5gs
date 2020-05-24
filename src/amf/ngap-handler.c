@@ -1157,7 +1157,7 @@ void ngap_handle_path_switch_request(
             gnb_ue->saved.e_cgi.cell_id);
 
     /* Copy TAI and ECGI from gnb_ue */
-    memcpy(&amf_ue->tai, &gnb_ue->saved.tai, sizeof(ogs_tai_t));
+    memcpy(&amf_ue->tai, &gnb_ue->saved.tai, sizeof(ogs_eps_tai_t));
     memcpy(&amf_ue->e_cgi, &gnb_ue->saved.e_cgi, sizeof(ogs_e_cgi_t));
 
     memcpy(&eea, encryptionAlgorithms->buf, sizeof(eea));
@@ -1850,7 +1850,7 @@ void ngap_handle_handover_notification(amf_gnb_t *gnb, ogs_ngap_message_t *messa
             target_ue->saved.e_cgi.cell_id);
 
     /* Copy TAI and ECGI from gnb_ue */
-    memcpy(&amf_ue->tai, &target_ue->saved.tai, sizeof(ogs_tai_t));
+    memcpy(&amf_ue->tai, &target_ue->saved.tai, sizeof(ogs_eps_tai_t));
     memcpy(&amf_ue->e_cgi, &target_ue->saved.e_cgi, sizeof(ogs_e_cgi_t));
 
     sess = amf_sess_first(amf_ue);
