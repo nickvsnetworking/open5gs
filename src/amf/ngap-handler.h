@@ -26,7 +26,7 @@
 extern "C" {
 #endif
 
-void ngap_handle_s1_setup_request(
+void ngap_handle_ng_setup_request(
         amf_gnb_t *gnb, ogs_ngap_message_t *message);
 #if 0
 void ngap_handle_initial_ue_message(

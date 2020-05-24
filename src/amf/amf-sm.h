@@ -40,6 +40,11 @@ void amf_nf_state_registered(ogs_fsm_t *s, amf_event_t *e);
 void amf_nf_state_de_registered(ogs_fsm_t *s, amf_event_t *e);
 void amf_nf_state_exception(ogs_fsm_t *s, amf_event_t *e);
 
+void ngap_state_initial(ogs_fsm_t *s, amf_event_t *e);
+void ngap_state_final(ogs_fsm_t *s, amf_event_t *e);
+void ngap_state_operational(ogs_fsm_t *s, amf_event_t *e);
+void ngap_state_exception(ogs_fsm_t *s, amf_event_t *e);
+
 #define amf_sm_debug(__pe) \
     ogs_debug("%s(): %s", __func__, amf_event_get_name(__pe))
 

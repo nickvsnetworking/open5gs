@@ -22,6 +22,7 @@
 
 #include "ogs-app.h"
 #include "ogs-sbi.h"
+#include "ogs-sctp.h"
 #include "ogs-ngap.h"
 #include "ogs-nas-5gs.h"
 
@@ -96,6 +97,9 @@ typedef struct amf_context_s {
     ogs_list_t      ngap_list;      /* AMF NGAP IPv4 Server List */
     ogs_list_t      ngap_list6;     /* AMF NGAP IPv6 Server List */
 
+    ogs_list_t      gnb_list;       /* ENB S1AP Client List */
+    ogs_hash_t      *gnb_addr_hash; /* hash table for GNB Address */
+    ogs_hash_t      *gnb_id_hash;   /* hash table for GNB-ID */
 } amf_context_t;
 
 typedef struct amf_gnb_s {
@@ -129,6 +133,15 @@ void amf_context_final(void);
 amf_context_t *amf_self(void);
 
 int amf_context_parse_config(void);
+
+amf_gnb_t *amf_gnb_add(ogs_sock_t *sock, ogs_sockaddr_t *addr);
+int amf_gnb_remove(amf_gnb_t *gnb);
+int amf_gnb_remove_all(void);
+amf_gnb_t *amf_gnb_find_by_addr(ogs_sockaddr_t *addr);
+amf_gnb_t *amf_gnb_find_by_gnb_id(uint32_t gnb_id);
+int amf_gnb_set_gnb_id(amf_gnb_t *gnb, uint32_t gnb_id);
+int amf_gnb_sock_type(ogs_sock_t *sock);
+bool amf_is_maximum_number_of_gnbs_reached(void);
 
 #ifdef __cplusplus
 }

@@ -52,7 +52,7 @@ static bool maximum_number_of_gnbs_is_reached(void)
 }
 #endif
 
-void ngap_handle_s1_setup_request(amf_gnb_t *gnb, ogs_ngap_message_t *message)
+void ngap_handle_ng_setup_request(amf_gnb_t *gnb, ogs_ngap_message_t *message)
 {
 #if 0
     char buf[OGS_ADDRSTRLEN];

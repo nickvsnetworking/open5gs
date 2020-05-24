@@ -17,11 +17,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "context.h"
+#include "ngap-path.h"
 
 static amf_context_t self;
 
 int __amf_log_domain;
+
+static OGS_POOL(amf_gnb_pool, amf_gnb_t);
 
 static int context_initialized = 0;
 
@@ -34,12 +36,31 @@ void amf_context_init(void)
 
     ogs_log_install_domain(&__amf_log_domain, "amf", ogs_core()->log.level);
 
+    ogs_list_init(&self.ngap_list);
+    ogs_list_init(&self.ngap_list6);
+
+    /* Allocate TWICE the pool to check if maximum number of gNBs is reached */
+    ogs_pool_init(&amf_gnb_pool, ogs_config()->max.gnb*2);
+
+    ogs_list_init(&self.gnb_list);
+    self.gnb_addr_hash = ogs_hash_make();
+    self.gnb_id_hash = ogs_hash_make();
+
     context_initialized = 1;
 }
 
 void amf_context_final(void)
 {
     ogs_assert(context_initialized == 1);
+
+    amf_gnb_remove_all();
+
+    ogs_assert(self.gnb_addr_hash);
+    ogs_hash_destroy(self.gnb_addr_hash);
+    ogs_assert(self.gnb_id_hash);
+    ogs_hash_destroy(self.gnb_id_hash);
+
+    ogs_pool_final(&amf_gnb_pool);
 
     context_initialized = 0;
 }
@@ -52,11 +73,67 @@ amf_context_t *amf_self(void)
 static int amf_context_prepare(void)
 {
     self.nf_type = OpenAPI_nf_type_AMF;
+
+    self.relative_capacity = 0xff;
+
+    self.ngap_port = OGS_NGAP_SCTP_PORT;
+
     return OGS_OK;
 }
 
 static int amf_context_validation(void)
 {
+    if (ogs_list_first(&self.ngap_list) == NULL &&
+        ogs_list_first(&self.ngap_list6) == NULL) {
+        ogs_error("No amf.ngap in '%s'", ogs_config()->file);
+        return OGS_RETRY;
+    }
+
+    if (self.max_num_of_served_guami == 0) {
+        ogs_error("No amf.guami in '%s'", ogs_config()->file);
+        return OGS_ERROR;
+    }
+
+    if (self.served_guami[0].num_of_plmn_id == 0) {
+        ogs_error("No amf.guami.plmn_id in '%s'", ogs_config()->file);
+        return OGS_ERROR;
+    }
+
+#if 0
+    if (self.served_guami[0].num_of_amf_gid == 0) {
+        ogs_error("No amf.guami.amf_gid in '%s'", ogs_config()->file);
+        return OGS_ERROR;
+    }
+
+    if (self.served_guami[0].num_of_amf_code == 0) {
+        ogs_error("No amf.guami.amf_code in '%s'", ogs_config()->file);
+        return OGS_ERROR;
+    }
+#endif
+
+    if (self.num_of_served_tai == 0) {
+        ogs_error("No amf.tai in '%s'", ogs_config()->file);
+        return OGS_ERROR;
+    }
+
+    if (self.served_tai[0].list0.tai[0].num == 0 &&
+        self.served_tai[0].list2.num == 0) {
+        ogs_error("No amf.tai.plmn_id|tac in '%s'", ogs_config()->file);
+        return OGS_ERROR;
+    }
+
+    if (self.num_of_integrity_order == 0) {
+        ogs_error("No amf.security.integrity_order in '%s'",
+                ogs_config()->file);
+        return OGS_ERROR;
+    }
+    if (self.num_of_ciphering_order == 0) {
+        ogs_error("no amf.security.ciphering_order in '%s'",
+                ogs_config()->file);
+        return OGS_ERROR;
+    }
+
+
     return OGS_OK;
 }
 
@@ -636,3 +713,129 @@ int amf_context_parse_config(void)
 
     return OGS_OK;
 }
+
+amf_gnb_t *amf_gnb_add(ogs_sock_t *sock, ogs_sockaddr_t *addr)
+{
+    amf_gnb_t *gnb = NULL;
+    amf_event_t e;
+
+    ogs_assert(sock);
+    ogs_assert(addr);
+
+    ogs_pool_alloc(&amf_gnb_pool, &gnb);
+    ogs_assert(gnb);
+    memset(gnb, 0, sizeof *gnb);
+
+    gnb->sock = sock;
+    gnb->addr = addr;
+    gnb->sock_type = amf_gnb_sock_type(gnb->sock);
+
+    gnb->max_num_of_ostreams = DEFAULT_SCTP_MAX_NUM_OF_OSTREAMS;
+    gnb->ostream_id = 0;
+    if (ogs_config()->sockopt.sctp.max_num_of_ostreams) {
+        gnb->max_num_of_ostreams =
+            ogs_config()->sockopt.sctp.max_num_of_ostreams;
+        ogs_info("[ENB] max_num_of_ostreams : %d", gnb->max_num_of_ostreams);
+    }
+
+    ogs_list_init(&gnb->gnb_ue_list);
+
+    if (gnb->sock_type == SOCK_STREAM) {
+        gnb->poll = ogs_pollset_add(amf_self()->pollset,
+            OGS_POLLIN, sock->fd, ngap_recv_upcall, sock);
+        ogs_assert(gnb->poll);
+    }
+
+    ogs_hash_set(self.gnb_addr_hash, gnb->addr, sizeof(ogs_sockaddr_t), gnb);
+
+    e.gnb = gnb;
+    e.id = 0;
+    ogs_fsm_create(&gnb->sm, ngap_state_initial, ngap_state_final);
+    ogs_fsm_init(&gnb->sm, &e);
+
+    ogs_list_add(&self.gnb_list, gnb);
+
+    return gnb;
+}
+
+int amf_gnb_remove(amf_gnb_t *gnb)
+{
+    amf_event_t e;
+
+    ogs_assert(gnb);
+    ogs_assert(gnb->sock);
+
+    ogs_list_remove(&self.gnb_list, gnb);
+
+    e.gnb = gnb;
+    ogs_fsm_fini(&gnb->sm, &e);
+    ogs_fsm_delete(&gnb->sm);
+
+    ogs_hash_set(self.gnb_addr_hash, gnb->addr, sizeof(ogs_sockaddr_t), NULL);
+    ogs_hash_set(self.gnb_id_hash, &gnb->gnb_id, sizeof(gnb->gnb_id), NULL);
+
+#if 0
+    gnb_ue_remove_in_gnb(gnb);
+#endif
+
+    if (gnb->sock_type == SOCK_STREAM) {
+        ogs_pollset_remove(gnb->poll);
+        ogs_sctp_destroy(gnb->sock);
+    }
+
+    ogs_free(gnb->addr);
+
+    ogs_pool_free(&amf_gnb_pool, gnb);
+
+    return OGS_OK;
+}
+
+int amf_gnb_remove_all()
+{
+    amf_gnb_t *gnb = NULL, *next_gnb = NULL;
+
+    ogs_list_for_each_safe(&self.gnb_list, next_gnb, gnb)
+        amf_gnb_remove(gnb);
+
+    return OGS_OK;
+}
+
+amf_gnb_t *amf_gnb_find_by_addr(ogs_sockaddr_t *addr)
+{
+    ogs_assert(addr);
+    return (amf_gnb_t *)ogs_hash_get(self.gnb_addr_hash,
+            addr, sizeof(ogs_sockaddr_t));
+
+    return NULL;
+}
+
+amf_gnb_t *amf_gnb_find_by_gnb_id(uint32_t gnb_id)
+{
+    return (amf_gnb_t *)ogs_hash_get(self.gnb_id_hash, &gnb_id, sizeof(gnb_id));
+}
+
+int amf_gnb_set_gnb_id(amf_gnb_t *gnb, uint32_t gnb_id)
+{
+    ogs_assert(gnb);
+
+    gnb->gnb_id = gnb_id;
+    ogs_hash_set(self.gnb_id_hash, &gnb->gnb_id, sizeof(gnb->gnb_id), gnb);
+
+    return OGS_OK;
+}
+
+int amf_gnb_sock_type(ogs_sock_t *sock)
+{
+    ogs_socknode_t *snode = NULL;
+
+    ogs_assert(sock);
+
+    ogs_list_for_each(&amf_self()->ngap_list, snode)
+        if (snode->sock == sock) return SOCK_SEQPACKET;
+
+    ogs_list_for_each(&amf_self()->ngap_list6, snode)
+        if (snode->sock == sock) return SOCK_SEQPACKET;
+
+    return SOCK_STREAM;
+}
+

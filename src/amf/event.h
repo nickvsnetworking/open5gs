@@ -51,6 +51,12 @@ typedef enum {
 
 } amf_event_e;
 
+typedef struct amf_gnb_s amf_gnb_t;
+typedef struct ogs_nas_5gs_message_s ogs_nas_5gs_message_t;
+typedef struct NGAP_NGAP_PDU ngap_message_t;
+typedef long NGAP_ProcedureCode_t;
+typedef struct NGAP_NGAP_PDU ngap_message_t;
+
 typedef struct amf_event_s {
     int id;
     ogs_pkbuf_t *pkbuf;
@@ -61,6 +67,9 @@ typedef struct amf_event_s {
         ogs_sockaddr_t *addr;
         uint16_t max_num_of_istreams;
         uint16_t max_num_of_ostreams;
+
+        NGAP_ProcedureCode_t code;
+        ngap_message_t *message;
     } ngap;
 
     struct {
@@ -76,6 +85,7 @@ typedef struct amf_event_s {
         ogs_sbi_message_t *message;
     } sbi;
 
+    amf_gnb_t *gnb;
 } amf_event_t;
 
 void amf_event_init(void);
