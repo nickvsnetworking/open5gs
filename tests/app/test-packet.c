@@ -46,16 +46,6 @@
 
 #include "test-packet.h"
 
-int testenb_s1ap_send(ogs_socknode_t *node, ogs_pkbuf_t *sendbuf)
-{
-    return s1ap_send(node->sock, sendbuf, NULL, 0);
-}
-
-int testvlr_sgsap_send(ogs_socknode_t *node, ogs_pkbuf_t *sendbuf)
-{
-    return sgsap_send(node->sock, sendbuf, &ogs_test_sctp_last_addr, 0);
-}
-
 bool test_no_mme_self = 0;
 
 int testenb_gtpu_send(ogs_socknode_t *node, ogs_pkbuf_t *sendbuf)

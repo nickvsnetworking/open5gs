@@ -31,16 +31,6 @@ extern "C" {
 
 extern bool test_no_mme_self;
 
-#define testenb_s1ap_client(x) testsctp_client(x, OGS_S1AP_SCTP_PORT)
-#define testenb_s1ap_read(x) testsctp_read(x, 0);
-int testenb_s1ap_send(ogs_socknode_t *node, ogs_pkbuf_t *sendbuf);
-#define testenb_s1ap_close ogs_socknode_free
-
-#define testvlr_sgsap_server(x) testsctp_server(x, OGS_SGSAP_SCTP_PORT)
-#define testvlr_sgsap_read(x) testsctp_read(x, 1);
-int testvlr_sgsap_send(ogs_socknode_t *node, ogs_pkbuf_t *sendbuf);
-#define testvlr_sgsap_close ogs_socknode_free
-
 #define testenb_gtpu_server(x) test_gtpu_server(x, OGS_GTPV1_U_UDP_PORT)
 #define testenb_gtpu_read(x) test_gtpu_read(x)
 int testenb_gtpu_send(ogs_socknode_t *node, ogs_pkbuf_t *sendbuf);

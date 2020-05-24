@@ -57,7 +57,7 @@ ogs_socknode_t *testsctp_client(const char *ipstr, int port)
     return node;
 }
 
-ogs_sockaddr_t ogs_test_sctp_last_addr;
+ogs_sockaddr_t last_addr;
 
 ogs_pkbuf_t *testsctp_read(ogs_socknode_t *node, int type)
 {
@@ -71,7 +71,7 @@ ogs_pkbuf_t *testsctp_read(ogs_socknode_t *node, int type)
     ogs_pkbuf_put(recvbuf, OGS_MAX_SDU_LEN);
 
     size = ogs_sctp_recvdata(node->sock, recvbuf->data, OGS_MAX_SDU_LEN,
-            type == 1 ? &ogs_test_sctp_last_addr : NULL, NULL);
+            type == 1 ? &last_addr : NULL, NULL);
     if (size <= 0) {
         ogs_error("sgsap_recv() failed");
         return NULL;
@@ -79,4 +79,24 @@ ogs_pkbuf_t *testsctp_read(ogs_socknode_t *node, int type)
 
     ogs_pkbuf_trim(recvbuf, size);
     return recvbuf;;
+}
+
+int testsctp_send(ogs_socknode_t *node, ogs_pkbuf_t *pkbuf,
+        int ppid, uint16_t stream_no, int type)
+{
+    int sent;
+
+    ogs_assert(node);
+    ogs_assert(node->sock);
+    ogs_assert(pkbuf);
+
+    sent = ogs_sctp_sendmsg(node->sock, pkbuf->data, pkbuf->len,
+            type == 1 ? &last_addr : NULL, ppid, stream_no);
+    if (sent < 0 || sent != pkbuf->len) {
+        ogs_error("ogs_sctp_sendmsg error (%d:%s)", errno, strerror(errno));
+        return OGS_ERROR;
+    }
+    ogs_pkbuf_free(pkbuf);
+
+    return OGS_OK;
 }
