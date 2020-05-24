@@ -125,7 +125,7 @@ void mme_context_init()
     ogs_pool_init(&mme_csmap_pool, ogs_config()->max.csmap);
 
     /* Allocate TWICE the pool to check if maximum number of eNBs is reached */
-    ogs_pool_init(&mme_enb_pool, ogs_config()->max.enb*2);
+    ogs_pool_init(&mme_enb_pool, ogs_config()->max.gnb*2);
 
     ogs_pool_init(&mme_ue_pool, ogs_config()->pool.ue);
     ogs_pool_init(&enb_ue_pool, ogs_config()->pool.ue);
@@ -3221,5 +3221,5 @@ bool mme_is_maximum_number_of_enbs_reached(void)
         }
     }
 
-    return number_of_enbs_online >= ogs_config()->max.enb;
+    return number_of_enbs_online >= ogs_config()->max.gnb;
 }

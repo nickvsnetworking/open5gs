@@ -71,7 +71,6 @@ typedef struct ogs_config_s {
         int pgw;
         int vlr;
         int csmap;
-        int enb;
 
         int ue;
         int smf;

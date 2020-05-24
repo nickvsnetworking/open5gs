@@ -156,7 +156,6 @@ static int config_prepare(void)
 #define MAX_NUM_OF_PGW              32  /* Num of PGW per MME */
 #define MAX_NUM_OF_VLR              32  /* Num of VLR per MME */
 #define MAX_NUM_OF_CSMAP            128 /* Num of TAI-LAI MAP per MME */
-#define MAX_NUM_OF_ENB              32  /* Num of eNodeB per MME */
 
 #define MAX_NUM_OF_UE               128 /* Num of UE per gNB */
 #define MAX_NUM_OF_SMF              32  /* Num of SMF per AMF */
@@ -166,7 +165,6 @@ static int config_prepare(void)
     self.max.pgw = MAX_NUM_OF_PGW;
     self.max.vlr = MAX_NUM_OF_VLR;
     self.max.csmap = MAX_NUM_OF_CSMAP;
-    self.max.enb = MAX_NUM_OF_ENB;
 
     self.max.gnb = MAX_NUM_OF_GNB;
     self.max.ue = MAX_NUM_OF_UE;
@@ -327,10 +325,8 @@ int ogs_config_parse()
                 if (!strcmp(max_key, "ue")) {
                     const char *v = ogs_yaml_iter_value(&max_iter);
                     if (v) self.max.ue = atoi(v);
-                } else if (!strcmp(max_key, "enb")) {
-                    const char *v = ogs_yaml_iter_value(&max_iter);
-                    if (v) self.max.enb = atoi(v);
-                } else if (!strcmp(max_key, "gnb")) {
+                } else if (!strcmp(max_key, "gnb") ||
+                            !strcmp(max_key, "enb")) {
                     const char *v = ogs_yaml_iter_value(&max_iter);
                     if (v) self.max.gnb = atoi(v);
                 } else
