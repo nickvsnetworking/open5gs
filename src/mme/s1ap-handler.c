@@ -257,13 +257,14 @@ void s1ap_handle_initial_ue_message(mme_enb_t *enb, ogs_s1ap_message_t *message)
         /* Find MME_UE if S_TMSI included */
         if (S_TMSI) {
             served_gummei_t *served_gummei = &mme_self()->served_gummei[0];
-            ogs_nas_guti_t nas_guti;
+            ogs_nas_eps_guti_t nas_guti;
             mme_ue_t *mme_ue = NULL;
 
-            memset(&nas_guti, 0, sizeof(ogs_nas_guti_t));
+            memset(&nas_guti, 0, sizeof(ogs_nas_eps_guti_t));
 
             /* Use the first configured plmn_id and mme group id */
-            ogs_nas_from_plmn_id(&nas_guti.nas_plmn_id, &served_gummei->plmn_id[0]);
+            ogs_nas_from_plmn_id(&nas_guti.nas_plmn_id,
+                    &served_gummei->plmn_id[0]);
             nas_guti.mme_gid = served_gummei->mme_gid[0];
 
             /* size must be 1 */

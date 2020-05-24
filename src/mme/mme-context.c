@@ -2134,11 +2134,11 @@ static int mme_ue_new_guti(mme_ue_t *mme_ue)
         /* MME has a VALID GUTI
          * As such, we need to remove previous GUTI in hash table */
         ogs_hash_set(self.guti_ue_hash,
-                &mme_ue->guti, sizeof(ogs_nas_guti_t), NULL);
+                &mme_ue->guti, sizeof(ogs_nas_eps_guti_t), NULL);
         ogs_assert(mme_m_tmsi_free(mme_ue->m_tmsi) == OGS_OK);
     }
 
-    memset(&mme_ue->guti, 0, sizeof(ogs_nas_guti_t));
+    memset(&mme_ue->guti, 0, sizeof(ogs_nas_eps_guti_t));
 
     /* Use the first configured plmn_id and mme group id */
     ogs_nas_from_plmn_id(&mme_ue->guti.nas_plmn_id, &served_gummei->plmn_id[0]);
@@ -2149,7 +2149,7 @@ static int mme_ue_new_guti(mme_ue_t *mme_ue)
     ogs_assert(mme_ue->m_tmsi);
     mme_ue->guti.m_tmsi = *(mme_ue->m_tmsi);
     ogs_hash_set(self.guti_ue_hash,
-            &mme_ue->guti, sizeof(ogs_nas_guti_t), mme_ue);
+            &mme_ue->guti, sizeof(ogs_nas_eps_guti_t), mme_ue);
 
     return OGS_OK;
 }
@@ -2258,7 +2258,7 @@ void mme_ue_remove(mme_ue_t *mme_ue)
     /* Clear hash table */
     if (mme_ue->m_tmsi) {
         ogs_hash_set(self.guti_ue_hash,
-                &mme_ue->guti, sizeof(ogs_nas_guti_t), NULL);
+                &mme_ue->guti, sizeof(ogs_nas_eps_guti_t), NULL);
         ogs_assert(mme_m_tmsi_free(mme_ue->m_tmsi) == OGS_OK);
     }
     if (mme_ue->imsi_len != 0)
@@ -2319,12 +2319,12 @@ mme_ue_t *mme_ue_find_by_imsi(uint8_t *imsi, int imsi_len)
     return (mme_ue_t *)ogs_hash_get(self.imsi_ue_hash, imsi, imsi_len);
 }
 
-mme_ue_t *mme_ue_find_by_guti(ogs_nas_guti_t *guti)
+mme_ue_t *mme_ue_find_by_guti(ogs_nas_eps_guti_t *guti)
 {
     ogs_assert(guti);
 
     return (mme_ue_t *)ogs_hash_get(
-            self.guti_ue_hash, guti, sizeof(ogs_nas_guti_t));
+            self.guti_ue_hash, guti, sizeof(ogs_nas_eps_guti_t));
 }
 
 mme_ue_t *mme_ue_find_by_teid(uint32_t teid)
@@ -2345,7 +2345,7 @@ mme_ue_t *mme_ue_find_by_message(ogs_nas_eps_message_t *message)
     ogs_nas_eps_mobile_identity_guti_t *eps_mobile_identity_guti = NULL;
     ogs_nas_mobile_identity_tmsi_t *mobile_identity_tmsi = NULL;
     served_gummei_t *served_gummei = NULL;
-    ogs_nas_guti_t ogs_nas_guti;
+    ogs_nas_eps_guti_t ogs_nas_guti;
 
     switch (message->emm.h.message_type) {
     case OGS_NAS_EPS_ATTACH_REQUEST:

@@ -39,7 +39,7 @@ int emm_handle_attach_request(
     int served_tai_index = 0;
 
     ogs_nas_eps_mobile_identity_guti_t *eps_mobile_identity_guti = NULL;
-    ogs_nas_guti_t nas_guti;
+    ogs_nas_eps_guti_t nas_guti;
 
     enb_ue_t *enb_ue = NULL;
     ogs_nas_eps_attach_type_t *eps_attach_type =
@@ -426,7 +426,7 @@ int emm_handle_tau_request(mme_ue_t *mme_ue,
     int served_tai_index = 0;
 
     ogs_nas_eps_mobile_identity_guti_t *eps_mobile_identity_guti = NULL;
-    ogs_nas_guti_t nas_guti;
+    ogs_nas_eps_guti_t nas_guti;
 
     ogs_nas_eps_update_type_t *eps_update_type =
                     &tau_request->eps_update_type;

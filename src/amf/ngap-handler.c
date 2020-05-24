@@ -248,10 +248,10 @@ void ngap_handle_initial_ue_message(amf_gnb_t *gnb, ogs_ngap_message_t *message)
         /* Find AMF_UE if S_TMSI included */
         if (S_TMSI) {
             served_guamfi_t *served_guamfi = &amf_self()->served_guamfi[0];
-            ogs_nas_guti_t nas_guti;
+            ogs_nas_5gs_guti_t nas_guti;
             amf_ue_t *amf_ue = NULL;
 
-            memset(&nas_guti, 0, sizeof(ogs_nas_guti_t));
+            memset(&nas_guti, 0, sizeof(ogs_nas_5gs_guti_t));
 
             /* Use the first configured plmn_id and amf group id */
             ogs_nas_from_plmn_id(&nas_guti.nas_plmn_id, &served_guamfi->plmn_id[0]);

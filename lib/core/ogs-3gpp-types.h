@@ -97,7 +97,6 @@ void *ogs_plmn_id_build(ogs_plmn_id_t *plmn_id,
         uint16_t mcc, uint16_t mnc, uint16_t mnc_len);
 
 #define OGS_MAX_NUM_OF_TAI              16
-
 typedef struct ogs_eps_tai_s {
     ogs_plmn_id_t plmn_id;
     uint16_t tac;
