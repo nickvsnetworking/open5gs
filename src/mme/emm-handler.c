@@ -120,7 +120,7 @@ int emm_handle_attach_request(
     /* Store UE specific information */
     if (attach_request->presencemask &
         OGS_NAS_EPS_ATTACH_REQUEST_LAST_VISITED_REGISTERED_TAI_PRESENT) {
-        ogs_nas_tracking_area_identity_t *last_visited_registered_tai = 
+        ogs_nas_eps_tai_t *last_visited_registered_tai = 
             &attach_request->last_visited_registered_tai;
 
         ogs_nas_to_plmn_id(&mme_ue->last_visited_plmn_id,
@@ -503,7 +503,7 @@ int emm_handle_tau_request(mme_ue_t *mme_ue,
     /* Store UE specific information */
     if (tau_request->presencemask &
         OGS_NAS_EPS_TRACKING_AREA_UPDATE_REQUEST_LAST_VISITED_REGISTERED_TAI_PRESENT) {
-        ogs_nas_tracking_area_identity_t *last_visited_registered_tai = 
+        ogs_nas_eps_tai_t *last_visited_registered_tai = 
             &tau_request->last_visited_registered_tai;
 
         ogs_nas_to_plmn_id(&mme_ue->last_visited_plmn_id,

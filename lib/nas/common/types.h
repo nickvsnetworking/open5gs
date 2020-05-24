@@ -473,7 +473,7 @@ typedef struct ogs_nas_tracking_area_identity_s {
     uint16_t tac;
 } __attribute__ ((packed)) ogs_nas_tracking_area_identity_t;
 
-typedef ogs_nas_tracking_area_identity_t ogs_nas_tai_t;
+typedef ogs_nas_tracking_area_identity_t ogs_nas_eps_tai_t;
 
 /* 9.9.3.33 Tracking area identity list
  * M LV 7-97 */
@@ -481,7 +481,7 @@ typedef ogs_nas_tracking_area_identity_t ogs_nas_tai_t;
 #define OGS_TAI0_TYPE                   0
 #define OGS_TAI1_TYPE                   1
 #define OGS_TAI2_TYPE                   2
-typedef struct ogs_tai0_list_s {
+typedef struct ogs_eps_tai0_list_s {
     struct {
     ED3(uint8_t spare:1;,
         uint8_t type:2;,
@@ -495,9 +495,9 @@ typedef struct ogs_tai0_list_s {
         ogs_plmn_id_t plmn_id;
         uint16_t tac[OGS_MAX_NUM_OF_TAI];
     } __attribute__ ((packed)) tai[OGS_MAX_NUM_OF_TAI];
-} __attribute__ ((packed)) ogs_tai0_list_t;
+} __attribute__ ((packed)) ogs_eps_tai0_list_t;
 
-typedef struct ogs_tai2_list_s {
+typedef struct ogs_eps_tai2_list_s {
 ED3(uint8_t spare:1;,
     uint8_t type:2;,
     uint8_t num:5;)
@@ -509,7 +509,7 @@ ED3(uint8_t spare:1;,
      * and is sent to the UE.
      */
     ogs_eps_tai_t tai[OGS_MAX_NUM_OF_TAI];
-} __attribute__ ((packed)) ogs_tai2_list_t;
+} __attribute__ ((packed)) ogs_eps_tai2_list_t;
 
 typedef struct ogs_nas_tracking_area_identity_list_s {
     uint8_t length;
@@ -517,7 +517,7 @@ typedef struct ogs_nas_tracking_area_identity_list_s {
 } __attribute__ ((packed)) ogs_nas_tracking_area_identity_list_t;
 
 void ogs_nas_tai_list_build(ogs_nas_tracking_area_identity_list_t *target,
-        ogs_tai0_list_t *source0, ogs_tai2_list_t *source2);
+        ogs_eps_tai0_list_t *source0, ogs_eps_tai2_list_t *source2);
 
 /* 9.9.3.34 UE network capability
  * M LV 3-14

@@ -447,8 +447,8 @@ int amf_context_parse_config(void)
                             YAML_SEQUENCE_NODE);
                 } else if (!strcmp(amf_key, "tai")) {
                     int num_of_list0 = 0;
-                    ogs_tai0_list_t *list0 = NULL;
-                    ogs_tai2_list_t *list2 = NULL;
+                    ogs_eps_tai0_list_t *list0 = NULL;
+                    ogs_eps_tai2_list_t *list2 = NULL;
 
                     ogs_assert(self.num_of_served_tai <=
                             OGS_MAX_NUM_OF_SERVED_TAI);

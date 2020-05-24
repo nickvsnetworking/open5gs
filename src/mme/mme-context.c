@@ -833,8 +833,8 @@ int mme_context_parse_config()
                             YAML_SEQUENCE_NODE);
                 } else if (!strcmp(mme_key, "tai")) {
                     int num_of_list0 = 0;
-                    ogs_tai0_list_t *list0 = NULL;
-                    ogs_tai2_list_t *list2 = NULL;
+                    ogs_eps_tai0_list_t *list0 = NULL;
+                    ogs_eps_tai2_list_t *list2 = NULL;
 
                     ogs_assert(self.num_of_served_tai <=
                             OGS_MAX_NUM_OF_SERVED_TAI);
@@ -1845,10 +1845,10 @@ mme_csmap_t *mme_csmap_find_by_tai(ogs_eps_tai_t *tai)
     ogs_assert(tai);
 
     ogs_list_for_each(&self.csmap_list, csmap) {
-        ogs_nas_tai_t ogs_nas_tai;
+        ogs_nas_eps_tai_t ogs_nas_tai;
         ogs_nas_from_plmn_id(&ogs_nas_tai.nas_plmn_id, &tai->plmn_id);
         ogs_nas_tai.tac = tai->tac;
-        if (memcmp(&csmap->tai, &ogs_nas_tai, sizeof(ogs_nas_tai_t)) == 0)
+        if (memcmp(&csmap->tai, &ogs_nas_tai, sizeof(ogs_nas_eps_tai_t)) == 0)
             return csmap;
     }
 
@@ -3086,9 +3086,9 @@ int mme_find_served_tai(ogs_eps_tai_t *tai)
     ogs_assert(tai);
 
     for (i = 0; i < self.num_of_served_tai; i++) {
-        ogs_tai0_list_t *list0 = &self.served_tai[i].list0;
+        ogs_eps_tai0_list_t *list0 = &self.served_tai[i].list0;
         ogs_assert(list0);
-        ogs_tai2_list_t *list2 = &self.served_tai[i].list2;
+        ogs_eps_tai2_list_t *list2 = &self.served_tai[i].list2;
         ogs_assert(list2);
 
         for (j = 0; list0->tai[j].num; j++) {

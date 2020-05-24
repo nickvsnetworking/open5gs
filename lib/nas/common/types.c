@@ -429,12 +429,12 @@ void eps_qos_build(ogs_nas_eps_quality_of_service_t *eps_qos, uint8_t qci,
 }
 
 void ogs_nas_tai_list_build(ogs_nas_tracking_area_identity_list_t *target,
-        ogs_tai0_list_t *source0, ogs_tai2_list_t *source2)
+        ogs_eps_tai0_list_t *source0, ogs_eps_tai2_list_t *source2)
 {
     int i = 0, j = 0, size = 0;
 
-    ogs_tai0_list_t target0;
-    ogs_tai2_list_t target2;
+    ogs_eps_tai0_list_t target0;
+    ogs_eps_tai2_list_t target2;
     ogs_nas_plmn_id_t ogs_nas_plmn_id;
 
     ogs_assert(target);
@@ -442,8 +442,8 @@ void ogs_nas_tai_list_build(ogs_nas_tracking_area_identity_list_t *target,
     ogs_assert(source2);
 
     memset(target, 0, sizeof(ogs_nas_tracking_area_identity_list_t));
-    memset(&target0, 0, sizeof(ogs_tai0_list_t));
-    memset(&target2, 0, sizeof(ogs_tai2_list_t));
+    memset(&target0, 0, sizeof(ogs_eps_tai0_list_t));
+    memset(&target2, 0, sizeof(ogs_eps_tai2_list_t));
 
     for (i = 0; source0->tai[i].num; i++) {
         ogs_assert(source0->tai[i].type == OGS_TAI0_TYPE);
@@ -453,8 +453,8 @@ void ogs_nas_tai_list_build(ogs_nas_tracking_area_identity_list_t *target,
         ogs_assert(source0->tai[i].num < OGS_MAX_NUM_OF_TAI);
         target0.tai[i].num = source0->tai[i].num - 1;
         memcpy(&target0.tai[i].plmn_id,
-                ogs_nas_from_plmn_id(&ogs_nas_plmn_id, &source0->tai[i].plmn_id),
-                OGS_PLMN_ID_LEN);
+            ogs_nas_from_plmn_id(&ogs_nas_plmn_id, &source0->tai[i].plmn_id),
+            OGS_PLMN_ID_LEN);
 
         for (j = 0; j < source0->tai[i].num; j++) {
             target0.tai[i].tac[j] = htobe16(source0->tai[i].tac[j]);
