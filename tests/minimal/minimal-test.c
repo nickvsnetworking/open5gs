@@ -98,11 +98,11 @@ static void test1_func(abts_case *tc, void *data)
         "\"__v\" : 0 "
       "}";
 
-#if 0
-    /* eNB connects to MME */
-    ngap = testenb_ngap_client("127.0.0.1");
+    /* gNB connects to AMF */
+    ngap = testgnb_ngap_client("127.0.0.1");
     ABTS_PTR_NOTNULL(tc, ngap);
 
+#if 0
     /* eNB connects to SGW */
     gtpu = testenb_gtpu_server("127.0.0.5");
     ABTS_PTR_NOTNULL(tc, gtpu);
@@ -252,12 +252,12 @@ static void test1_func(abts_case *tc, void *data)
 
     mongoc_collection_destroy(collection);
 
-    /* eNB disonncect from MME */
-    testenb_ngap_close(ngap);
-
     /* eNB disonncect from SGW */
     testenb_gtpu_close(gtpu);
 #endif
+
+    /* gNB disonncect from AMF */
+    testgnb_ngap_close(ngap);
 }
 
 abts_suite *test_minimal(abts_suite *suite)

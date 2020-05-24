@@ -43,6 +43,18 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
 #if 0
     ogs_pkbuf_t *recvbuf = NULL;
 #endif
+    char buf[OGS_ADDRSTRLEN];
+
+    ogs_sock_t *sock = NULL;
+    ogs_sockaddr_t *addr = NULL;
+    amf_gnb_t *gnb = NULL;
+    uint16_t max_num_of_ostreams = 0;
+
+    ngap_message_t ngap_message;
+    ogs_pkbuf_t *pkbuf = NULL;
+    int rc;
+
+    ogs_nas_5gs_message_t nas_message;
 
     ogs_sbi_server_t *server = NULL;
     ogs_sbi_session_t *session = NULL;
@@ -281,6 +293,118 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
                     amf_timer_get_name(e->timer_id), e->timer_id);
         }
         break;
+
+    case AMF_EVT_NGAP_LO_ACCEPT:
+        sock = e->ngap.sock;
+        ogs_assert(sock);
+        addr = e->ngap.addr;
+        ogs_assert(addr);
+
+        ogs_info("gNB-N1 accepted[%s] in master_sm module",
+        OGS_ADDR(addr, buf));
+
+        gnb = amf_gnb_find_by_addr(addr);
+        if (!gnb) {
+            gnb = amf_gnb_add(sock, addr);
+            ogs_assert(gnb);
+        } else {
+            ogs_warn("gNB context duplicated with IP-address [%s]!!!",
+                    OGS_ADDR(addr, buf));
+            ogs_sock_destroy(sock);
+            ogs_warn("N1 Socket Closed");
+        }
+
+        break;
+
+    case AMF_EVT_NGAP_LO_SCTP_COMM_UP:
+        sock = e->ngap.sock;
+        ogs_assert(sock);
+        addr = e->ngap.addr;
+        ogs_assert(addr);
+
+        max_num_of_ostreams = e->ngap.max_num_of_ostreams;
+
+        gnb = amf_gnb_find_by_addr(addr);
+        if (!gnb) {
+            gnb = amf_gnb_add(sock, addr);
+            ogs_assert(gnb);
+        } else {
+            ogs_free(addr);
+        }
+
+        gnb->max_num_of_ostreams =
+                ogs_min(max_num_of_ostreams, gnb->max_num_of_ostreams);
+
+        ogs_debug("gNB-N1 SCTP_COMM_UP[%s] Max Num of Outbound Streams[%d]", 
+            OGS_ADDR(addr, buf), gnb->max_num_of_ostreams);
+
+        break;
+
+    case AMF_EVT_NGAP_LO_CONNREFUSED:
+        sock = e->ngap.sock;
+        ogs_assert(sock);
+        addr = e->ngap.addr;
+        ogs_assert(addr);
+
+        gnb = amf_gnb_find_by_addr(addr);
+        ogs_free(addr);
+
+        if (gnb) {
+            ogs_info("gNB-N1[%s] connection refused!!!", 
+                    OGS_ADDR(addr, buf));
+            amf_gnb_remove(gnb);
+        } else {
+            ogs_warn("gNB-N1[%s] connection refused, Already Removed!",
+                    OGS_ADDR(addr, buf));
+        }
+
+        break;
+    case AMF_EVT_NGAP_MESSAGE:
+        sock = e->ngap.sock;
+        ogs_assert(sock);
+        addr = e->ngap.addr;
+        ogs_assert(addr);
+        pkbuf = e->pkbuf;
+        ogs_assert(pkbuf);
+
+        gnb = amf_gnb_find_by_addr(addr);
+        ogs_free(addr);
+
+        ogs_assert(gnb);
+        ogs_assert(OGS_FSM_STATE(&gnb->sm));
+
+        rc = ogs_ngap_decode(&ngap_message, pkbuf);
+        if (rc == OGS_OK) {
+            e->gnb = gnb;
+            e->ngap.message = &ngap_message;
+            ogs_fsm_dispatch(&gnb->sm, e);
+        } else {
+            ogs_warn("Cannot process NGAP message");
+#if 0
+            ngap_send_error_indication(
+                    gnb, NULL, NULL, NGAP_Cause_PR_protocol, 
+                    NGAP_CauseProtocol_abstract_syntax_error_falsely_constructed_message);
+#endif
+        }
+
+        ogs_ngap_free(&ngap_message);
+        ogs_pkbuf_free(pkbuf);
+        break;
+
+    case AMF_EVT_NGAP_TIMER:
+#if 0
+        gnb_ue = e->gnb_ue;
+        ogs_assert(gnb_ue);
+        gnb = e->gnb;
+        ogs_assert(gnb);
+        ogs_assert(OGS_FSM_STATE(&gnb->sm));
+
+        ogs_fsm_dispatch(&gnb->sm, e);
+#else
+        ogs_fatal("Not implemeted");
+#endif
+        break;
+
 
     default:
         ogs_error("No handler for event %s", amf_event_get_name(e));

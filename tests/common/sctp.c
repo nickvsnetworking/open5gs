@@ -19,13 +19,13 @@
 
 #include "test-common.h"
 
-ogs_socknode_t *testsctp_server(const char *ipstr)
+ogs_socknode_t *testsctp_server(const char *ipstr, int port)
 {
     int rv;
     ogs_sockaddr_t *addr = NULL;
     ogs_socknode_t *node = NULL;
 
-    rv = ogs_getaddrinfo(&addr, AF_UNSPEC, ipstr, OGS_SGSAP_SCTP_PORT, 0);
+    rv = ogs_getaddrinfo(&addr, AF_UNSPEC, ipstr, port, 0);
     ogs_assert(rv == OGS_OK);
 
     node = ogs_socknode_new(addr);
@@ -38,13 +38,13 @@ ogs_socknode_t *testsctp_server(const char *ipstr)
     return node;
 }
 
-ogs_socknode_t *testsctp_client(const char *ipstr)
+ogs_socknode_t *testsctp_client(const char *ipstr, int port)
 {
     int rv;
     ogs_sockaddr_t *addr = NULL;
     ogs_socknode_t *node = NULL;
 
-    rv = ogs_getaddrinfo(&addr, AF_UNSPEC, ipstr, OGS_S1AP_SCTP_PORT, 0);
+    rv = ogs_getaddrinfo(&addr, AF_UNSPEC, ipstr, port, 0);
     ogs_assert(rv == OGS_OK);
 
     node = ogs_socknode_new(addr);
