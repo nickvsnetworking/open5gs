@@ -28,7 +28,7 @@
 extern "C" {
 #endif
 
-void test_app_run(int argc, const char *const argv[],
+void test_epc_run(int argc, const char *const argv[],
         const char *name, void (*init)(const char * const argv[]));
 void test_5gc_run(int argc, const char *const argv[],
         const char *name, void (*init)(const char * const argv[]));
