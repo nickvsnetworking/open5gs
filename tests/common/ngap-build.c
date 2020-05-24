@@ -51,6 +51,7 @@ int testngap_build_setup_req(
 
     NGSetupRequest = &initiatingMessage->value.choice.NGSetupRequest;
 
+#if 0
     ie = CALLOC(1, sizeof(NGAP_NGSetupRequestIEs_t));
     ASN_SEQUENCE_ADD(&NGSetupRequest->protocolIEs, ie);
 
@@ -68,6 +69,7 @@ int testngap_build_setup_req(
     ie->value.present = NGAP_NGSetupRequestIEs__value_PR_SupportedTAList;
 
     SupportedTAList = &ie->value.choice.SupportedTAList;
+#endif
 
     ie = CALLOC(1, sizeof(NGAP_NGSetupRequestIEs_t));
     ASN_SEQUENCE_ADD(&NGSetupRequest->protocolIEs, ie);
@@ -78,6 +80,7 @@ int testngap_build_setup_req(
 
     PagingDRX = &ie->value.choice.PagingDRX;
 
+#if 0
     ogs_plmn_id_build(&plmn_id, mcc, mnc, mnc_len);
 
     globalGNB_ID = CALLOC(1, sizeof(*globalGNB_ID));
@@ -97,6 +100,7 @@ int testngap_build_setup_req(
     ASN_SEQUENCE_ADD(&SupportedTAItem->broadcastPLMNList.list, pLMNIdentity);
 
     ASN_SEQUENCE_ADD(&SupportedTAList->list, SupportedTAItem);
+#endif
 
     *PagingDRX = NGAP_PagingDRX_v64;
 

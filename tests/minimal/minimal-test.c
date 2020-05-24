@@ -104,18 +104,23 @@ static void test1_func(abts_case *tc, void *data)
 
 #if 0
     /* eNB connects to SGW */
-    gtpu = testenb_gtpu_server("127.0.0.5");
+    gtpu = testgnb_gtpu_server("127.0.0.5");
     ABTS_PTR_NOTNULL(tc, gtpu);
+#endif
 
-    /* Send S1-Setup Reqeust */
-    rv = testngap_build_setup_req(
-            &sendbuf, S1AP_ENB_ID_PR_macroENB_ID, 0x54f64, 51, 310, 14, 3);
+    /* Send NG-Setup Reqeust */
+#if 0
+    rv = testngap_build_setup_req(&sendbuf, 0x54f64, 51, 310, 14, 3);
+#else
+    rv = testngap_build_setup_req(&sendbuf, 0x000102, 1, 208, 93, 2);
+#endif
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_ngap_send(ngap, sendbuf);
+    rv = testgnb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
+#if 0
     /* Receive S1-Setup Response */
-    recvbuf = testenb_ngap_read(ngap);
+    recvbuf = testgnb_ngap_read(ngap);
     ABTS_PTR_NOTNULL(tc, recvbuf);
     rv = ogs_ngap_decode(&message, recvbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
@@ -144,11 +149,11 @@ static void test1_func(abts_case *tc, void *data)
     mme_self()->mme_ue_ngap_id = 27263233;
     rv = testngap_build_initial_ue_msg(&sendbuf, msgindex);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_ngap_send(ngap, sendbuf);
+    rv = testgnb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     /* Receive Authentication Request */
-    recvbuf = testenb_ngap_read(ngap);
+    recvbuf = testgnb_ngap_read(ngap);
     ABTS_PTR_NOTNULL(tc, recvbuf);
     ABTS_TRUE(tc, memcmp(recvbuf->data, 
         OGS_HEX(_authentication_request, strlen(_authentication_request), tmp),
@@ -158,11 +163,11 @@ static void test1_func(abts_case *tc, void *data)
     /* Send Authentication Response */
     rv = testngap_build_authentication_response(&sendbuf, msgindex);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_ngap_send(ngap, sendbuf);
+    rv = testgnb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     /* Receive Security mode Command */
-    recvbuf = testenb_ngap_read(ngap);
+    recvbuf = testgnb_ngap_read(ngap);
     ABTS_PTR_NOTNULL(tc, recvbuf);
     ABTS_TRUE(tc, memcmp(recvbuf->data,
         OGS_HEX(_security_mode_command, strlen(_security_mode_command), tmp),
@@ -172,11 +177,11 @@ static void test1_func(abts_case *tc, void *data)
     /* Send Security mode Complete */
     rv = testngap_build_security_mode_complete(&sendbuf, msgindex);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_ngap_send(ngap, sendbuf);
+    rv = testgnb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     /* Receive ESM Information Request */
-    recvbuf = testenb_ngap_read(ngap);
+    recvbuf = testgnb_ngap_read(ngap);
     ABTS_PTR_NOTNULL(tc, recvbuf);
     ABTS_TRUE(tc, memcmp(recvbuf->data, 
         OGS_HEX(_esm_information_request, strlen(_security_mode_command), tmp),
@@ -186,13 +191,13 @@ static void test1_func(abts_case *tc, void *data)
     /* Send ESM Information Response */
     rv = testngap_build_esm_information_response(&sendbuf, msgindex);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_ngap_send(ngap, sendbuf);
+    rv = testgnb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     /* Receive Initial Context Setup Request + 
      * Attach Accept + 
      * Activate Default Bearer Context Request */
-    recvbuf = testenb_ngap_read(ngap);
+    recvbuf = testgnb_ngap_read(ngap);
     ABTS_PTR_NOTNULL(tc, recvbuf);
     OGS_HEX(_initial_context_setup_request,
             strlen(_initial_context_setup_request), tmp);
@@ -204,7 +209,7 @@ static void test1_func(abts_case *tc, void *data)
     /* Send UE Capability Info Indication */
     rv = testngap_build_ue_capability_info_indication(&sendbuf, msgindex);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_ngap_send(ngap, sendbuf);
+    rv = testgnb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     ogs_msleep(50);
@@ -213,19 +218,19 @@ static void test1_func(abts_case *tc, void *data)
     rv = testngap_build_initial_context_setup_response(&sendbuf,
             27263233, 24, 5, 1, "127.0.0.5");
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_ngap_send(ngap, sendbuf);
+    rv = testgnb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     /* Send Attach Complete + Activate default EPS bearer cotext accept */
     rv = testngap_build_attach_complete(&sendbuf, msgindex);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_ngap_send(ngap, sendbuf);
+    rv = testgnb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     ogs_msleep(50);
 
     /* Receive EMM information */
-    recvbuf = testenb_ngap_read(ngap);
+    recvbuf = testgnb_ngap_read(ngap);
     ABTS_PTR_NOTNULL(tc, recvbuf);
     OGS_HEX(_emm_information, strlen(_emm_information), tmp);
     ABTS_TRUE(tc, memcmp(recvbuf->data, tmp, 28) == 0);
@@ -235,11 +240,11 @@ static void test1_func(abts_case *tc, void *data)
     /* Send GTP-U ICMP Packet */
     rv = testgtpu_build_ping(&sendbuf, 1, "10.45.0.2", "10.45.0.1");
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    rv = testenb_gtpu_send(gtpu, sendbuf);
+    rv = testgnb_gtpu_send(gtpu, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
     /* Receive GTP-U ICMP Packet */
-    recvbuf = testenb_gtpu_read(gtpu);
+    recvbuf = testgnb_gtpu_read(gtpu);
     ABTS_PTR_NOTNULL(tc, recvbuf);
     ogs_pkbuf_free(recvbuf);
 
@@ -253,7 +258,7 @@ static void test1_func(abts_case *tc, void *data)
     mongoc_collection_destroy(collection);
 
     /* eNB disonncect from SGW */
-    testenb_gtpu_close(gtpu);
+    testgnb_gtpu_close(gtpu);
 #endif
 
     /* gNB disonncect from AMF */

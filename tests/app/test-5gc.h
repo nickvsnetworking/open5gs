@@ -2,10 +2,7 @@
 #define TEST_5GC_H
 
 #include "test-common.h"
-
-#include "ogs-ngap.h"
-#include "ogs-sbi.h"
-#include "ogs-nas-5gs.h"
+#include "test-ngap.h"
 
 #include "amf/context.h"
 
