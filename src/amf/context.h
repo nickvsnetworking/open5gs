@@ -66,8 +66,8 @@ typedef struct amf_context_s {
     /* Served TAI */
     uint8_t         num_of_served_tai;
     struct {
-        ogs_eps_tai0_list_t list0;
-        ogs_eps_tai2_list_t list2;
+        ogs_5gs_tai0_list_t list0;
+        ogs_5gs_tai2_list_t list2;
     } served_tai[OGS_MAX_NUM_OF_SERVED_TAI];
 
     /* defined in 'nas_ies.h'
@@ -122,7 +122,7 @@ typedef struct amf_gnb_s {
 
 
     uint8_t         num_of_supported_ta_list;
-    ogs_eps_tai_t   supported_ta_list[OGS_MAX_NUM_OF_TAI*OGS_MAX_NUM_OF_BPLMN];
+    ogs_5gs_tai_t   supported_ta_list[OGS_MAX_NUM_OF_TAI*OGS_MAX_NUM_OF_BPLMN];
 
     ogs_list_t      gnb_ue_list;
 

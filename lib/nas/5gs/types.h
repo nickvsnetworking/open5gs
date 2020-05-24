@@ -214,11 +214,54 @@ ED3(uint8_t type:4;,
 
 /* 9.11.3.8 5GS tracking area identity
  * O TV 6 */
-typedef ogs_nas_tracking_area_identity_t ogs_nas_5gs_tracking_area_identity_t;
+typedef struct ogs_nas_5gs_tracking_area_identity_s {
+    ogs_nas_plmn_id_t nas_plmn_id;
+    uint16_t tac;
+} __attribute__ ((packed)) ogs_nas_5gs_tracking_area_identity_t;
+
+typedef ogs_nas_5gs_tracking_area_identity_t ogs_nas_5gs_tai_t;
 
 /* 9.11.3.9 5GS tracking area identity list
  * O TLV 9-114 */
-typedef ogs_nas_tracking_area_identity_list_t ogs_nas_5gs_tracking_area_identity_list_t;
+#define OGS_NAS_5GS_MAX_TAI_LIST_LEN    114
+typedef struct ogs_5gs_tai0_list_s {
+    struct {
+    ED3(uint8_t spare:1;,
+        uint8_t type:2;,
+        uint8_t num:5;)
+        /*
+         * Do not change 'ogs_plmn_id_t' to 'ogs_nas_plmn_id_t'.
+         * Use 'ogs_plmn_id_t' for easy implementation.
+         * ogs_nas_tai_list_build() changes to NAS format(ogs_nas_plmn_id_t)
+         * and is sent to the UE.
+         */
+        ogs_plmn_id_t plmn_id;
+        uint16_t tac[OGS_MAX_NUM_OF_TAI];
+    } __attribute__ ((packed)) tai[OGS_MAX_NUM_OF_TAI];
+} __attribute__ ((packed)) ogs_5gs_tai0_list_t;
+
+typedef struct ogs_5gs_tai2_list_s {
+ED3(uint8_t spare:1;,
+    uint8_t type:2;,
+    uint8_t num:5;)
+    /*
+     * Do not change 'ogs_5gs_tai_t' to 'ogs_nas_tracking_area_identity_t'.
+     * Use 'ogs_5gs_tai_t' for easy implementation.
+     * ogs_nas_tai_list_build() changes to NAS 
+     * format(ogs_nas_tracking_area_identity_t)
+     * and is sent to the UE.
+     */
+    ogs_5gs_tai_t tai[OGS_MAX_NUM_OF_TAI];
+} __attribute__ ((packed)) ogs_5gs_tai2_list_t;
+
+typedef struct ogs_nas_5gs_tracking_area_identity_list_s {
+    uint8_t length;
+    uint8_t buffer[OGS_NAS_5GS_MAX_TAI_LIST_LEN];
+} __attribute__ ((packed)) ogs_nas_5gs_tracking_area_identity_list_t;
+
+void ogs_nas_5gs_tai_list_build(
+        ogs_nas_5gs_tracking_area_identity_list_t *target,
+        ogs_5gs_tai0_list_t *source0, ogs_5gs_tai2_list_t *source2);
 
 /* 9.11.3.9A 5GS update type
  * O TLV 3 */

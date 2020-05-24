@@ -67,14 +67,14 @@ extern "C" {
 #define OGS_NAS_PROCEDURE_TRANSACTION_IDENTITY_UNASSIGNED 0
 
 typedef struct ogs_uint24_s {
-    uint32_t v: 24;
+    uint32_t v:24;
 }  __attribute__ ((packed)) ogs_uint24_t;
 
-#define ogs_htole24(x) htole32((x).v)
-#define ogs_le24toh(x) le32toh((x).v)
+#define ogs_htole24(x) htole32(x)
+#define ogs_le24toh(x) le32toh(x)
 
-#define ogs_htobe24(x) htobe32((x).v)
-#define ogs_be24toh(x) be32toh((x).v)
+#define ogs_htobe24(x) htobe32(x)
+#define ogs_be24toh(x) be32toh(x)
 
 /**********************************
  * PLMN_ID Structure             */
@@ -102,6 +102,11 @@ typedef struct ogs_eps_tai_s {
     ogs_plmn_id_t plmn_id;
     uint16_t tac;
 } __attribute__ ((packed)) ogs_eps_tai_t;
+
+typedef struct ogs_5gs_tai_s {
+    ogs_plmn_id_t plmn_id;
+    uint16_t tac;
+} __attribute__ ((packed)) ogs_5gs_tai_t;
 
 typedef struct ogs_e_cgi_s {
     ogs_plmn_id_t plmn_id;
