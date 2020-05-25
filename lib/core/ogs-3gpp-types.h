@@ -166,6 +166,11 @@ typedef struct ogs_e_cgi_s {
     uint32_t cell_id; /* 28 bit */
 } __attribute__ ((packed)) ogs_e_cgi_t;
 
+typedef struct ogs_nr_cgi_s {
+    ogs_plmn_id_t plmn_id;
+    uint64_t cell_id; /* 36 bit */
+} __attribute__ ((packed)) ogs_nr_cgi_t;
+
 /************************************
  * S-NSSAI Structure                */
 #define OGS_MAX_NUM_OF_S_NSSAI      8

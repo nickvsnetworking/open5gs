@@ -57,6 +57,8 @@ ogs_pkbuf_t *ngap_build_ng_setup_response(void)
     ie->value.present = NGAP_NGSetupResponseIEs__value_PR_AMFName;
 
     AMFName = &ie->value.choice.AMFName;
+    ogs_asn_buffer_to_OCTET_STRING((char*)amf_self()->amf_name,
+            strlen(amf_self()->amf_name), AMFName);
 
     ie = CALLOC(1, sizeof(NGAP_NGSetupResponseIEs_t));
     ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
@@ -66,28 +68,6 @@ ogs_pkbuf_t *ngap_build_ng_setup_response(void)
     ie->value.present = NGAP_NGSetupResponseIEs__value_PR_ServedGUAMIList;
 
     ServedGUAMIList = &ie->value.choice.ServedGUAMIList;
-
-    ie = CALLOC(1, sizeof(NGAP_NGSetupResponseIEs_t));
-    ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
-
-    ie->id = NGAP_ProtocolIE_ID_id_RelativeAMFCapacity;
-    ie->criticality = NGAP_Criticality_ignore;
-    ie->value.present = NGAP_NGSetupResponseIEs__value_PR_RelativeAMFCapacity;
-
-    RelativeAMFCapacity = &ie->value.choice.RelativeAMFCapacity;
-
-    ie = CALLOC(1, sizeof(NGAP_NGSetupResponseIEs_t));
-    ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
-
-    ie->id = NGAP_ProtocolIE_ID_id_PLMNSupportList;
-    ie->criticality = NGAP_Criticality_reject;
-    ie->value.present = NGAP_NGSetupResponseIEs__value_PR_PLMNSupportList;
-
-    PLMNSupportList = &ie->value.choice.PLMNSupportList;
-
-    ogs_asn_buffer_to_OCTET_STRING((char*)amf_self()->amf_name,
-            strlen(amf_self()->amf_name), AMFName);
-
     for (i = 0; i < amf_self()->num_of_served_guami; i++) {
         NGAP_ServedGUAMIItem_t *ServedGUAMIItem = NULL;
         NGAP_GUAMI_t *gUAMI = NULL;
@@ -120,8 +100,24 @@ ogs_pkbuf_t *ngap_build_ng_setup_response(void)
         ASN_SEQUENCE_ADD(&ServedGUAMIList->list, ServedGUAMIItem);
     }
 
+    ie = CALLOC(1, sizeof(NGAP_NGSetupResponseIEs_t));
+    ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
+
+    ie->id = NGAP_ProtocolIE_ID_id_RelativeAMFCapacity;
+    ie->criticality = NGAP_Criticality_ignore;
+    ie->value.present = NGAP_NGSetupResponseIEs__value_PR_RelativeAMFCapacity;
+
+    RelativeAMFCapacity = &ie->value.choice.RelativeAMFCapacity;
     *RelativeAMFCapacity = amf_self()->relative_capacity;
 
+    ie = CALLOC(1, sizeof(NGAP_NGSetupResponseIEs_t));
+    ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
+
+    ie->id = NGAP_ProtocolIE_ID_id_PLMNSupportList;
+    ie->criticality = NGAP_Criticality_reject;
+    ie->value.present = NGAP_NGSetupResponseIEs__value_PR_PLMNSupportList;
+
+    PLMNSupportList = &ie->value.choice.PLMNSupportList;
     for (i = 0; i < amf_self()->num_of_plmn_support; i++) {
         NGAP_PLMNSupportItem_t *NGAP_PLMNSupportItem = NULL;
         NGAP_PLMNIdentity_t *pLMNIdentity = NULL;
@@ -190,15 +186,6 @@ ogs_pkbuf_t *ngap_build_ng_setup_failure(
 
     NGSetupFailure = &unsuccessfulOutcome->value.choice.NGSetupFailure;
 
-    ie = CALLOC(1, sizeof(NGAP_NGSetupFailureIEs_t));
-    ASN_SEQUENCE_ADD(&NGSetupFailure->protocolIEs, ie);
-
-    ie->id = NGAP_ProtocolIE_ID_id_Cause;
-    ie->criticality = NGAP_Criticality_ignore;
-    ie->value.present = NGAP_NGSetupFailureIEs__value_PR_Cause;
-
-    Cause = &ie->value.choice.Cause;
-
     if (time_to_wait > -1) {
         ie = CALLOC(1, sizeof(NGAP_NGSetupFailureIEs_t));
         ASN_SEQUENCE_ADD(&NGSetupFailure->protocolIEs, ie);
@@ -210,6 +197,14 @@ ogs_pkbuf_t *ngap_build_ng_setup_failure(
         TimeToWait = &ie->value.choice.TimeToWait;
     }
 
+    ie = CALLOC(1, sizeof(NGAP_NGSetupFailureIEs_t));
+    ASN_SEQUENCE_ADD(&NGSetupFailure->protocolIEs, ie);
+
+    ie->id = NGAP_ProtocolIE_ID_id_Cause;
+    ie->criticality = NGAP_Criticality_ignore;
+    ie->value.present = NGAP_NGSetupFailureIEs__value_PR_Cause;
+
+    Cause = &ie->value.choice.Cause;
     Cause->present = group;
     Cause->choice.radioNetwork = cause;
 

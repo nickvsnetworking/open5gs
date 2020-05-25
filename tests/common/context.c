@@ -63,6 +63,10 @@ static int test_context_validation(void)
                 OGS_PLMN_ID_LEN);
     }
 
+    memcpy(&test_self()->cgi.plmn_id, &test_self()->tai.plmn_id,
+            OGS_PLMN_ID_LEN);
+    test_self()->cgi.cell_id = 1;
+
     return OGS_OK;
 }
 

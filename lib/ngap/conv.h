@@ -38,6 +38,12 @@ void ogs_ngap_uint16_to_NGAP_AMFSetID(
 void ogs_ngap_uint8_to_NGAP_NGAP_AMFPointer(
         uint8_t pointer, NGAP_AMFPointer_t *aMFPointer);
 
+void ogs_ngap_nr_cgi_to_ASN(ogs_nr_cgi_t *cgi, NGAP_NR_CGI_t *nR_CGI);
+void ogs_ngap_ASN_to_nr_cgi(NGAP_NR_CGI_t *nR_CGI, ogs_nr_cgi_t *cgi);
+
+void ogs_ngap_5gs_tai_to_ASN(ogs_5gs_tai_t *tai, NGAP_TAI_t *tAI);
+void ogs_ngap_ASN_to_5gs_tai(NGAP_TAI_t *tAI, ogs_5gs_tai_t *tai);
+
 #ifdef __cplusplus
 }
 #endif

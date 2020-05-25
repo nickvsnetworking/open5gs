@@ -54,6 +54,7 @@ typedef struct test_context_s {
     } plmn_support[OGS_MAX_NUM_OF_PLMN];
 
     ogs_5gs_tai_t tai;
+    ogs_nr_cgi_t cgi;
 } test_context_t;
 
 void test_context_init(void);
