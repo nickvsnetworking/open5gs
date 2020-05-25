@@ -24,7 +24,6 @@ ogs_pkbuf_t *testngap_build_ng_setup_request(uint32_t gnb_id)
     ogs_pkbuf_t *pkbuf = NULL;
     int i, j;
     ogs_plmn_id_t *plmn_id = NULL;
-    ogs_uint24_t uint24;
 
     NGAP_NGAP_PDU_t pdu;
     NGAP_InitiatingMessage_t *initiatingMessage = NULL;
@@ -42,7 +41,7 @@ ogs_pkbuf_t *testngap_build_ng_setup_request(uint32_t gnb_id)
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -137,3 +136,60 @@ ogs_pkbuf_t *testngap_build_ng_setup_request(uint32_t gnb_id)
     return ogs_ngap_encode(&pdu);
 }
 
+ogs_pkbuf_t *testngap_build_initial_ue_message(ogs_pkbuf_t *gmmbuf)
+{
+    ogs_pkbuf_t *pkbuf = NULL;
+    int i, j;
+    ogs_plmn_id_t *plmn_id = NULL;
+
+    NGAP_NGAP_PDU_t pdu;
+    NGAP_InitiatingMessage_t *initiatingMessage = NULL;
+    NGAP_InitialUEMessage_t *InitialUEMessage = NULL;
+
+    NGAP_InitialUEMessage_IEs_t *ie = NULL;
+    NGAP_RAN_UE_NGAP_ID_t *RAN_UE_NGAP_ID = NULL;
+    NGAP_NAS_PDU_t *NAS_PDU = NULL;
+    NGAP_UserLocationInformation_t *UserLocationInformation = NULL;
+    NGAP_RRCEstablishmentCause_t *RRCEstablishmentCause = NULL;
+    NGAP_UEContextRequest_t *UEContextRequest = NULL;
+
+    memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
+    pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
+    pdu.choice.initiatingMessage =
+        CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
+
+    initiatingMessage = pdu.choice.initiatingMessage;
+    initiatingMessage->procedureCode = NGAP_ProcedureCode_id_InitialUEMessage;
+    initiatingMessage->criticality = NGAP_Criticality_reject;
+    initiatingMessage->value.present =
+        NGAP_InitiatingMessage__value_PR_InitialUEMessage;
+
+    InitialUEMessage = &initiatingMessage->value.choice.InitialUEMessage;
+
+    ie = CALLOC(1, sizeof(NGAP_InitialUEMessage_IEs_t));
+    ASN_SEQUENCE_ADD(&InitialUEMessage->protocolIEs, ie);
+
+    ie->id = NGAP_ProtocolIE_ID_id_RAN_UE_NGAP_ID;
+    ie->criticality = NGAP_Criticality_reject;
+    ie->value.present = NGAP_InitialUEMessage_IEs__value_PR_RAN_UE_NGAP_ID;
+
+    RAN_UE_NGAP_ID = &ie->value.choice.RAN_UE_NGAP_ID;
+
+    ie = CALLOC(1, sizeof(NGAP_InitialUEMessage_IEs_t));
+    ASN_SEQUENCE_ADD(&InitialUEMessage->protocolIEs, ie);
+
+    ie->id = NGAP_ProtocolIE_ID_id_NAS_PDU;
+    ie->criticality = NGAP_Criticality_reject;
+    ie->value.present = NGAP_InitialUEMessage_IEs__value_PR_NAS_PDU;
+
+    NAS_PDU = &ie->value.choice.NAS_PDU;
+
+    *RAN_UE_NGAP_ID = 1;
+
+    NAS_PDU->size = gmmbuf->len;
+    NAS_PDU->buf = CALLOC(NAS_PDU->size, sizeof(uint8_t));
+    memcpy(NAS_PDU->buf, gmmbuf->data, NAS_PDU->size);
+    ogs_pkbuf_free(gmmbuf);
+
+    return ogs_ngap_encode(&pdu);
+}

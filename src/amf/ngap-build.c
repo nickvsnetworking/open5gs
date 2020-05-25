@@ -38,7 +38,7 @@ ogs_pkbuf_t *ngap_build_ng_setup_response(void)
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_successfulOutcome;
-    pdu.choice.successfulOutcome = 
+    pdu.choice.successfulOutcome =
         CALLOC(1, sizeof(NGAP_SuccessfulOutcome_t));
 
     successfulOutcome = pdu.choice.successfulOutcome;
@@ -179,7 +179,7 @@ ogs_pkbuf_t *ngap_build_ng_setup_failure(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_unsuccessfulOutcome;
-    pdu.choice.unsuccessfulOutcome = 
+    pdu.choice.unsuccessfulOutcome =
         CALLOC(1, sizeof(NGAP_UnsuccessfulOutcome_t));
 
     unsuccessfulOutcome = pdu.choice.unsuccessfulOutcome;
@@ -239,7 +239,7 @@ ogs_pkbuf_t *ngap_build_downlink_nas_transport(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -325,7 +325,7 @@ ogs_pkbuf_t *ngap_build_initial_context_setup_request(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -600,7 +600,7 @@ ogs_pkbuf_t *ngap_build_ue_context_modification_request(amf_ue_t *amf_ue)
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -737,7 +737,7 @@ ogs_pkbuf_t *ngap_build_ue_context_release_command(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -819,7 +819,7 @@ ogs_pkbuf_t *ngap_build_e_rab_setup_request(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -956,7 +956,7 @@ ogs_pkbuf_t *ngap_build_e_rab_modify_request(
     ogs_debug("[AMF] E-RAB modify request");
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -1092,7 +1092,7 @@ ogs_pkbuf_t *ngap_build_e_rab_release_command(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -1213,7 +1213,7 @@ ogs_pkbuf_t *ngap_build_paging(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -1327,7 +1327,7 @@ ogs_pkbuf_t *ngap_build_amf_configuration_transfer(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -1378,7 +1378,7 @@ ogs_pkbuf_t *ngap_build_path_switch_ack(amf_ue_t *amf_ue)
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_successfulOutcome;
-    pdu.choice.successfulOutcome = 
+    pdu.choice.successfulOutcome =
         CALLOC(1, sizeof(NGAP_SuccessfulOutcome_t));
 
     successfulOutcome = pdu.choice.successfulOutcome;
@@ -1455,7 +1455,7 @@ ogs_pkbuf_t *ngap_build_path_switch_failure(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_unsuccessfulOutcome;
-    pdu.choice.unsuccessfulOutcome = 
+    pdu.choice.unsuccessfulOutcome =
         CALLOC(1, sizeof(NGAP_UnsuccessfulOutcome_t));
 
     unsuccessfulOutcome = pdu.choice.unsuccessfulOutcome;
@@ -1537,7 +1537,7 @@ ogs_pkbuf_t *ngap_build_handover_command(gnb_ue_t *source_ue)
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_successfulOutcome;
-    pdu.choice.successfulOutcome = 
+    pdu.choice.successfulOutcome =
         CALLOC(1, sizeof(NGAP_SuccessfulOutcome_t));
 
     successfulOutcome = pdu.choice.successfulOutcome;
@@ -1699,7 +1699,7 @@ ogs_pkbuf_t *ngap_build_handover_preparation_failure(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_unsuccessfulOutcome;
-    pdu.choice.unsuccessfulOutcome = 
+    pdu.choice.unsuccessfulOutcome =
         CALLOC(1, sizeof(NGAP_UnsuccessfulOutcome_t));
 
     unsuccessfulOutcome = pdu.choice.unsuccessfulOutcome;
@@ -1797,7 +1797,7 @@ ogs_pkbuf_t *ngap_build_handover_request(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -2015,7 +2015,7 @@ ogs_pkbuf_t *ngap_build_handover_cancel_ack(gnb_ue_t *source_ue)
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_successfulOutcome;
-    pdu.choice.successfulOutcome = 
+    pdu.choice.successfulOutcome =
         CALLOC(1, sizeof(NGAP_SuccessfulOutcome_t));
 
     successfulOutcome = pdu.choice.successfulOutcome;
@@ -2080,7 +2080,7 @@ ogs_pkbuf_t *ngap_build_amf_status_transfer(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -2153,7 +2153,7 @@ ogs_pkbuf_t *ngap_build_error_indication(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -2226,7 +2226,7 @@ ogs_pkbuf_t *ngap_build_s1_reset(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -2313,7 +2313,7 @@ ogs_pkbuf_t *ngap_build_s1_reset_ack(
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_successfulOutcome;
-    pdu.choice.successfulOutcome = 
+    pdu.choice.successfulOutcome =
         CALLOC(1, sizeof(NGAP_SuccessfulOutcome_t));
 
     successfulOutcome = pdu.choice.successfulOutcome;
@@ -2414,7 +2414,7 @@ ogs_pkbuf_t *ngap_build_write_replace_warning_request(sbc_pws_data_t *sbc_pws)
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;
@@ -2552,7 +2552,7 @@ ogs_pkbuf_t *ngap_build_kill_request(sbc_pws_data_t *sbc_pws)
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_initiatingMessage;
-    pdu.choice.initiatingMessage = 
+    pdu.choice.initiatingMessage =
         CALLOC(1, sizeof(NGAP_InitiatingMessage_t));
 
     initiatingMessage = pdu.choice.initiatingMessage;

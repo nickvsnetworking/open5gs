@@ -28,7 +28,7 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.2.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-24 17:29:31.588956 by acetcom
+ * Created on: 2020-05-25 14:53:46.444896 by acetcom
  * from 24501-g41.docx
  ******************************************************************************/
 
@@ -1731,7 +1731,7 @@ int ogs_nas_5gs_decode_5gs_mobile_identity(ogs_nas_5gs_mobile_identity_t *mobile
     uint16_t size = 0;
     ogs_nas_5gs_mobile_identity_t *source = (ogs_nas_5gs_mobile_identity_t *)pkbuf->data;
 
-    mobile_identity->length = source->length;
+    mobile_identity->length = be16toh(source->length);
     size = mobile_identity->length + sizeof(mobile_identity->length);
 
     ogs_assert(ogs_pkbuf_pull(pkbuf, size));
@@ -1755,6 +1755,7 @@ int ogs_nas_5gs_encode_5gs_mobile_identity(ogs_pkbuf_t *pkbuf, ogs_nas_5gs_mobil
     ogs_nas_5gs_mobile_identity_t target;
 
     memcpy(&target, mobile_identity, sizeof(ogs_nas_5gs_mobile_identity_t));
+    target.length = htobe16(target.length);
     if (mobile_identity->guti.type == OGS_NAS_5GS_MOBILE_IDENTITY_GUTI) {
         target.guti.m_tmsi = htobe32(mobile_identity->guti.m_tmsi);
         target.guti._0xf = 0xf;

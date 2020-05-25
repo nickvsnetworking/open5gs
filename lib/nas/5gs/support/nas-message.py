@@ -430,7 +430,36 @@ for (k, v) in sorted_type_list:
         f.write("    ogs_log_hexdump(OGS_LOG_TRACE, pkbuf->data - size, size);\n\n");
         f.write("    return size;\n")
         f.write("}\n\n")
-    elif (type_list[k]["format"] == "LV-E" or type_list[k]["format"] == "TLV-E") and type_list[k]["value"] != "5GS mobile identity":
+    elif type_list[k]["value"] == "5GS mobile identity":
+        f.write("int ogs_nas_5gs_decode_%s(ogs_nas_%s_t *%s, ogs_pkbuf_t *pkbuf)\n" % (v_lower(k), v_lower(k), get_value(k)))
+        f.write("{\n")
+        f.write("    uint16_t size = 0;\n")
+        f.write("    ogs_nas_%s_t *source = (ogs_nas_%s_t *)pkbuf->data;\n\n" % (v_lower(k), v_lower(k)))
+        f.write("    %s->length = be16toh(source->length);\n" % get_value(k))
+        f.write("    size = %s->length + sizeof(%s->length);\n\n" % (get_value(k), get_value(k)))
+        f.write("    ogs_assert(ogs_pkbuf_pull(pkbuf, size));\n")
+        f.write("    memcpy(%s, pkbuf->data - size, size);\n\n" % get_value(k))
+        if "decode" in type_list[k]:
+            f.write("%s" % type_list[k]["decode"])
+        f.write("    ogs_trace(\"  %s - \");\n" % v_upper(k))
+        f.write("    ogs_log_hexdump(OGS_LOG_TRACE, pkbuf->data - size, size);\n\n");
+        f.write("    return size;\n")
+        f.write("}\n\n")
+        f.write("int ogs_nas_5gs_encode_%s(ogs_pkbuf_t *pkbuf, ogs_nas_%s_t *%s)\n" % (v_lower(k), v_lower(k), get_value(k)))
+        f.write("{\n")
+        f.write("    uint16_t size = %s->length + sizeof(%s->length);\n" % (get_value(k), get_value(k)))
+        f.write("    ogs_nas_%s_t target;\n\n" % v_lower(k))
+        f.write("    memcpy(&target, %s, sizeof(ogs_nas_%s_t));\n" % (get_value(k), v_lower(k)))
+        f.write("    target.length = htobe16(target.length);\n")
+        if "encode" in type_list[k]:
+            f.write("%s" % type_list[k]["encode"])
+        f.write("    ogs_assert(ogs_pkbuf_pull(pkbuf, size));\n")
+        f.write("    memcpy(pkbuf->data - size, &target, size);\n\n")
+        f.write("    ogs_trace(\"  %s - \");\n" % v_upper(k))
+        f.write("    ogs_log_hexdump(OGS_LOG_TRACE, pkbuf->data - size, size);\n\n");
+        f.write("    return size;\n")
+        f.write("}\n\n");
+    elif type_list[k]["format"] == "LV-E" or type_list[k]["format"] == "TLV-E":
         f.write("int ogs_nas_5gs_decode_%s(ogs_nas_%s_t *%s, ogs_pkbuf_t *pkbuf)\n" % (v_lower(k), v_lower(k), get_value(k)))
         f.write("{\n")
         f.write("    uint16_t size = 0;\n")

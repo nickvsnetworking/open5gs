@@ -134,9 +134,12 @@ static void test1_func(abts_case *tc, void *data)
 
     gmmbuf = test5gmm_build_registration_request();
     ABTS_PTR_NOTNULL(tc, gmmbuf);
+    sendbuf = testngap_build_initial_ue_message(gmmbuf);
+    ABTS_PTR_NOTNULL(tc, sendbuf);
+    rv = testgnb_ngap_send(ngap, sendbuf);
+    ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
-    ogs_log_hexdump(OGS_LOG_FATAL, gmmbuf->data, gmmbuf->len);
-
+    ogs_msleep(300);
 #if 0
     collection = mongoc_client_get_collection(
         ogs_mongoc()->client, ogs_mongoc()->name, "subscribers");

@@ -25,6 +25,7 @@ extern "C" {
 #endif
 
 ogs_pkbuf_t *testngap_build_ng_setup_request(uint32_t gnb_id);
+ogs_pkbuf_t *testngap_build_initial_ue_message(ogs_pkbuf_t *gmmbuf);
 
 #ifdef __cplusplus
 }
