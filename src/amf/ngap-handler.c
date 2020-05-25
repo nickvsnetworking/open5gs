@@ -119,18 +119,25 @@ void ngap_handle_ng_setup_request(amf_gnb_t *gnb, ogs_ngap_message_t *message)
         return;
     }
 
+    if (!SupportedTAList) {
+        ogs_warn("No SupportedTAList");
+        group = NGAP_Cause_PR_protocol;
+        cause = NGAP_CauseProtocol_semantic_error;
+        ngap_send_s1_setup_failure(gnb, group, cause);
+        return;
+    }
+
     ogs_ngap_GNB_ID_to_uint32(&globalGNB_ID->gNB_ID, &gnb_id);
     ogs_fatal("    IP[%s] GNB_ID[%x]", OGS_ADDR(gnb->addr, buf), gnb_id);
 
     if (PagingDRX)
         ogs_debug("    PagingDRX[%ld]", *PagingDRX);
 
-#if 0
     amf_gnb_set_gnb_id(gnb, gnb_id);
 
-    ogs_assert(SupportedTAs);
     /* Parse Supported TA */
     gnb->num_of_supported_ta_list = 0;
+#if 0
     for (i = 0; i < SupportedTAs->list.count; i++) {
         NGAP_SupportedTAs_Item_t *SupportedTAs_Item = NULL;
         NGAP_TAC_t *tAC = NULL;
