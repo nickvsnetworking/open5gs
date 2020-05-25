@@ -24,6 +24,7 @@ static void test1_func(abts_case *tc, void *data)
     int rv;
     ogs_socknode_t *ngap;
     ogs_socknode_t *gtpu;
+    ogs_pkbuf_t *gmmbuf;
     ogs_pkbuf_t *sendbuf;
     ogs_pkbuf_t *recvbuf;
     ogs_ngap_message_t message;
@@ -115,7 +116,7 @@ static void test1_func(abts_case *tc, void *data)
 #endif
 
     /* Send NG-Setup Reqeust */
-    sendbuf = testngap_build_setup_req(0x000102);
+    sendbuf = testngap_build_ng_setup_request(0x000102);
     ABTS_PTR_NOTNULL(tc, sendbuf);
     ABTS_TRUE(tc, memcmp(sendbuf->data,
         OGS_HEX(_ng_setup_request, strlen(_ng_setup_request), tmp),
@@ -130,6 +131,11 @@ static void test1_func(abts_case *tc, void *data)
         OGS_HEX(_ng_setup_response, strlen(_ng_setup_response), tmp),
         recvbuf->len) == 0);
     ogs_pkbuf_free(recvbuf);
+
+    gmmbuf = test5gmm_build_registration_request();
+    ABTS_PTR_NOTNULL(tc, gmmbuf);
+
+    ogs_log_hexdump(OGS_LOG_FATAL, gmmbuf->data, gmmbuf->len);
 
 #if 0
     collection = mongoc_client_get_collection(

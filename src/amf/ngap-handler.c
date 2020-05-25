@@ -78,7 +78,7 @@ void ngap_handle_ng_setup_request(amf_gnb_t *gnb, ogs_ngap_message_t *message)
     NGSetupRequest = &initiatingMessage->value.choice.NGSetupRequest;
     ogs_assert(NGSetupRequest);
 
-    ogs_debug("[AMF] NG-Setup request");
+    ogs_debug("NG-Setup request");
 
     for (i = 0; i < NGSetupRequest->protocolIEs.list.count; i++) {
         ie = NGSetupRequest->protocolIEs.list.array[i];

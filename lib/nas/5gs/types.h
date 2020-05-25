@@ -67,9 +67,9 @@ typedef struct ogs_nas_s_nssai_s {
 typedef struct ogs_nas_5gmm_capability_s {
     uint8_t length;
 ED4(uint8_t spare:5;,
-    uint8_t lpp:1;,
-    uint8_t ho:1;,
-    uint8_t s1:1;)
+    uint8_t lte_positioning_protocol_capability:1;,
+    uint8_t ho_attach:1;,
+    uint8_t s1_mode:1;)
 } __attribute__ ((packed)) ogs_nas_5gmm_capability_t;
 
 /* 9.11.3.2 5GMM cause
@@ -140,6 +140,27 @@ ED3(uint8_t type:4;,
 
 /* 9.11.3.4 5GS mobile identity
  * M LV-E 6-n */
+#define OGS_NAS_MAX_SCHEME_OUTPUT_LEN 256
+typedef struct ogs_nas_5gs_mobile_identity_suci_s {
+ED4(uint8_t spare1:1;,
+#define OGS_NAS_5GS_SUPI_FORMAT_IMSI 0
+#define OGS_NAS_5GS_SUPI_FORMAT_NETWORK_SPECIFIC_IDENTIFIER 1
+    uint8_t supi_format:3;,
+    uint8_t spare:1;,
+    uint8_t type:3;)
+    ogs_nas_plmn_id_t nas_plmn_id;
+ED4(uint8_t routing_indicator2:4;,
+    uint8_t routing_indicator1:4;,
+    uint8_t routing_indicator4:4;,
+    uint8_t routing_indicator3:4;)
+ED2(uint8_t spare3:4;,
+#define OGS_NAS_5GS_NULL_SCHEME 0
+#define OGS_NAS_5GS_ECIES_SCHEME_PROFILE_A 1
+#define OGS_NAS_5GS_ECIES_SCHEME_PROFILE_B 2
+    uint8_t protection_scheme_id:4;)
+    uint8_t home_network_pki_value;
+    uint8_t scheme_output[OGS_NAS_MAX_SCHEME_OUTPUT_LEN];
+} __attribute__ ((packed)) ogs_nas_5gs_mobile_identity_suci_t;
 typedef struct ogs_nas_5gs_mobile_identity_guti_s {
 ED3(uint8_t _0xf:4;,
     uint8_t spare:1;,
@@ -164,7 +185,7 @@ ED2(uint8_t amf_set_id2:2;,
 typedef struct ogs_nas_5gs_mobile_identity_s {
     uint16_t length;
     union {
-        ogs_nas_mobile_identity_imsi_t imsi;
+        ogs_nas_5gs_mobile_identity_suci_t suci;
         ogs_nas_5gs_mobile_identity_guti_t guti;
         ogs_nas_5gs_mobile_identity_s_tmsi_t s_tmsi;
         ogs_nas_mobile_identity_imei_t imei;

@@ -388,22 +388,22 @@ ED3(uint8_t type:4;,
 #define OGS_NAS_SECURITY_ALGORITHMS_128_EEA1    1
 #define OGS_NAS_SECURITY_ALGORITHMS_128_EEA2    2
 #define OGS_NAS_SECURITY_ALGORITHMS_128_EEA3    3
-#define OGS_NAS_SECURITY_ALGORITHMS_IA0         0
-#define OGS_NAS_SECURITY_ALGORITHMS_128_IA1     1
-#define OGS_NAS_SECURITY_ALGORITHMS_128_IA2     2
-#define OGS_NAS_SECURITY_ALGORITHMS_128_IA3     3
-#define OGS_NAS_SECURITY_ALGORITHMS_IA4         4
-#define OGS_NAS_SECURITY_ALGORITHMS_IA5         5
-#define OGS_NAS_SECURITY_ALGORITHMS_IA6         6
-#define OGS_NAS_SECURITY_ALGORITHMS_IA7         7
-#define OGS_NAS_SECURITY_ALGORITHMS_EA0         0
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EA1     1
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EA2     2
-#define OGS_NAS_SECURITY_ALGORITHMS_128_EA3     3
-#define OGS_NAS_SECURITY_ALGORITHMS_EA4         4
-#define OGS_NAS_SECURITY_ALGORITHMS_EA5         5
-#define OGS_NAS_SECURITY_ALGORITHMS_EA6         6
-#define OGS_NAS_SECURITY_ALGORITHMS_EA7         7
+#define OGS_NAS_SECURITY_ALGORITHMS_NIA0        0
+#define OGS_NAS_SECURITY_ALGORITHMS_128_NIA1    1
+#define OGS_NAS_SECURITY_ALGORITHMS_128_NIA2    2
+#define OGS_NAS_SECURITY_ALGORITHMS_128_NIA3    3
+#define OGS_NAS_SECURITY_ALGORITHMS_NIA4        4
+#define OGS_NAS_SECURITY_ALGORITHMS_NIA5        5
+#define OGS_NAS_SECURITY_ALGORITHMS_NIA6        6
+#define OGS_NAS_SECURITY_ALGORITHMS_NIA7        7
+#define OGS_NAS_SECURITY_ALGORITHMS_NEA0        0
+#define OGS_NAS_SECURITY_ALGORITHMS_128_NEA1    1
+#define OGS_NAS_SECURITY_ALGORITHMS_128_NEA2    2
+#define OGS_NAS_SECURITY_ALGORITHMS_128_NEA3    3
+#define OGS_NAS_SECURITY_ALGORITHMS_NEA4        4
+#define OGS_NAS_SECURITY_ALGORITHMS_NEA5        5
+#define OGS_NAS_SECURITY_ALGORITHMS_NEA6        6
+#define OGS_NAS_SECURITY_ALGORITHMS_NEA7        7
 typedef struct ogs_nas_security_algorithms_s {
 ED2(uint8_t type_of_ciphering_algorithm:4;,
     uint8_t type_of_integrity_protection_algorithm:4;)
@@ -565,16 +565,16 @@ typedef struct ogs_nas_ue_security_capability_s {
         uint8_t eea;
 
         struct {
-        ED8(uint8_t ea0_5g:1;,
-            uint8_t ea1_5g_128:1;,
-            uint8_t ea2_5g_128:1;,
-            uint8_t ea3_5g_128:1;,
-            uint8_t ea4_5g:1;,
-            uint8_t ea5_5g:1;,
-            uint8_t ea6_5g:1;,
-            uint8_t ea7_5g:1;)
+        ED8(uint8_t nea0:1;,
+            uint8_t nea1:1;,
+            uint8_t nea2:1;,
+            uint8_t nea3:1;,
+            uint8_t nea4:1;,
+            uint8_t nea5:1;,
+            uint8_t nea6:1;,
+            uint8_t nea7:1;)
         };
-        uint8_t ea_5g; 
+        uint8_t nea; 
     };
     union {
         struct {
@@ -590,16 +590,16 @@ typedef struct ogs_nas_ue_security_capability_s {
         uint8_t eia;
 
         struct {
-        ED8(uint8_t ia0_5g:1;,
-            uint8_t ia1_5g_128:1;,
-            uint8_t ia2_5g_128:1;,
-            uint8_t ia3_5g_128:1;,
-            uint8_t ia4_5g:1;,
-            uint8_t ia5_5g:1;,
-            uint8_t ia6_5g:1;,
-            uint8_t ia7_5g:1;)
+        ED8(uint8_t nia0:1;,
+            uint8_t nia1:1;,
+            uint8_t nia2:1;,
+            uint8_t nia3:1;,
+            uint8_t nia4:1;,
+            uint8_t nia5:1;,
+            uint8_t nia6:1;,
+            uint8_t nia7:1;)
         };
-        uint8_t ia_5g; 
+        uint8_t nia; 
     };
     union {
         struct {
@@ -616,9 +616,9 @@ typedef struct ogs_nas_ue_security_capability_s {
 
         struct {
         ED8(uint8_t ea0:1;,
-            uint8_t ea1_128:1;,
-            uint8_t ea2_128:1;,
-            uint8_t ea3_128:1;,
+            uint8_t ea1:1;,
+            uint8_t ea2:1;,
+            uint8_t ea3:1;,
             uint8_t ea4:1;,
             uint8_t ea5:1;,
             uint8_t ea6:1;,
@@ -641,9 +641,9 @@ typedef struct ogs_nas_ue_security_capability_s {
 
         struct {
         ED8(uint8_t ia0:1;,
-            uint8_t ia1_128:1;,
-            uint8_t ia2_128:1;,
-            uint8_t ia3_128:1;,
+            uint8_t ia1:1;,
+            uint8_t ia2:1;,
+            uint8_t ia3:1;,
             uint8_t ia4:1;,
             uint8_t ia5:1;,
             uint8_t ia6:1;,

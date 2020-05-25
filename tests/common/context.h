@@ -53,6 +53,7 @@ typedef struct test_context_s {
         ogs_s_nssai_t s_nssai[OGS_MAX_NUM_OF_S_NSSAI];
     } plmn_support[OGS_MAX_NUM_OF_PLMN];
 
+    ogs_5gs_tai_t tai;
 } test_context_t;
 
 void test_context_init(void);

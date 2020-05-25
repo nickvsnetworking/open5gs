@@ -247,8 +247,8 @@ void ngap_send_ng_setup_response(amf_gnb_t *gnb)
 {
     ogs_pkbuf_t *ngap_buffer;
 
-    ogs_debug("[AMF] NG-Setup response");
-    ngap_buffer = ngap_build_setup_rsp();
+    ogs_debug("NG-Setup response");
+    ngap_buffer = ngap_build_ng_setup_response();
     ogs_expect_or_return(ngap_buffer);
 
     ogs_expect(OGS_OK ==
@@ -260,8 +260,9 @@ void ngap_send_ng_setup_failure(
 {
     ogs_pkbuf_t *ngap_buffer;
 
-    ogs_debug("[AMF] NG-Setup failure");
-    ngap_buffer = ngap_build_setup_failure(group, cause, NGAP_TimeToWait_v10s);
+    ogs_debug("NG-Setup failure");
+    ngap_buffer = ngap_build_ng_setup_failure(
+            group, cause, NGAP_TimeToWait_v10s);
     ogs_expect_or_return(ngap_buffer);
 
     ogs_expect(OGS_OK ==

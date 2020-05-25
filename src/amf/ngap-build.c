@@ -22,7 +22,7 @@
 #endif
 #include "ngap-build.h"
 
-ogs_pkbuf_t *ngap_build_setup_rsp(void)
+ogs_pkbuf_t *ngap_build_ng_setup_response(void)
 {
     int i, j;
 
@@ -163,7 +163,7 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
     return ogs_ngap_encode(&pdu);
 }
 
-ogs_pkbuf_t *ngap_build_setup_failure(
+ogs_pkbuf_t *ngap_build_ng_setup_failure(
         NGAP_Cause_PR group, long cause, long time_to_wait)
 {
     NGAP_NGAP_PDU_t pdu;
