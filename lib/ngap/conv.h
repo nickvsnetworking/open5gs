@@ -28,13 +28,8 @@
 extern "C" {
 #endif
 
-#if 0
-void ogs_ngap_buffer_to_OCTET_STRING(
-        void *buf, int size, NGAP_TBCD_STRING_t *tbcd_string);
-#endif
-
-void ogs_ngap_uint32_to_GNB_ID(uint32_t enb_id, NGAP_GNB_ID_t *eNB_ID);
-void ogs_ngap_GNB_ID_to_uint32(NGAP_GNB_ID_t *eNB_ID, uint32_t *uint32);
+void ogs_ngap_uint24_to_GNB_ID(ogs_uint24_t gnb_id, NGAP_GNB_ID_t *gNB_ID);
+void ogs_ngap_GNB_ID_to_uint24(NGAP_GNB_ID_t *gNB_ID, ogs_uint24_t *gnb_id);
 
 #ifdef __cplusplus
 }

@@ -23,6 +23,7 @@ int testngap_build_setup_req(ogs_pkbuf_t **pkbuf, uint32_t gnb_id)
 {
     int i, j;
     ogs_plmn_id_t *plmn_id = NULL;
+    ogs_uint24_t uint24;
 
     NGAP_NGAP_PDU_t pdu;
     NGAP_InitiatingMessage_t *initiatingMessage = NULL;
@@ -85,7 +86,8 @@ int testngap_build_setup_req(ogs_pkbuf_t **pkbuf, uint32_t gnb_id)
     ogs_asn_buffer_to_OCTET_STRING(
             plmn_id, OGS_PLMN_ID_LEN, &globalGNB_ID->pLMNIdentity);
 
-    ogs_ngap_uint32_to_GNB_ID(gnb_id, &globalGNB_ID->gNB_ID);
+    uint24.v = gnb_id;
+    ogs_ngap_uint24_to_GNB_ID(uint24, &globalGNB_ID->gNB_ID);
 
     GlobalRANNodeID->present = NGAP_GlobalRANNodeID_PR_globalGNB_ID;
     GlobalRANNodeID->choice.globalGNB_ID = globalGNB_ID;
