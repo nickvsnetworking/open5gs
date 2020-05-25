@@ -47,9 +47,9 @@ int ngap_delayed_send_to_gnb_ue(gnb_ue_t *gnb_ue,
 int ngap_send_to_nas(gnb_ue_t *gnb_ue,
         NGAP_ProcedureCode_t procedureCode, NGAP_NAS_PDU_t *nasPdu);
 int ngap_send_to_esm(amf_ue_t *amf_ue, ogs_pkbuf_t *esmbuf);
+#endif
 
 void ngap_send_ng_setup_response(amf_gnb_t *gnb);
-#endif
 void ngap_send_ng_setup_failure(
         amf_gnb_t *gnb, NGAP_Cause_PR group, long cause);
 

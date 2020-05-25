@@ -43,7 +43,7 @@ static bool maximum_number_of_gnbs_is_reached(void)
     int number_of_gnbs_online = 0;
 
     ogs_list_for_each_safe(&amf_self()->gnb_list, next_gnb, gnb) {
-        if (gnb->state.s1_setup_success) {
+        if (gnb->state.ng_setup_success) {
             number_of_gnbs_online++;
         }
     }
@@ -123,7 +123,7 @@ void ngap_handle_ng_setup_request(amf_gnb_t *gnb, ogs_ngap_message_t *message)
     }
 
     ogs_ngap_GNB_ID_to_uint32(&globalGNB_ID->gNB_ID, &gnb_id);
-    ogs_fatal("    IP[%s] GNB_ID[%x]", OGS_ADDR(gnb->addr, buf), gnb_id);
+    ogs_debug("    IP[%s] GNB_ID[%x]", OGS_ADDR(gnb->addr, buf), gnb_id);
 
     if (PagingDRX)
         ogs_debug("    PagingDRX[%ld]", *PagingDRX);
@@ -201,10 +201,8 @@ void ngap_handle_ng_setup_request(amf_gnb_t *gnb, ogs_ngap_message_t *message)
         return;
     }
 
-    gnb->state.s1_setup_success = true;
-#if 0
-    ngap_send_s1_setup_response(gnb);
-#endif
+    gnb->state.ng_setup_success = true;
+    ngap_send_ng_setup_response(gnb);
 }
 
 #if 0

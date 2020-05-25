@@ -241,6 +241,7 @@ int ngap_send_to_nas(gnb_ue_t *gnb_ue,
         return OGS_ERROR;
     }
 }
+#endif
 
 void ngap_send_ng_setup_response(amf_gnb_t *gnb)
 {
@@ -253,7 +254,6 @@ void ngap_send_ng_setup_response(amf_gnb_t *gnb)
     ogs_expect(OGS_OK ==
             ngap_send_to_gnb(gnb, ngap_buffer, NGAP_NON_UE_SIGNALLING));
 }
-#endif
 
 void ngap_send_ng_setup_failure(
         amf_gnb_t *gnb, NGAP_Cause_PR group, long cause)

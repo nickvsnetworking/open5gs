@@ -24,7 +24,6 @@
 
 ogs_pkbuf_t *ngap_build_setup_rsp(void)
 {
-#if 0
     int i, j;
 
     NGAP_NGAP_PDU_t pdu;
@@ -32,8 +31,10 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
     NGAP_NGSetupResponse_t *NGSetupResponse = NULL;
 
     NGAP_NGSetupResponseIEs_t *ie = NULL;
-    NGAP_ServedGUAMFIs_t *ServedGUAMFIs = NULL;
+    NGAP_AMFName_t *AMFName = NULL;
+    NGAP_ServedGUAMIList_t *ServedGUAMIList = NULL;
     NGAP_RelativeAMFCapacity_t *RelativeAMFCapacity = NULL;
+    NGAP_PLMNSupportList_t *PLMNSupportList = NULL;
 
     memset(&pdu, 0, sizeof (NGAP_NGAP_PDU_t));
     pdu.present = NGAP_NGAP_PDU_PR_successfulOutcome;
@@ -51,6 +52,16 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
     ie = CALLOC(1, sizeof(NGAP_NGSetupResponseIEs_t));
     ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
 
+    ie->id = NGAP_ProtocolIE_ID_id_AMFName;
+    ie->criticality = NGAP_Criticality_reject;
+    ie->value.present = NGAP_NGSetupResponseIEs__value_PR_AMFName;
+
+    AMFName = &ie->value.choice.AMFName;
+
+#if 0
+    ie = CALLOC(1, sizeof(NGAP_NGSetupResponseIEs_t));
+    ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
+
     ie->id = NGAP_ProtocolIE_ID_id_ServedGUAMFIs;
     ie->criticality = NGAP_Criticality_reject;
     ie->value.present = NGAP_NGSetupResponseIEs__value_PR_ServedGUAMFIs;
@@ -65,7 +76,13 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
     ie->value.present = NGAP_NGSetupResponseIEs__value_PR_RelativeAMFCapacity;
 
     RelativeAMFCapacity = &ie->value.choice.RelativeAMFCapacity;
+#endif
 
+
+    ogs_asn_buffer_to_OCTET_STRING(
+            (char*)"amf.open5gs.org", strlen("amf.open5gs.org"), AMFName);
+
+#if 0
     for (i = 0; i < amf_self()->max_num_of_served_guamfi; i++) {
         NGAP_ServedGUAMFIsItem_t *ServedGUAMFIsItem = NULL;
         ServedGUAMFIsItem = (NGAP_ServedGUAMFIsItem_t *)
@@ -109,10 +126,9 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
     }
 
     *RelativeAMFCapacity = amf_self()->relative_capacity;
+#endif
 
     return ogs_ngap_encode(&pdu);
-#endif
-    return NULL;
 }
 
 ogs_pkbuf_t *ngap_build_setup_failure(

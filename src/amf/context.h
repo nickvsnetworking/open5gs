@@ -118,7 +118,7 @@ typedef struct amf_gnb_s {
     ogs_poll_t      *poll;      /* eNB S1AP Poll */
 
     struct {
-        bool s1_setup_success;  /* eNB S1AP Setup complete successfuly */
+        bool ng_setup_success;  /* eNB S1AP Setup complete successfuly */
     } state;
 
     uint16_t        max_num_of_ostreams;/* SCTP Max num of outbound streams */
