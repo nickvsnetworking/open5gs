@@ -135,13 +135,10 @@ void ngap_handle_ng_setup_request(amf_gnb_t *gnb, ogs_ngap_message_t *message)
     gnb->num_of_supported_ta_list = 0;
     for (i = 0; i < SupportedTAList->list.count; i++) {
         NGAP_SupportedTAItem_t *SupportedTAItem = NULL;
-        NGAP_TAC_t *tAC = NULL;
 
         SupportedTAItem = (NGAP_SupportedTAItem_t *)
                 SupportedTAList->list.array[i];
         ogs_assert(SupportedTAItem);
-        tAC = &SupportedTAItem->tAC;
-        ogs_assert(tAC);
 
         for (j = 0; j < SupportedTAItem->broadcastPLMNList.list.count; j++) {
             NGAP_BroadcastPLMNItem_t *BroadcastPLMNItem = NULL;
@@ -154,11 +151,9 @@ void ngap_handle_ng_setup_request(amf_gnb_t *gnb, ogs_ngap_message_t *message)
                     &BroadcastPLMNItem->pLMNIdentity;
             ogs_assert(pLMNIdentity);
 
-            memcpy(&gnb->supported_ta_list[gnb->num_of_supported_ta_list].tac,
-                    tAC->buf, sizeof(ogs_uint24_t));
-            gnb->supported_ta_list[gnb->num_of_supported_ta_list].tac =
-                ogs_be24toh(
-                    gnb->supported_ta_list[gnb->num_of_supported_ta_list].tac);
+            ogs_asn_OCTET_STRING_to_uint24(&SupportedTAItem->tAC,
+                &gnb->supported_ta_list[gnb->num_of_supported_ta_list].tac);
+
             memcpy(&gnb->supported_ta_list
                         [gnb->num_of_supported_ta_list].plmn_id,
                     pLMNIdentity->buf, sizeof(ogs_plmn_id_t));
@@ -302,9 +297,8 @@ void ngap_handle_initial_ue_message(amf_gnb_t *gnb, ogs_ngap_message_t *message)
             ogs_amf_id_build(&nas_guti.amf_id, region, set, pointer);
 
             /* size must be 4 */
-            memcpy(&nas_guti.m_tmsi, FiveG_S_TMSI->fiveG_TMSI.buf,
-                    FiveG_S_TMSI->fiveG_TMSI.size);
-            nas_guti.m_tmsi = be32toh(nas_guti.m_tmsi);
+            ogs_asn_OCTET_STRING_to_uint32(
+                &FiveG_S_TMSI->fiveG_TMSI, &nas_guti.m_tmsi);
 
             amf_ue = amf_ue_find_by_guti(&nas_guti);
             if (!amf_ue) {

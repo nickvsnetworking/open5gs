@@ -166,6 +166,5 @@ void ogs_ngap_ASN_to_5gs_tai(NGAP_TAI_t *tAI, ogs_5gs_tai_t *tai)
     ogs_assert(tAI);
 
     memcpy(tAI->pLMNIdentity.buf, &tai->plmn_id, OGS_PLMN_ID_LEN);
-    memcpy(&tai->tac, tAI->tAC.buf, sizeof(ogs_uint24_t));
-    tai->tac = ogs_be24toh(tai->tac);
+    ogs_asn_OCTET_STRING_to_uint24(&tAI->tAC, &tai->tac);
 }
