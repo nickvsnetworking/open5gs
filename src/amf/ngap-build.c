@@ -67,6 +67,7 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
     ie->value.present = NGAP_NGSetupResponseIEs__value_PR_ServedGUAMFIs;
 
     ServedGUAMFIs = &ie->value.choice.ServedGUAMFIs;
+#endif
 
     ie = CALLOC(1, sizeof(NGAP_NGSetupResponseIEs_t));
     ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
@@ -76,7 +77,6 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
     ie->value.present = NGAP_NGSetupResponseIEs__value_PR_RelativeAMFCapacity;
 
     RelativeAMFCapacity = &ie->value.choice.RelativeAMFCapacity;
-#endif
 
 
     ogs_asn_buffer_to_OCTET_STRING(
@@ -124,9 +124,9 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
         }
         ASN_SEQUENCE_ADD(&ServedGUAMFIs->list, ServedGUAMFIsItem);
     }
+#endif
 
     *RelativeAMFCapacity = amf_self()->relative_capacity;
-#endif
 
     return ogs_ngap_encode(&pdu);
 }
