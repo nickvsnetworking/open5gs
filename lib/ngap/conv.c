@@ -19,7 +19,7 @@
 
 #include "ogs-ngap.h"
 
-void ogs_ngap_uint24_to_GNB_ID(ogs_uint24_t gnb_id, NGAP_GNB_ID_t *gNB_ID)
+void ogs_ngap_uint32_to_GNB_ID(uint32_t gnb_id, NGAP_GNB_ID_t *gNB_ID)
 {
     BIT_STRING_t *bit_string = NULL;
 
@@ -32,12 +32,12 @@ void ogs_ngap_uint24_to_GNB_ID(ogs_uint24_t gnb_id, NGAP_GNB_ID_t *gNB_ID)
     bit_string->size = 3;
     bit_string->buf = CALLOC(bit_string->size, sizeof(uint8_t));
 
-    bit_string->buf[0] = gnb_id.v >> 16;
-    bit_string->buf[1] = gnb_id.v >> 8;
-    bit_string->buf[2] = (gnb_id.v & 0xff);
+    bit_string->buf[0] = gnb_id >> 16;
+    bit_string->buf[1] = gnb_id >> 8;
+    bit_string->buf[2] = (gnb_id & 0xff);
 }
 
-void ogs_ngap_GNB_ID_to_uint24(NGAP_GNB_ID_t *gNB_ID, ogs_uint24_t *gnb_id)
+void ogs_ngap_GNB_ID_to_uint32(NGAP_GNB_ID_t *gNB_ID, uint32_t *gnb_id)
 {
     uint8_t *buf = NULL;
 
@@ -47,5 +47,5 @@ void ogs_ngap_GNB_ID_to_uint24(NGAP_GNB_ID_t *gNB_ID, ogs_uint24_t *gnb_id)
     buf = gNB_ID->choice.gNB_ID.buf;
     ogs_assert(buf);
 
-    (*gnb_id).v = (buf[0] << 16) + (buf[1] << 8) + buf[2];
+    *gnb_id = (buf[0] << 16) + (buf[1] << 8) + buf[2];
 }

@@ -70,7 +70,7 @@ void ngap_handle_ng_setup_request(amf_gnb_t *gnb, ogs_ngap_message_t *message)
     NGAP_PLMNIdentity_t *pLMNIdentity = NULL;
     NGAP_PagingDRX_t *PagingDRX = NULL;
 
-    ogs_uint24_t gnb_id;
+    uint32_t gnb_id;
     NGAP_Cause_PR group = NGAP_Cause_PR_NOTHING;
     long cause = 0;
 
@@ -119,8 +119,8 @@ void ngap_handle_ng_setup_request(amf_gnb_t *gnb, ogs_ngap_message_t *message)
         return;
     }
 
-    ogs_ngap_GNB_ID_to_uint24(&globalGNB_ID->gNB_ID, &gnb_id);
-    ogs_fatal("    IP[%s] GNB_ID[%x]", OGS_ADDR(gnb->addr, buf), gnb_id.v);
+    ogs_ngap_GNB_ID_to_uint32(&globalGNB_ID->gNB_ID, &gnb_id);
+    ogs_fatal("    IP[%s] GNB_ID[%x]", OGS_ADDR(gnb->addr, buf), gnb_id);
 
     if (PagingDRX)
         ogs_debug("    PagingDRX[%ld]", *PagingDRX);
