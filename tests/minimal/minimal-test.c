@@ -115,8 +115,8 @@ static void test1_func(abts_case *tc, void *data)
 #endif
 
     /* Send NG-Setup Reqeust */
-    rv = testngap_build_setup_req(&sendbuf, 0x000102);
-    ABTS_INT_EQUAL(tc, OGS_OK, rv);
+    sendbuf = testngap_build_setup_req(0x000102);
+    ABTS_PTR_NOTNULL(tc, sendbuf);
     ABTS_TRUE(tc, memcmp(sendbuf->data,
         OGS_HEX(_ng_setup_request, strlen(_ng_setup_request), tmp),
         sendbuf->len) == 0);

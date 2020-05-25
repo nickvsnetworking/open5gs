@@ -19,8 +19,9 @@
 
 #include "test-ngap.h"
 
-int testngap_build_setup_req(ogs_pkbuf_t **pkbuf, uint32_t gnb_id)
+ogs_pkbuf_t *testngap_build_setup_req(uint32_t gnb_id)
 {
+    ogs_pkbuf_t *pkbuf = NULL;
     int i, j;
     ogs_plmn_id_t *plmn_id = NULL;
     ogs_uint24_t uint24;
@@ -133,11 +134,6 @@ int testngap_build_setup_req(ogs_pkbuf_t **pkbuf, uint32_t gnb_id)
 
     *PagingDRX = NGAP_PagingDRX_v64;
 
-    *pkbuf = ogs_ngap_encode(&pdu);
-    if (*pkbuf == NULL) {
-        ogs_error("ogs_ngap_encode() failed");
-        return OGS_ERROR;
-    }
-    return OGS_OK;
+    return ogs_ngap_encode(&pdu);
 }
 
