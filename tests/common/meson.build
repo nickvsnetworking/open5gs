@@ -21,9 +21,10 @@ configure_file(output : 'test-config-private.h',
                configuration : libtestcommon_conf)
 
 libtestcommon_sources = files('''
-    application.c
     sctp.c
     gtpu.c
+    context.c
+    application.c
 
     ngap-build.c
 '''.split())

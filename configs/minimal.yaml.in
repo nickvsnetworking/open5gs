@@ -33,7 +33,7 @@ amf:
       - plmn_id:
           mcc: 208
           mnc: 93
-        snssai:
+        s_nssai:
           - sst: 1
             sd: 010203
     security:

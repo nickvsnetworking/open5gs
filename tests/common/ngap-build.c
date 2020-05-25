@@ -23,7 +23,8 @@ int testngap_build_setup_req(
         ogs_pkbuf_t **pkbuf, uint32_t gnb_id,
         int tac, uint16_t mcc, uint16_t mnc, uint16_t mnc_len)
 {
-    ogs_plmn_id_t plmn_id;
+    int i, j;
+    ogs_plmn_id_t plmn_id2;
 
     NGAP_NGAP_PDU_t pdu;
     NGAP_InitiatingMessage_t *initiatingMessage = NULL;
@@ -82,8 +83,6 @@ int testngap_build_setup_req(
 
     PagingDRX = &ie->value.choice.PagingDRX;
 
-    ogs_plmn_id_build(&plmn_id, mcc, mnc, mnc_len);
-
 #if 0
     globalGNB_ID = CALLOC(1, sizeof(*globalGNB_ID));
     GlobalRANNodeID->choice.globalGNB_ID = globalGNB_ID;
@@ -93,21 +92,31 @@ int testngap_build_setup_req(
             &plmn_id, OGS_PLMN_ID_LEN, &globalGNB_ID->pLMNIdentity);
 #endif
 
-    BroadcastPLMNItem = CALLOC(1, sizeof(NGAP_BroadcastPLMNItem_t));
-    ogs_asn_buffer_to_OCTET_STRING(
-            &plmn_id, OGS_PLMN_ID_LEN, &BroadcastPLMNItem->pLMNIdentity);
-
-    SliceSupportItem = CALLOC(1, sizeof(NGAP_SliceSupportItem_t));
-    char tmp1 = 0x12;
-    ogs_asn_uint8_to_OCTET_STRING(tmp1, &SliceSupportItem->s_NSSAI.sST);
-
-    ASN_SEQUENCE_ADD(&BroadcastPLMNItem->tAISliceSupportList.list,
-            SliceSupportItem);
-
     SupportedTAItem = CALLOC(1, sizeof(NGAP_SupportedTAItem_t));
     ogs_asn_buffer_to_OCTET_STRING(&tac, 3, &SupportedTAItem->tAC);
-    ASN_SEQUENCE_ADD(&SupportedTAItem->broadcastPLMNList.list,
-            BroadcastPLMNItem);
+
+    for (i = 0; i < test_self()->num_of_plmn_support; i++) {
+        ogs_plmn_id_t *plmn_id = &test_self()->plmn_support[i].plmn_id;
+
+        BroadcastPLMNItem = CALLOC(1, sizeof(NGAP_BroadcastPLMNItem_t));
+
+        ogs_asn_buffer_to_OCTET_STRING(
+                plmn_id, OGS_PLMN_ID_LEN, &BroadcastPLMNItem->pLMNIdentity);
+
+        for (j = 0; j < test_self()->plmn_support[i].num_of_s_nssai; j++) {
+            ogs_s_nssai_t *s_nssai = &test_self()->plmn_support[i].s_nssai[j];
+
+            SliceSupportItem = CALLOC(1, sizeof(NGAP_SliceSupportItem_t));
+            ogs_asn_uint8_to_OCTET_STRING(s_nssai->sst,
+                    &SliceSupportItem->s_NSSAI.sST);
+
+            ASN_SEQUENCE_ADD(&BroadcastPLMNItem->tAISliceSupportList.list,
+                            SliceSupportItem);
+        }
+
+        ASN_SEQUENCE_ADD(&SupportedTAItem->broadcastPLMNList.list,
+                BroadcastPLMNItem);
+    }
 
     ASN_SEQUENCE_ADD(&SupportedTAList->list, SupportedTAItem);
 

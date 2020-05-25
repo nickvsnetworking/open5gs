@@ -35,9 +35,10 @@ extern "C" {
 
 #define OGS_TEST_INSIDE
 
-#include "common/application.h"
+#include "common/context.h"
 #include "common/sctp.h"
 #include "common/gtpu.h"
+#include "common/application.h"
 
 #undef OGS_TEST_INSIDE
 

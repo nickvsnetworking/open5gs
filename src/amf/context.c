@@ -104,8 +104,8 @@ static int amf_context_validation(void)
         return OGS_ERROR;
     }
 
-    if (self.plmn_support[0].num_of_snssai == 0) {
-        ogs_error("No amf.plmn.snssai in '%s'", ogs_config()->file);
+    if (self.plmn_support[0].num_of_s_nssai == 0) {
+        ogs_error("No amf.plmn.s_nssai in '%s'", ogs_config()->file);
         return OGS_ERROR;
     }
 
@@ -536,91 +536,91 @@ int amf_context_parse_config(void)
                                                 plmn_id,
                                         atoi(mcc), atoi(mnc), strlen(mnc));
                                 }
-                            } else if (!strcmp(plmn_key, "snssai")) {
-                                ogs_yaml_iter_t snssai_array, snssai_iter;
+                            } else if (!strcmp(plmn_key, "s_nssai")) {
+                                ogs_yaml_iter_t s_nssai_array, s_nssai_iter;
                                 ogs_yaml_iter_recurse(&plmn_iter,
-                                        &snssai_array);
+                                        &s_nssai_array);
                                 do {
-                                    ogs_s_nssai_t *snssai = NULL;
+                                    ogs_s_nssai_t *s_nssai = NULL;
                                     const char *sst = NULL, *sd = NULL;
                                     ogs_assert(
                                         self.plmn_support[
                                             self.num_of_plmn_support].
-                                                num_of_snssai <=
+                                                num_of_s_nssai <=
                                             OGS_MAX_NUM_OF_S_NSSAI);
-                                    snssai = &self.plmn_support[
-                                            self.num_of_plmn_support].snssai[
+                                    s_nssai = &self.plmn_support[
+                                            self.num_of_plmn_support].s_nssai[
                                                 self.plmn_support[
                                                     self.num_of_plmn_support].
-                                                        num_of_snssai];
-                                    ogs_assert(snssai);
+                                                        num_of_s_nssai];
+                                    ogs_assert(s_nssai);
 
-                                    if (ogs_yaml_iter_type(&snssai_array) ==
+                                    if (ogs_yaml_iter_type(&s_nssai_array) ==
                                             YAML_MAPPING_NODE) {
-                                        memcpy(&snssai_iter, &snssai_array,
+                                        memcpy(&s_nssai_iter, &s_nssai_array,
                                                 sizeof(ogs_yaml_iter_t));
                                     } else if (ogs_yaml_iter_type(
-                                                &snssai_array) ==
+                                                &s_nssai_array) ==
                                                 YAML_SEQUENCE_NODE) {
-                                        if (!ogs_yaml_iter_next(&snssai_array))
+                                        if (!ogs_yaml_iter_next(&s_nssai_array))
                                             break;
-                                        ogs_yaml_iter_recurse(&snssai_array,
-                                                &snssai_iter);
+                                        ogs_yaml_iter_recurse(&s_nssai_array,
+                                                &s_nssai_iter);
                                     } else if (ogs_yaml_iter_type(
-                                                &snssai_array) ==
+                                                &s_nssai_array) ==
                                                 YAML_SCALAR_NODE) {
                                         break;
                                     } else
                                         ogs_assert_if_reached();
 
-                                    while (ogs_yaml_iter_next(&snssai_iter)) {
-                                        const char *snssai_key =
-                                            ogs_yaml_iter_key(&snssai_iter);
-                                        ogs_assert(snssai_key);
-                                        if (!strcmp(snssai_key, "sst")) {
+                                    while (ogs_yaml_iter_next(&s_nssai_iter)) {
+                                        const char *s_nssai_key =
+                                            ogs_yaml_iter_key(&s_nssai_iter);
+                                        ogs_assert(s_nssai_key);
+                                        if (!strcmp(s_nssai_key, "sst")) {
                                             sst = ogs_yaml_iter_value(
-                                                    &snssai_iter);
+                                                    &s_nssai_iter);
                                         } else if (!strcmp(
-                                                    snssai_key, "sd")) {
+                                                    s_nssai_key, "sd")) {
                                             sd = ogs_yaml_iter_value(
-                                                    &snssai_iter);
+                                                    &s_nssai_iter);
                                         }
                                     }
 
                                     if (sst) {
-                                        snssai->sst = atoi(sst);
+                                        s_nssai->sst = atoi(sst);
                                         if (sd) {
-                                            snssai->sd =
+                                            s_nssai->sd =
                                                 ogs_uint24_from_string(
                                                         (char*)sd);
                                         } else {
-                                            snssai->sd.v =
+                                            s_nssai->sd.v =
                                                 OGS_S_NSSAI_NO_SD_VALUE;
                                         }
 
                                         self.plmn_support[
                                             self.num_of_plmn_support].
-                                                num_of_snssai++;
+                                                num_of_s_nssai++;
                                     }
 
-                                } while (ogs_yaml_iter_type(&snssai_array) ==
+                                } while (ogs_yaml_iter_type(&s_nssai_array) ==
                                         YAML_SEQUENCE_NODE);
                             } else
                                 ogs_warn("unknown key `%s`", plmn_key);
                         }
 
                         if (self.plmn_support[
-                                self.num_of_plmn_support].num_of_snssai &&
+                                self.num_of_plmn_support].num_of_s_nssai &&
                                 mcc && mnc) {
                             self.num_of_plmn_support++;
                         } else {
                             ogs_warn("Ignore plmn : "
-                                    "snssai(%d) mcc(%s), mnc(%s)",
-                                    self.plmn_support[
-                                        self.num_of_plmn_support].num_of_snssai,
+                                    "s_nssai(%d) mcc(%s), mnc(%s)",
+                                self.plmn_support[
+                                    self.num_of_plmn_support].num_of_s_nssai,
                                     mcc, mnc);
                             self.plmn_support[
-                                self.num_of_plmn_support].num_of_snssai = 0;
+                                self.num_of_plmn_support].num_of_s_nssai = 0;
                         }
                     } while (ogs_yaml_iter_type(&plmn_array) ==
                             YAML_SEQUENCE_NODE);

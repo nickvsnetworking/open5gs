@@ -32,7 +32,7 @@ amf:
       - plmn_id:
           mcc: 901
           mnc: 70
-        snssai:
+        s_nssai:
           - sst: 1
     security:
         integrity_order : [ EIA1, EIA2, EIA0 ]

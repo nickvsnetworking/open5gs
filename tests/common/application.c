@@ -89,7 +89,14 @@ void test_epc_run(int argc, const char *const argv[],
 void test_5gc_run(int argc, const char *const argv[],
         const char *name, void (*init)(const char * const argv[]))
 {
+    int rv;
+
     test_app_run(argc, argv, name, init);
+
+    test_context_init();
+
+    rv = test_context_parse_config();
+    ogs_assert(rv == OGS_OK);
 
     ogs_msleep(500); /* Wait for listening all sockets */
 }
