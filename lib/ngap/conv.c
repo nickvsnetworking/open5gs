@@ -70,7 +70,7 @@ void ogs_ngap_uint16_to_NGAP_AMFSetID(
     aMFSetID->bits_unused = 6;
 
     aMFSetID->buf[0] = (set >> 2);
-    aMFSetID->buf[1] = (set & 0x03);
+    aMFSetID->buf[1] = ((set & 0x03) << 6);
 }
 void ogs_ngap_uint8_to_NGAP_NGAP_AMFPointer(
         uint8_t pointer, NGAP_AMFPointer_t *aMFPointer)

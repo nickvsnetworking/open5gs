@@ -71,11 +71,19 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
     ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
 
     ie->id = NGAP_ProtocolIE_ID_id_RelativeAMFCapacity;
-    ie->criticality = NGAP_Criticality_ignore;
+    ie->criticality = NGAP_Criticality_reject;
     ie->value.present = NGAP_NGSetupResponseIEs__value_PR_RelativeAMFCapacity;
 
     RelativeAMFCapacity = &ie->value.choice.RelativeAMFCapacity;
 
+    ie = CALLOC(1, sizeof(NGAP_NGSetupResponseIEs_t));
+    ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
+
+    ie->id = NGAP_ProtocolIE_ID_id_PLMNSupportList;
+    ie->criticality = NGAP_Criticality_reject;
+    ie->value.present = NGAP_NGSetupResponseIEs__value_PR_PLMNSupportList;
+
+    PLMNSupportList = &ie->value.choice.PLMNSupportList;
 
     ogs_asn_buffer_to_OCTET_STRING(
             (char*)"amf.open5gs.org", strlen("amf.open5gs.org"), AMFName);
@@ -110,6 +118,44 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
                 aMFPointer);
 
         ASN_SEQUENCE_ADD(&ServedGUAMIList->list, ServedGUAMIItem);
+    }
+
+    for (i = 0; i < amf_self()->num_of_plmn_support; i++) {
+        NGAP_PLMNSupportItem_t *NGAP_PLMNSupportItem = NULL;
+        NGAP_PLMNIdentity_t *pLMNIdentity = NULL;
+        NGAP_SliceSupportList_t *sliceSupportList = NULL;
+
+        NGAP_PLMNSupportItem = (NGAP_PLMNSupportItem_t *)
+                CALLOC(1, sizeof(NGAP_PLMNSupportItem_t));
+        pLMNIdentity = &NGAP_PLMNSupportItem->pLMNIdentity;
+        sliceSupportList = &NGAP_PLMNSupportItem->sliceSupportList;
+
+        ogs_asn_buffer_to_OCTET_STRING(
+                &amf_self()->plmn_support[i].plmn_id,
+                OGS_PLMN_ID_LEN, pLMNIdentity);
+        for (j = 0; j < amf_self()->plmn_support[i].num_of_s_nssai; j++) {
+            NGAP_SliceSupportItem_t *NGAP_SliceSupportItem = NULL;
+            NGAP_S_NSSAI_t *s_NSSAI = NULL;
+            NGAP_SST_t *sST = NULL;
+
+            NGAP_SliceSupportItem = (NGAP_SliceSupportItem_t *)
+                    CALLOC(1, sizeof(NGAP_SliceSupportItem_t));
+            s_NSSAI = &NGAP_SliceSupportItem->s_NSSAI;
+            sST = &s_NSSAI->sST;
+
+            ogs_asn_uint8_to_OCTET_STRING(
+                amf_self()->plmn_support[i].s_nssai[j].sst, sST);
+            if (amf_self()->plmn_support[i].s_nssai[j].sd.v !=
+                    OGS_S_NSSAI_NO_SD_VALUE) {
+                s_NSSAI->sD = CALLOC(1, sizeof(ogs_uint24_t));
+                ogs_asn_uint24_to_OCTET_STRING(
+                    amf_self()->plmn_support[i].s_nssai[j].sd, s_NSSAI->sD);
+            }
+
+            ASN_SEQUENCE_ADD(&sliceSupportList->list, NGAP_SliceSupportItem);
+        }
+
+        ASN_SEQUENCE_ADD(&PLMNSupportList->list, NGAP_PLMNSupportItem);
     }
 
     *RelativeAMFCapacity = amf_self()->relative_capacity;
