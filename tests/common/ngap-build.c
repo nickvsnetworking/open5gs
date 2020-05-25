@@ -115,6 +115,11 @@ int testngap_build_setup_req(ogs_pkbuf_t **pkbuf, uint32_t gnb_id)
             SliceSupportItem = CALLOC(1, sizeof(NGAP_SliceSupportItem_t));
             ogs_asn_uint8_to_OCTET_STRING(s_nssai->sst,
                     &SliceSupportItem->s_NSSAI.sST);
+            if (s_nssai->sd.v != OGS_S_NSSAI_NO_SD_VALUE) {
+                SliceSupportItem->s_NSSAI.sD = CALLOC(1, sizeof(ogs_uint24_t));
+                ogs_asn_uint24_to_OCTET_STRING(
+                        s_nssai->sd, SliceSupportItem->s_NSSAI.sD);
+            }
 
             ASN_SEQUENCE_ADD(&BroadcastPLMNItem->tAISliceSupportList.list,
                             SliceSupportItem);

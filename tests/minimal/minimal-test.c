@@ -31,6 +31,13 @@ static void test1_func(abts_case *tc, void *data)
     int msgindex = 0;
 
     uint8_t tmp[OGS_MAX_SDU_LEN];
+    const char *_ng_setup_request =
+        "0015002d00000300 1b00080002f83910 0001020066001500 000000010002f839"
+        "0001100801020310 0811223300154001 20";
+    const char *_ng_setup_response =
+        "2015003d00000400 0100110700616d66 2e6f70656e356773 2e6f726700600008"
+        "000002f839cafe00 00564001ff005000 100002f839000110 0801020310081122"
+        "33";
     const char *_authentication_request = 
         "000b403b00000300 000005c00100009d 000800020001001a 0025240752002008"
         "0c3818183b522614 162c07601d0d10f1 1b89a2a8de8000ad 0ccf7f55e8b20d";
@@ -109,26 +116,23 @@ static void test1_func(abts_case *tc, void *data)
 #endif
 
     /* Send NG-Setup Reqeust */
-#if 0
-    rv = testngap_build_setup_req(&sendbuf, 0x54f64, 51, 310, 14, 3);
-#else
     rv = testngap_build_setup_req(&sendbuf, 0x000102);
-#endif
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
+    ABTS_TRUE(tc, memcmp(sendbuf->data,
+        OGS_HEX(_ng_setup_request, strlen(_ng_setup_request), tmp),
+        sendbuf->len) == 0);
     rv = testgnb_ngap_send(ngap, sendbuf);
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
 
-    ogs_msleep(500);
-
-#if 0
-    /* Receive S1-Setup Response */
+    /* Receive NG-Setup Response */
     recvbuf = testgnb_ngap_read(ngap);
     ABTS_PTR_NOTNULL(tc, recvbuf);
-    rv = ogs_ngap_decode(&message, recvbuf);
-    ABTS_INT_EQUAL(tc, OGS_OK, rv);
-    ogs_ngap_free(&message);
+    ABTS_TRUE(tc, memcmp(recvbuf->data,
+        OGS_HEX(_ng_setup_response, strlen(_ng_setup_response), tmp),
+        recvbuf->len) == 0);
     ogs_pkbuf_free(recvbuf);
 
+#if 0
     collection = mongoc_client_get_collection(
         ogs_mongoc()->client, ogs_mongoc()->name, "subscribers");
     ABTS_PTR_NOTNULL(tc, collection);

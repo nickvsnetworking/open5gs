@@ -71,7 +71,7 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
     ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
 
     ie->id = NGAP_ProtocolIE_ID_id_RelativeAMFCapacity;
-    ie->criticality = NGAP_Criticality_reject;
+    ie->criticality = NGAP_Criticality_ignore;
     ie->value.present = NGAP_NGSetupResponseIEs__value_PR_RelativeAMFCapacity;
 
     RelativeAMFCapacity = &ie->value.choice.RelativeAMFCapacity;
