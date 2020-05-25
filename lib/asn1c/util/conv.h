@@ -61,6 +61,9 @@ void ogs_asn_uint32_to_OCTET_STRING(
 void ogs_asn_buffer_to_OCTET_STRING(
         void *buf, int size, OCTET_STRING_t *octet_string);
 
+void ogs_asn_buffer_to_BIT_STRING(
+        void *buf, int size, int unused, BIT_STRING_t *bit_string);
+
 int ogs_asn_BIT_STRING_to_ip(
         BIT_STRING_t *bit_string, ogs_ip_t *ip);
 int ogs_asn_ip_to_BIT_STRING(

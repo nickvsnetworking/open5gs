@@ -70,6 +70,16 @@ void ogs_asn_buffer_to_OCTET_STRING(
     memcpy(octet_string->buf, buf, size);
 }
 
+void ogs_asn_buffer_to_BIT_STRING(
+        void *buf, int size, int unused, BIT_STRING_t *bit_string)
+{
+    bit_string->size = size;
+    bit_string->buf = CALLOC(bit_string->size, sizeof(uint8_t));
+    bit_string->bits_unused = unused;
+
+    memcpy(bit_string->buf, buf, size);
+}
+
 int ogs_asn_BIT_STRING_to_ip(BIT_STRING_t *bit_string, ogs_ip_t *ip)
 {
     char buf[OGS_ADDRSTRLEN], buf2[OGS_ADDRSTRLEN];
@@ -95,7 +105,7 @@ int ogs_asn_BIT_STRING_to_ip(BIT_STRING_t *bit_string, ogs_ip_t *ip)
     } else
         ogs_assert_if_reached();
 
-    ip->len =  bit_string->size;
+    ip->len = bit_string->size;
 
     return OGS_OK;
 }

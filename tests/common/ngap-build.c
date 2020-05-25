@@ -140,7 +140,7 @@ ogs_pkbuf_t *testngap_build_initial_ue_message(ogs_pkbuf_t *gmmbuf)
 {
     ogs_pkbuf_t *pkbuf = NULL;
     int i, j;
-    ogs_plmn_id_t *plmn_id = NULL;
+    char buf[5];
 
     NGAP_NGAP_PDU_t pdu;
     NGAP_InitiatingMessage_t *initiatingMessage = NULL;
@@ -150,6 +150,9 @@ ogs_pkbuf_t *testngap_build_initial_ue_message(ogs_pkbuf_t *gmmbuf)
     NGAP_RAN_UE_NGAP_ID_t *RAN_UE_NGAP_ID = NULL;
     NGAP_NAS_PDU_t *NAS_PDU = NULL;
     NGAP_UserLocationInformation_t *UserLocationInformation = NULL;
+    NGAP_UserLocationInformationNR_t *userLocationInformationNR = NULL;
+    NGAP_NR_CGI_t *nR_CGI = NULL;
+    NGAP_TAI_t *tAI = NULL;
     NGAP_RRCEstablishmentCause_t *RRCEstablishmentCause = NULL;
     NGAP_UEContextRequest_t *UEContextRequest = NULL;
 
@@ -184,12 +187,41 @@ ogs_pkbuf_t *testngap_build_initial_ue_message(ogs_pkbuf_t *gmmbuf)
 
     NAS_PDU = &ie->value.choice.NAS_PDU;
 
+    ie = CALLOC(1, sizeof(NGAP_InitialUEMessage_IEs_t));
+    ASN_SEQUENCE_ADD(&InitialUEMessage->protocolIEs, ie);
+
+    ie->id = NGAP_ProtocolIE_ID_id_UserLocationInformation;
+    ie->criticality = NGAP_Criticality_reject;
+    ie->value.present =
+        NGAP_InitialUEMessage_IEs__value_PR_UserLocationInformation;
+
+    UserLocationInformation = &ie->value.choice.UserLocationInformation;
+
     *RAN_UE_NGAP_ID = 1;
 
     NAS_PDU->size = gmmbuf->len;
     NAS_PDU->buf = CALLOC(NAS_PDU->size, sizeof(uint8_t));
     memcpy(NAS_PDU->buf, gmmbuf->data, NAS_PDU->size);
     ogs_pkbuf_free(gmmbuf);
+
+    userLocationInformationNR =
+            CALLOC(1, sizeof(NGAP_UserLocationInformationNR_t));
+
+    nR_CGI = &userLocationInformationNR->nR_CGI;
+    ogs_asn_buffer_to_OCTET_STRING(
+            &test_self()->tai.plmn_id, OGS_PLMN_ID_LEN, &nR_CGI->pLMNIdentity);
+    ogs_asn_buffer_to_BIT_STRING(buf, 5, 4, &nR_CGI->nRCellIdentity);
+
+    tAI = &userLocationInformationNR->tAI;
+    ogs_asn_buffer_to_OCTET_STRING(
+            &test_self()->tai.plmn_id, OGS_PLMN_ID_LEN, &tAI->pLMNIdentity);
+    ogs_asn_uint24_to_OCTET_STRING(
+        test_self()->tai.tac, &tAI->tAC);
+
+    UserLocationInformation->present =
+        NGAP_UserLocationInformation_PR_userLocationInformationNR;
+    UserLocationInformation->choice.userLocationInformationNR =
+        userLocationInformationNR;
 
     return ogs_ngap_encode(&pdu);
 }
