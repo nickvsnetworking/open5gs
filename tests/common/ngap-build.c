@@ -19,11 +19,10 @@
 
 #include "test-ngap.h"
 
-int testngap_build_setup_req(
-        ogs_pkbuf_t **pkbuf, uint32_t gnb_id,
-        int tac, uint16_t mcc, uint16_t mnc, uint16_t mnc_len)
+int testngap_build_setup_req(ogs_pkbuf_t **pkbuf, uint32_t gnb_id)
 {
     int i, j;
+    ogs_plmn_id_t *plmn_id = NULL;
 
     NGAP_NGAP_PDU_t pdu;
     NGAP_InitiatingMessage_t *initiatingMessage = NULL;
@@ -31,7 +30,7 @@ int testngap_build_setup_req(
 
     NGAP_NGSetupRequestIEs_t *ie = NULL;
     NGAP_GlobalRANNodeID_t *GlobalRANNodeID = NULL;
-    struct NGAP_GlobalGNB_ID *globalGNB_ID = NULL;
+    NGAP_GlobalGNB_ID_t *globalGNB_ID = NULL;
     NGAP_RANNodeName_t *RANNodeName = NULL;
     NGAP_SupportedTAList_t *SupportedTAList = NULL;
     NGAP_SupportedTAItem_t *SupportedTAItem = NULL;
@@ -53,7 +52,6 @@ int testngap_build_setup_req(
 
     NGSetupRequest = &initiatingMessage->value.choice.NGSetupRequest;
 
-#if 0
     ie = CALLOC(1, sizeof(NGAP_NGSetupRequestIEs_t));
     ASN_SEQUENCE_ADD(&NGSetupRequest->protocolIEs, ie);
 
@@ -62,7 +60,6 @@ int testngap_build_setup_req(
     ie->value.present = NGAP_NGSetupRequestIEs__value_PR_GlobalRANNodeID;
 
     GlobalRANNodeID = &ie->value.choice.GlobalRANNodeID;
-#endif
 
     ie = CALLOC(1, sizeof(NGAP_NGSetupRequestIEs_t));
     ASN_SEQUENCE_ADD(&NGSetupRequest->protocolIEs, ie);
@@ -82,20 +79,30 @@ int testngap_build_setup_req(
 
     PagingDRX = &ie->value.choice.PagingDRX;
 
-#if 0
-    globalGNB_ID = CALLOC(1, sizeof(*globalGNB_ID));
-    GlobalRANNodeID->choice.globalGNB_ID = globalGNB_ID;
+    globalGNB_ID = CALLOC(1, sizeof(NGAP_GlobalGNB_ID_t));
+
+    plmn_id = &test_self()->plmn_support[0].plmn_id;
+    ogs_asn_buffer_to_OCTET_STRING(
+            plmn_id, OGS_PLMN_ID_LEN, &globalGNB_ID->pLMNIdentity);
 
     ogs_ngap_uint32_to_GNB_ID(gnb_id, &globalGNB_ID->gNB_ID);
-    ogs_asn_buffer_to_OCTET_STRING(
-            &plmn_id, OGS_PLMN_ID_LEN, &globalGNB_ID->pLMNIdentity);
-#endif
+
+    GlobalRANNodeID->present = NGAP_GlobalRANNodeID_PR_globalGNB_ID;
+    GlobalRANNodeID->choice.globalGNB_ID = globalGNB_ID;
 
     SupportedTAItem = CALLOC(1, sizeof(NGAP_SupportedTAItem_t));
-    ogs_asn_buffer_to_OCTET_STRING(&tac, 3, &SupportedTAItem->tAC);
+    if (test_self()->served_tai[0].list2.num)
+        ogs_asn_uint24_to_OCTET_STRING(
+            test_self()->served_tai[0].list2.tai[0].tac, &SupportedTAItem->tAC);
+    else if (test_self()->served_tai[0].list0.tai[0].num)
+        ogs_asn_uint24_to_OCTET_STRING(
+            test_self()->served_tai[0].list0.tai[0].tac[0],
+                &SupportedTAItem->tAC);
+    else
+        ogs_assert_if_reached();
 
     for (i = 0; i < test_self()->num_of_plmn_support; i++) {
-        ogs_plmn_id_t *plmn_id = &test_self()->plmn_support[i].plmn_id;
+        plmn_id = &test_self()->plmn_support[i].plmn_id;
 
         BroadcastPLMNItem = CALLOC(1, sizeof(NGAP_BroadcastPLMNItem_t));
 

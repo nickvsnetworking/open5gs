@@ -54,6 +54,8 @@ void ogs_asn_uint8_to_OCTET_STRING(
         uint8_t uint8, OCTET_STRING_t *octet_string);
 void ogs_asn_uint16_to_OCTET_STRING(
         uint16_t uint16, OCTET_STRING_t *octet_string);
+void ogs_asn_uint24_to_OCTET_STRING(
+        ogs_uint24_t uint24, OCTET_STRING_t *octet_string);
 void ogs_asn_uint32_to_OCTET_STRING(
         uint32_t uint32, OCTET_STRING_t *octet_string);
 void ogs_asn_buffer_to_OCTET_STRING(

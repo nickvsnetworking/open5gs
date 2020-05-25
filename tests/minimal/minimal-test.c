@@ -112,7 +112,7 @@ static void test1_func(abts_case *tc, void *data)
 #if 0
     rv = testngap_build_setup_req(&sendbuf, 0x54f64, 51, 310, 14, 3);
 #else
-    rv = testngap_build_setup_req(&sendbuf, 0x000102, 1, 208, 93, 2);
+    rv = testngap_build_setup_req(&sendbuf, 0x000102);
 #endif
     ABTS_INT_EQUAL(tc, OGS_OK, rv);
     rv = testgnb_ngap_send(ngap, sendbuf);

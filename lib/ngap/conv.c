@@ -19,17 +19,6 @@
 
 #include "ogs-ngap.h"
 
-#if 0
-void ogs_ngap_buffer_to_OCTET_STRING(
-        void *buf, int size, NGAP_TBCD_STRING_t *tbcd_string)
-{
-    tbcd_string->size = size;
-    tbcd_string->buf = CALLOC(tbcd_string->size, sizeof(uint8_t));
-
-    memcpy(tbcd_string->buf, buf, size);
-}
-#endif
-
 void ogs_ngap_uint32_to_GNB_ID(uint32_t enb_id, NGAP_GNB_ID_t *gNB_ID)
 {
     BIT_STRING_t *bit_string = NULL;

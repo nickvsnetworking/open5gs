@@ -24,9 +24,7 @@
 extern "C" {
 #endif
 
-int testngap_build_setup_req(
-        ogs_pkbuf_t **pkbuf, uint32_t gnb_id,
-        int tac, uint16_t mcc, uint16_t mnc, uint16_t mnc_len);
+int testngap_build_setup_req(ogs_pkbuf_t **pkbuf, uint32_t gnb_id);
 
 #ifdef __cplusplus
 }
