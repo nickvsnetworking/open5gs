@@ -1631,7 +1631,6 @@ amf_sess_t *amf_sess_find_by_dnn(amf_ue_t *amf_ue, char *dnn)
 
     sess = amf_sess_first(amf_ue);
     while (sess) {
-
         if (sess->pdn && strcmp(sess->pdn->apn, dnn) == 0)
             return sess;
 
