@@ -24,7 +24,6 @@ int testngap_build_setup_req(
         int tac, uint16_t mcc, uint16_t mnc, uint16_t mnc_len)
 {
     int i, j;
-    ogs_plmn_id_t plmn_id2;
 
     NGAP_NGAP_PDU_t pdu;
     NGAP_InitiatingMessage_t *initiatingMessage = NULL;
