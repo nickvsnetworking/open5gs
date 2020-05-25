@@ -120,6 +120,8 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
         ASN_SEQUENCE_ADD(&ServedGUAMIList->list, ServedGUAMIItem);
     }
 
+    *RelativeAMFCapacity = amf_self()->relative_capacity;
+
     for (i = 0; i < amf_self()->num_of_plmn_support; i++) {
         NGAP_PLMNSupportItem_t *NGAP_PLMNSupportItem = NULL;
         NGAP_PLMNIdentity_t *pLMNIdentity = NULL;
@@ -157,8 +159,6 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
 
         ASN_SEQUENCE_ADD(&PLMNSupportList->list, NGAP_PLMNSupportItem);
     }
-
-    *RelativeAMFCapacity = amf_self()->relative_capacity;
 
     return ogs_ngap_encode(&pdu);
 }

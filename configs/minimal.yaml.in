@@ -36,6 +36,8 @@ amf:
         s_nssai:
           - sst: 1
             sd: 010203
+          - sst: 1
+            sd: 112233
     security:
         integrity_order : [ EIA1, EIA2, EIA0 ]
         ciphering_order : [ EEA0, EEA1, EEA2 ]
