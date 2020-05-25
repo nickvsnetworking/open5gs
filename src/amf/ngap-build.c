@@ -29,9 +29,9 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
 
     NGAP_NGAP_PDU_t pdu;
     NGAP_SuccessfulOutcome_t *successfulOutcome = NULL;
-    NGAP_S1SetupResponse_t *S1SetupResponse = NULL;
+    NGAP_NGSetupResponse_t *NGSetupResponse = NULL;
 
-    NGAP_S1SetupResponseIEs_t *ie = NULL;
+    NGAP_NGSetupResponseIEs_t *ie = NULL;
     NGAP_ServedGUAMFIs_t *ServedGUAMFIs = NULL;
     NGAP_RelativeAMFCapacity_t *RelativeAMFCapacity = NULL;
 
@@ -41,28 +41,28 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
         CALLOC(1, sizeof(NGAP_SuccessfulOutcome_t));
 
     successfulOutcome = pdu.choice.successfulOutcome;
-    successfulOutcome->procedureCode = NGAP_ProcedureCode_id_S1Setup;
+    successfulOutcome->procedureCode = NGAP_ProcedureCode_id_NGSetup;
     successfulOutcome->criticality = NGAP_Criticality_reject;
     successfulOutcome->value.present =
-        NGAP_SuccessfulOutcome__value_PR_S1SetupResponse;
+        NGAP_SuccessfulOutcome__value_PR_NGSetupResponse;
 
-    S1SetupResponse = &successfulOutcome->value.choice.S1SetupResponse;
+    NGSetupResponse = &successfulOutcome->value.choice.NGSetupResponse;
 
-    ie = CALLOC(1, sizeof(NGAP_S1SetupResponseIEs_t));
-    ASN_SEQUENCE_ADD(&S1SetupResponse->protocolIEs, ie);
+    ie = CALLOC(1, sizeof(NGAP_NGSetupResponseIEs_t));
+    ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
 
     ie->id = NGAP_ProtocolIE_ID_id_ServedGUAMFIs;
     ie->criticality = NGAP_Criticality_reject;
-    ie->value.present = NGAP_S1SetupResponseIEs__value_PR_ServedGUAMFIs;
+    ie->value.present = NGAP_NGSetupResponseIEs__value_PR_ServedGUAMFIs;
 
     ServedGUAMFIs = &ie->value.choice.ServedGUAMFIs;
 
-    ie = CALLOC(1, sizeof(NGAP_S1SetupResponseIEs_t));
-    ASN_SEQUENCE_ADD(&S1SetupResponse->protocolIEs, ie);
+    ie = CALLOC(1, sizeof(NGAP_NGSetupResponseIEs_t));
+    ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
 
     ie->id = NGAP_ProtocolIE_ID_id_RelativeAMFCapacity;
     ie->criticality = NGAP_Criticality_ignore;
-    ie->value.present = NGAP_S1SetupResponseIEs__value_PR_RelativeAMFCapacity;
+    ie->value.present = NGAP_NGSetupResponseIEs__value_PR_RelativeAMFCapacity;
 
     RelativeAMFCapacity = &ie->value.choice.RelativeAMFCapacity;
 
@@ -118,12 +118,11 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
 ogs_pkbuf_t *ngap_build_setup_failure(
         NGAP_Cause_PR group, long cause, long time_to_wait)
 {
-#if 0
     NGAP_NGAP_PDU_t pdu;
     NGAP_UnsuccessfulOutcome_t *unsuccessfulOutcome = NULL;
-    NGAP_S1SetupFailure_t *S1SetupFailure = NULL;
+    NGAP_NGSetupFailure_t *NGSetupFailure = NULL;
 
-    NGAP_S1SetupFailureIEs_t *ie = NULL;
+    NGAP_NGSetupFailureIEs_t *ie = NULL;
     NGAP_Cause_t *Cause = NULL;
     NGAP_TimeToWait_t *TimeToWait = NULL;
     
@@ -136,29 +135,29 @@ ogs_pkbuf_t *ngap_build_setup_failure(
         CALLOC(1, sizeof(NGAP_UnsuccessfulOutcome_t));
 
     unsuccessfulOutcome = pdu.choice.unsuccessfulOutcome;
-    unsuccessfulOutcome->procedureCode = NGAP_ProcedureCode_id_S1Setup;
+    unsuccessfulOutcome->procedureCode = NGAP_ProcedureCode_id_NGSetup;
     unsuccessfulOutcome->criticality = NGAP_Criticality_reject;
     unsuccessfulOutcome->value.present =
-        NGAP_UnsuccessfulOutcome__value_PR_S1SetupFailure;
+        NGAP_UnsuccessfulOutcome__value_PR_NGSetupFailure;
 
-    S1SetupFailure = &unsuccessfulOutcome->value.choice.S1SetupFailure;
+    NGSetupFailure = &unsuccessfulOutcome->value.choice.NGSetupFailure;
 
-    ie = CALLOC(1, sizeof(NGAP_S1SetupFailureIEs_t));
-    ASN_SEQUENCE_ADD(&S1SetupFailure->protocolIEs, ie);
+    ie = CALLOC(1, sizeof(NGAP_NGSetupFailureIEs_t));
+    ASN_SEQUENCE_ADD(&NGSetupFailure->protocolIEs, ie);
 
     ie->id = NGAP_ProtocolIE_ID_id_Cause;
     ie->criticality = NGAP_Criticality_ignore;
-    ie->value.present = NGAP_S1SetupFailureIEs__value_PR_Cause;
+    ie->value.present = NGAP_NGSetupFailureIEs__value_PR_Cause;
 
     Cause = &ie->value.choice.Cause;
 
     if (time_to_wait > -1) {
-        ie = CALLOC(1, sizeof(NGAP_S1SetupFailureIEs_t));
-        ASN_SEQUENCE_ADD(&S1SetupFailure->protocolIEs, ie);
+        ie = CALLOC(1, sizeof(NGAP_NGSetupFailureIEs_t));
+        ASN_SEQUENCE_ADD(&NGSetupFailure->protocolIEs, ie);
 
         ie->id = NGAP_ProtocolIE_ID_id_TimeToWait;
         ie->criticality = NGAP_Criticality_ignore;
-        ie->value.present = NGAP_S1SetupFailureIEs__value_PR_TimeToWait;
+        ie->value.present = NGAP_NGSetupFailureIEs__value_PR_TimeToWait;
 
         TimeToWait = &ie->value.choice.TimeToWait;
     }
@@ -170,8 +169,6 @@ ogs_pkbuf_t *ngap_build_setup_failure(
         *TimeToWait = time_to_wait;
 
     return ogs_ngap_encode(&pdu);
-#endif
-    return NULL;
 }
 
 #if 0
@@ -368,7 +365,7 @@ ogs_pkbuf_t *ngap_build_initial_context_setup_request(
             e_rab->e_RAB_ID = bearer->ebi;
             e_rab->e_RABlevelQoSParameters.qCI = bearer->qos.qci;
 
-            ogs_debug("    EBI[%d] QCI[%d] SGW-S1U-TEID[%d]",
+            ogs_debug("    EBI[%d] QCI[%d] SGW-NGU-TEID[%d]",
                     bearer->ebi, bearer->qos.qci, bearer->sgw_s1u_teid);
 
             e_rab->e_RABlevelQoSParameters.allocationRetentionPriority.
@@ -868,7 +865,7 @@ ogs_pkbuf_t *ngap_build_e_rab_setup_request(
             &bearer->sgw_s1u_ip, &e_rab->transportLayerAddress);
     ogs_assert(rv == OGS_OK);
     ogs_asn_uint32_to_OCTET_STRING(bearer->sgw_s1u_teid, &e_rab->gTP_TEID);
-    ogs_debug("    SGW-S1U-TEID[%d]", bearer->sgw_s1u_teid);
+    ogs_debug("    SGW-NGU-TEID[%d]", bearer->sgw_s1u_teid);
 
     nasPdu = &e_rab->nAS_PDU;
     nasPdu->size = esmbuf->len;
@@ -1914,7 +1911,7 @@ ogs_pkbuf_t *ngap_build_handover_request(
             ogs_assert(rv == OGS_OK);
             ogs_asn_uint32_to_OCTET_STRING(
                     bearer->sgw_s1u_teid, &e_rab->gTP_TEID);
-            ogs_debug("    SGW-S1U-TEID[%d]", bearer->sgw_s1u_teid);
+            ogs_debug("    SGW-NGU-TEID[%d]", bearer->sgw_s1u_teid);
 
             bearer = amf_bearer_next(bearer);
         }
@@ -2167,7 +2164,7 @@ ogs_pkbuf_t *ngap_build_error_indication(
 
 ogs_pkbuf_t *ngap_build_s1_reset(
         NGAP_Cause_PR group, long cause,
-        NGAP_UE_associatedLogicalS1_ConnectionListRes_t *partOfS1_Interface)
+        NGAP_UE_associatedLogicalNG_ConnectionListRes_t *partOfNG_Interface)
 {
     NGAP_NGAP_PDU_t pdu;
     NGAP_InitiatingMessage_t *initiatingMessage = NULL;
@@ -2213,12 +2210,12 @@ ogs_pkbuf_t *ngap_build_s1_reset(
     Cause->present = group;
     Cause->choice.radioNetwork = cause;
 
-    ogs_debug("    Group[%d] Cause[%d] partOfS1_Interface[%p]",
-        Cause->present, (int)Cause->choice.radioNetwork, partOfS1_Interface);
+    ogs_debug("    Group[%d] Cause[%d] partOfNG_Interface[%p]",
+        Cause->present, (int)Cause->choice.radioNetwork, partOfNG_Interface);
 
-    if (partOfS1_Interface) {
-        ResetType->present = NGAP_ResetType_PR_partOfS1_Interface;
-        ResetType->choice.partOfS1_Interface = partOfS1_Interface;
+    if (partOfNG_Interface) {
+        ResetType->present = NGAP_ResetType_PR_partOfNG_Interface;
+        ResetType->choice.partOfNG_Interface = partOfNG_Interface;
     } else {
         ResetType->present = NGAP_ResetType_PR_s1_Interface;
         ResetType->choice.s1_Interface = NGAP_ResetAll_reset_all;
@@ -2232,31 +2229,31 @@ ogs_pkbuf_t *ngap_build_s1_reset_partial(
         NGAP_AMF_UE_NGAP_ID_t *amf_ue_ngap_id,
         NGAP_ENB_UE_NGAP_ID_t *gnb_ue_ngap_id)
 {
-    NGAP_UE_associatedLogicalS1_ConnectionListRes_t *partOfS1_Interface = NULL;
-    NGAP_UE_associatedLogicalS1_ConnectionItemRes_t *ie2 = NULL;
-    NGAP_UE_associatedLogicalS1_ConnectionItem_t *item = NULL;
+    NGAP_UE_associatedLogicalNG_ConnectionListRes_t *partOfNG_Interface = NULL;
+    NGAP_UE_associatedLogicalNG_ConnectionItemRes_t *ie2 = NULL;
+    NGAP_UE_associatedLogicalNG_ConnectionItem_t *item = NULL;
 
-    partOfS1_Interface = CALLOC(1,
-            sizeof(NGAP_UE_associatedLogicalS1_ConnectionListRes_t));
-    ogs_assert(partOfS1_Interface);
+    partOfNG_Interface = CALLOC(1,
+            sizeof(NGAP_UE_associatedLogicalNG_ConnectionListRes_t));
+    ogs_assert(partOfNG_Interface);
 
     ie2 = CALLOC(1,
-            sizeof(NGAP_UE_associatedLogicalS1_ConnectionItemRes_t));
-    ASN_SEQUENCE_ADD(&partOfS1_Interface->list, ie2);
+            sizeof(NGAP_UE_associatedLogicalNG_ConnectionItemRes_t));
+    ASN_SEQUENCE_ADD(&partOfNG_Interface->list, ie2);
 
-    ie2->id = NGAP_ProtocolIE_ID_id_UE_associatedLogicalS1_ConnectionItem;
+    ie2->id = NGAP_ProtocolIE_ID_id_UE_associatedLogicalNG_ConnectionItem;
     ie2->criticality = NGAP_Criticality_reject;
-    ie2->value.present = NGAP_UE_associatedLogicalS1_ConnectionItemRes__value_PR_UE_associatedLogicalS1_ConnectionItem;
+    ie2->value.present = NGAP_UE_associatedLogicalNG_ConnectionItemRes__value_PR_UE_associatedLogicalNG_ConnectionItem;
 
-    item = &ie2->value.choice.UE_associatedLogicalS1_ConnectionItem;
+    item = &ie2->value.choice.UE_associatedLogicalNG_ConnectionItem;
     item->mME_UE_NGAP_ID = amf_ue_ngap_id;
     item->eNB_UE_NGAP_ID = gnb_ue_ngap_id;
 
-    return ngap_build_s1_reset(group, cause, partOfS1_Interface);
+    return ngap_build_s1_reset(group, cause, partOfNG_Interface);
 }
 
 ogs_pkbuf_t *ngap_build_s1_reset_ack(
-        NGAP_UE_associatedLogicalS1_ConnectionListRes_t *partOfS1_Interface)
+        NGAP_UE_associatedLogicalNG_ConnectionListRes_t *partOfNG_Interface)
 {
     NGAP_NGAP_PDU_t pdu;
     NGAP_SuccessfulOutcome_t *successfulOutcome = NULL;
@@ -2279,32 +2276,32 @@ ogs_pkbuf_t *ngap_build_s1_reset_ack(
 
     ResetAcknowledge = &successfulOutcome->value.choice.ResetAcknowledge;
 
-    if (partOfS1_Interface && partOfS1_Interface->list.count) {
+    if (partOfNG_Interface && partOfNG_Interface->list.count) {
         int i = 0;
-        NGAP_UE_associatedLogicalS1_ConnectionListResAck_t *list = NULL;
+        NGAP_UE_associatedLogicalNG_ConnectionListResAck_t *list = NULL;
 
         ie = CALLOC(1, sizeof(NGAP_ResetAcknowledgeIEs_t));
         ASN_SEQUENCE_ADD(&ResetAcknowledge->protocolIEs, ie);
 
         ie->id =
-            NGAP_ProtocolIE_ID_id_UE_associatedLogicalS1_ConnectionListResAck;
+            NGAP_ProtocolIE_ID_id_UE_associatedLogicalNG_ConnectionListResAck;
         ie->criticality = NGAP_Criticality_ignore;
-        ie->value.present = NGAP_ResetAcknowledgeIEs__value_PR_UE_associatedLogicalS1_ConnectionListResAck;
+        ie->value.present = NGAP_ResetAcknowledgeIEs__value_PR_UE_associatedLogicalNG_ConnectionListResAck;
 
-        list = &ie->value.choice.UE_associatedLogicalS1_ConnectionListResAck;
+        list = &ie->value.choice.UE_associatedLogicalNG_ConnectionListResAck;
 
-        for (i = 0; i < partOfS1_Interface->list.count; i++) {
-            NGAP_UE_associatedLogicalS1_ConnectionItemRes_t *ie1 = NULL;
-            NGAP_UE_associatedLogicalS1_ConnectionItem_t *item1 = NULL;
+        for (i = 0; i < partOfNG_Interface->list.count; i++) {
+            NGAP_UE_associatedLogicalNG_ConnectionItemRes_t *ie1 = NULL;
+            NGAP_UE_associatedLogicalNG_ConnectionItem_t *item1 = NULL;
 
-            NGAP_UE_associatedLogicalS1_ConnectionItemResAck_t *ie2 = NULL;
-            NGAP_UE_associatedLogicalS1_ConnectionItem_t *item2 = NULL;
+            NGAP_UE_associatedLogicalNG_ConnectionItemResAck_t *ie2 = NULL;
+            NGAP_UE_associatedLogicalNG_ConnectionItem_t *item2 = NULL;
 
-            ie1 = (NGAP_UE_associatedLogicalS1_ConnectionItemRes_t *)
-                partOfS1_Interface->list.array[i];
+            ie1 = (NGAP_UE_associatedLogicalNG_ConnectionItemRes_t *)
+                partOfNG_Interface->list.array[i];
             ogs_assert(ie1);
 
-            item1 = &ie1->value.choice.UE_associatedLogicalS1_ConnectionItem;
+            item1 = &ie1->value.choice.UE_associatedLogicalNG_ConnectionItem;
             ogs_assert(item1);
 
             if (item1->mME_UE_NGAP_ID == NULL &&
@@ -2314,16 +2311,16 @@ ogs_pkbuf_t *ngap_build_s1_reset_ack(
             }
 
             ie2 = CALLOC(1,
-                    sizeof(NGAP_UE_associatedLogicalS1_ConnectionItemResAck_t));
+                    sizeof(NGAP_UE_associatedLogicalNG_ConnectionItemResAck_t));
             ogs_assert(ie2);
             ASN_SEQUENCE_ADD(&list->list, ie2);
 
             ie2->id =
-                NGAP_ProtocolIE_ID_id_UE_associatedLogicalS1_ConnectionItem;
+                NGAP_ProtocolIE_ID_id_UE_associatedLogicalNG_ConnectionItem;
             ie2->criticality = NGAP_Criticality_ignore;
-            ie2->value.present = NGAP_UE_associatedLogicalS1_ConnectionItemResAck__value_PR_UE_associatedLogicalS1_ConnectionItem;
+            ie2->value.present = NGAP_UE_associatedLogicalNG_ConnectionItemResAck__value_PR_UE_associatedLogicalNG_ConnectionItem;
 
-            item2 = &ie2->value.choice.UE_associatedLogicalS1_ConnectionItem;
+            item2 = &ie2->value.choice.UE_associatedLogicalNG_ConnectionItem;
             ogs_assert(item2);
 
             if (item1->mME_UE_NGAP_ID) {

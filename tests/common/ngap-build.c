@@ -32,7 +32,6 @@ int testngap_build_setup_req(ogs_pkbuf_t **pkbuf, uint32_t gnb_id)
     NGAP_NGSetupRequestIEs_t *ie = NULL;
     NGAP_GlobalRANNodeID_t *GlobalRANNodeID = NULL;
     NGAP_GlobalGNB_ID_t *globalGNB_ID = NULL;
-    NGAP_RANNodeName_t *RANNodeName = NULL;
     NGAP_SupportedTAList_t *SupportedTAList = NULL;
     NGAP_SupportedTAItem_t *SupportedTAItem = NULL;
     NGAP_BroadcastPLMNItem_t *BroadcastPLMNItem = NULL;

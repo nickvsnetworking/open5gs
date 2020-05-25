@@ -54,19 +54,23 @@ static bool maximum_number_of_gnbs_is_reached(void)
 
 void ngap_handle_ng_setup_request(amf_gnb_t *gnb, ogs_ngap_message_t *message)
 {
-#if 0
     char buf[OGS_ADDRSTRLEN];
     int i, j;
 
     NGAP_InitiatingMessage_t *initiatingMessage = NULL;
-    NGAP_S1SetupRequest_t *S1SetupRequest = NULL;
+    NGAP_NGSetupRequest_t *NGSetupRequest = NULL;
 
-    NGAP_S1SetupRequestIEs_t *ie = NULL;
-    NGAP_Global_ENB_ID_t *Global_ENB_ID = NULL;
-    NGAP_SupportedTAs_t *SupportedTAs = NULL;
+    NGAP_NGSetupRequestIEs_t *ie = NULL;
+    NGAP_GlobalRANNodeID_t *GlobalRANNodeID = NULL;
+    NGAP_GlobalGNB_ID_t *globalGNB_ID = NULL;
+    NGAP_SupportedTAList_t *SupportedTAList = NULL;
+    NGAP_SupportedTAItem_t *SupportedTAItem = NULL;
+    NGAP_BroadcastPLMNItem_t *BroadcastPLMNItem = NULL;
+    NGAP_SliceSupportItem_t *SliceSupportItem = NULL;
+    NGAP_PLMNIdentity_t *pLMNIdentity = NULL;
     NGAP_PagingDRX_t *PagingDRX = NULL;
 
-    uint32_t gnb_id;
+    ogs_uint24_t gnb_id;
     NGAP_Cause_PR group = NGAP_Cause_PR_NOTHING;
     long cause = 0;
 
@@ -76,19 +80,19 @@ void ngap_handle_ng_setup_request(amf_gnb_t *gnb, ogs_ngap_message_t *message)
     ogs_assert(message);
     initiatingMessage = message->choice.initiatingMessage;
     ogs_assert(initiatingMessage);
-    S1SetupRequest = &initiatingMessage->value.choice.S1SetupRequest;
-    ogs_assert(S1SetupRequest);
+    NGSetupRequest = &initiatingMessage->value.choice.NGSetupRequest;
+    ogs_assert(NGSetupRequest);
 
-    ogs_debug("[AMF] S1-Setup request");
+    ogs_debug("[AMF] NG-Setup request");
 
-    for (i = 0; i < S1SetupRequest->protocolIEs.list.count; i++) {
-        ie = S1SetupRequest->protocolIEs.list.array[i];
+    for (i = 0; i < NGSetupRequest->protocolIEs.list.count; i++) {
+        ie = NGSetupRequest->protocolIEs.list.array[i];
         switch (ie->id) {
-        case NGAP_ProtocolIE_ID_id_Global_ENB_ID:
-            Global_ENB_ID = &ie->value.choice.Global_ENB_ID;
+        case NGAP_ProtocolIE_ID_id_GlobalRANNodeID:
+            GlobalRANNodeID = &ie->value.choice.GlobalRANNodeID;
             break;
-        case NGAP_ProtocolIE_ID_id_SupportedTAs:
-            SupportedTAs = &ie->value.choice.SupportedTAs;
+        case NGAP_ProtocolIE_ID_id_SupportedTAList:
+            SupportedTAList = &ie->value.choice.SupportedTAList;
             break;
         case NGAP_ProtocolIE_ID_id_DefaultPagingDRX:
             PagingDRX = &ie->value.choice.PagingDRX;
@@ -98,14 +102,30 @@ void ngap_handle_ng_setup_request(amf_gnb_t *gnb, ogs_ngap_message_t *message)
         }
     }
 
-    ogs_assert(Global_ENB_ID);
+    if (!GlobalRANNodeID) {
+        ogs_warn("No GlobalRANNodeID");
+        group = NGAP_Cause_PR_protocol;
+        cause = NGAP_CauseProtocol_semantic_error;
+        ngap_send_s1_setup_failure(gnb, group, cause);
+        return;
+    }
 
-    ogs_ngap_ENB_ID_to_uint32(&Global_ENB_ID->eNB_ID, &gnb_id);
-    ogs_debug("    IP[%s] ENB_ID[%d]", OGS_ADDR(gnb->addr, buf), gnb_id);
+    globalGNB_ID = GlobalRANNodeID->choice.globalGNB_ID;
+    if (!globalGNB_ID) {
+        ogs_warn("No globalGNB_ID");
+        group = NGAP_Cause_PR_protocol;
+        cause = NGAP_CauseProtocol_semantic_error;
+        ngap_send_s1_setup_failure(gnb, group, cause);
+        return;
+    }
+
+    ogs_ngap_GNB_ID_to_uint24(&globalGNB_ID->gNB_ID, &gnb_id);
+    ogs_fatal("    IP[%s] GNB_ID[%x]", OGS_ADDR(gnb->addr, buf), gnb_id.v);
 
     if (PagingDRX)
         ogs_debug("    PagingDRX[%ld]", *PagingDRX);
 
+#if 0
     amf_gnb_set_gnb_id(gnb, gnb_id);
 
     ogs_assert(SupportedTAs);
