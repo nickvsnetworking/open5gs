@@ -119,6 +119,11 @@ static int amf_context_validation(void)
         return OGS_ERROR;
     }
 
+    if (self.amf_name == NULL) {
+        ogs_error("No amf.amf_name in '%s'", ogs_config()->file);
+        return OGS_ERROR;
+    }
+
     if (self.num_of_integrity_order == 0) {
         ogs_error("No amf.security.integrity_order in '%s'",
                 ogs_config()->file);
@@ -764,6 +769,8 @@ int amf_context_parse_config(void)
                             network_short_name->coding_scheme = 1;
                         }
                     }
+                } else if (!strcmp(amf_key, "amf_name")) {
+                    self.amf_name = ogs_yaml_iter_value(&amf_iter);
                 } else if (!strcmp(amf_key, "sbi")) {
                     /* handle config in sbi library */
                 } else

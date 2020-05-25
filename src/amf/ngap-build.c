@@ -85,8 +85,8 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
 
     PLMNSupportList = &ie->value.choice.PLMNSupportList;
 
-    ogs_asn_buffer_to_OCTET_STRING(
-            (char*)"amf.open5gs.org", strlen("amf.open5gs.org"), AMFName);
+    ogs_asn_buffer_to_OCTET_STRING((char*)amf_self()->amf_name,
+            strlen(amf_self()->amf_name), AMFName);
 
     for (i = 0; i < amf_self()->num_of_served_guami; i++) {
         NGAP_ServedGUAMIItem_t *ServedGUAMIItem = NULL;
