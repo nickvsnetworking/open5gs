@@ -40,6 +40,8 @@ extern int __amf_log_domain;
 #undef OGS_LOG_DOMAIN
 #define OGS_LOG_DOMAIN __amf_log_domain
 
+typedef uint32_t amf_m_tmsi_t;
+
 typedef struct amf_context_s {
     ogs_queue_t     *queue;         /* Queue for processing UPF control */
     ogs_timer_mgr_t *timer_mgr;     /* Timer Manager */
@@ -87,6 +89,9 @@ typedef struct amf_context_s {
     /* Network Name */    
     ogs_nas_network_name_t short_name; /* Network short name */
     ogs_nas_network_name_t full_name; /* Network Full Name */
+
+    /* M-TMSI Pool */
+    OGS_POOL(m_tmsi, amf_m_tmsi_t);
 
     /* NGSetupResponse */
     uint8_t         relative_capacity;
@@ -140,9 +145,17 @@ amf_gnb_t *amf_gnb_find_by_addr(ogs_sockaddr_t *addr);
 amf_gnb_t *amf_gnb_find_by_gnb_id(uint32_t gnb_id);
 int amf_gnb_set_gnb_id(amf_gnb_t *gnb, uint32_t gnb_id);
 int amf_gnb_sock_type(ogs_sock_t *sock);
-bool amf_is_maximum_number_of_gnbs_reached(void);
 
 int amf_find_served_tai(ogs_5gs_tai_t *tai);
+
+int amf_m_tmsi_pool_generate(void);
+amf_m_tmsi_t *amf_m_tmsi_alloc(void);
+int amf_m_tmsi_free(amf_m_tmsi_t *tmsi);
+
+#if 0
+uint8_t amf_selected_int_algorithm(amf_ue_t *amf_ue);
+uint8_t amf_selected_enc_algorithm(amf_ue_t *amf_ue);
+#endif
 
 #ifdef __cplusplus
 }

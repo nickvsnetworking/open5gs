@@ -664,7 +664,6 @@ mme_enb_t *mme_enb_find_by_addr(ogs_sockaddr_t *addr);
 mme_enb_t *mme_enb_find_by_enb_id(uint32_t enb_id);
 int mme_enb_set_enb_id(mme_enb_t *enb, uint32_t enb_id);
 int mme_enb_sock_type(ogs_sock_t *sock);
-bool mme_is_maximum_number_of_enbs_reached(void);
 
 enb_ue_t *enb_ue_add(mme_enb_t *enb, uint32_t enb_ue_s1ap_id);
 unsigned int enb_ue_count(void);

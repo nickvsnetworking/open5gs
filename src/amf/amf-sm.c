@@ -54,7 +54,9 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
     ogs_pkbuf_t *pkbuf = NULL;
     int rc;
 
+#if 0
     ogs_nas_5gs_message_t nas_message;
+#endif
 
     ogs_sbi_server_t *server = NULL;
     ogs_sbi_session_t *session = NULL;

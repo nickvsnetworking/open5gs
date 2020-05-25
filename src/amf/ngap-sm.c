@@ -40,7 +40,9 @@ void ngap_state_final(ogs_fsm_t *s, amf_event_t *e)
 void ngap_state_operational(ogs_fsm_t *s, amf_event_t *e)
 {
     amf_gnb_t *gnb = NULL;
+#if 0
     ogs_pkbuf_t *pkbuf = NULL;
+#endif
 
     NGAP_NGAP_PDU_t *pdu = NULL;
     NGAP_InitiatingMessage_t *initiatingMessage = NULL;

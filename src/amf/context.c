@@ -46,6 +46,8 @@ void amf_context_init(void)
     self.gnb_addr_hash = ogs_hash_make();
     self.gnb_id_hash = ogs_hash_make();
 
+    ogs_pool_init(&self.m_tmsi, ogs_config()->pool.ue);
+
     context_initialized = 1;
 }
 
@@ -59,6 +61,8 @@ void amf_context_final(void)
     ogs_hash_destroy(self.gnb_addr_hash);
     ogs_assert(self.gnb_id_hash);
     ogs_hash_destroy(self.gnb_id_hash);
+
+    ogs_pool_final(&self.m_tmsi);
 
     ogs_pool_final(&amf_gnb_pool);
 
@@ -941,3 +945,93 @@ int amf_find_served_tai(ogs_5gs_tai_t *tai)
 
     return -1;
 }
+
+int amf_m_tmsi_pool_generate()
+{
+    int i, j;
+    int index = 0;
+
+    ogs_trace("M-TMSI Pool try to generate...");
+    for (i = 0; index < ogs_config()->pool.ue; i++) {
+        amf_m_tmsi_t *m_tmsi = NULL;
+        int conflict = 0;
+
+        m_tmsi = &self.m_tmsi.array[index];
+        ogs_assert(m_tmsi);
+        *m_tmsi = ogs_random32();
+
+        /* for mapped-GUTI */
+        *m_tmsi |= 0xc0000000;
+        *m_tmsi &= 0xff00ffff;
+
+        for (j = 0; j < index; j++) {
+            if (*m_tmsi == self.m_tmsi.array[j]) {
+                conflict = 1;
+                ogs_trace("[M-TMSI CONFLICT]  %d:0x%x == %d:0x%x",
+                        index, *m_tmsi, j, self.m_tmsi.array[j]);
+                break;
+            }
+        }
+        if (conflict == 1) {
+            continue;
+        }
+
+        index++;
+    }
+    self.m_tmsi.size = index;
+    ogs_trace("M-TMSI Pool generate...done");
+
+    return OGS_OK;
+}
+
+amf_m_tmsi_t *amf_m_tmsi_alloc()
+{
+    amf_m_tmsi_t *m_tmsi = NULL;
+
+    ogs_pool_alloc(&self.m_tmsi, &m_tmsi);
+    ogs_assert(m_tmsi);
+
+    return m_tmsi;
+}
+
+int amf_m_tmsi_free(amf_m_tmsi_t *m_tmsi)
+{
+    ogs_assert(m_tmsi);
+    ogs_pool_free(&self.m_tmsi, m_tmsi);
+
+    return OGS_OK;
+}
+
+#if 0
+uint8_t amf_selected_int_algorithm(amf_ue_t *amf_ue)
+{
+    int i;
+
+    ogs_assert(amf_ue);
+
+    for (i = 0; i < amf_self()->num_of_integrity_order; i++) {
+        if (amf_ue->ue_network_capability.eia & 
+                (0x80 >> amf_self()->integrity_order[i])) {
+            return amf_self()->integrity_order[i];
+        }
+    }
+
+    return 0;
+}
+
+uint8_t amf_selected_enc_algorithm(amf_ue_t *amf_ue)
+{
+    int i;
+
+    ogs_assert(amf_ue);
+
+    for (i = 0; i < amf_self()->num_of_ciphering_order; i++) {
+        if (amf_ue->ue_network_capability.eea & 
+                (0x80 >> amf_self()->ciphering_order[i])) {
+            return amf_self()->ciphering_order[i];
+        }
+    }
+
+    return 0;
+}
+#endif
