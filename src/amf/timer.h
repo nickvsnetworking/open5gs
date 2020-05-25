@@ -36,6 +36,19 @@ typedef enum {
     AMF_TIMER_NF_INSTANCE_VALIDITY,
     AMF_TIMER_SUBSCRIPTION_VALIDITY,
 
+    AMF_TIMER_NG_DELAYED_SEND,
+
+    AMF_TIMER_T3413,
+    AMF_TIMER_T3422,
+    AMF_TIMER_T3450,
+    AMF_TIMER_T3460,
+    AMF_TIMER_T3470,
+    AMF_TIMER_T3489,
+
+#if 0
+    AMF_TIMER_SGS_CLI_CONN_TO_SRV,
+#endif
+
     MAX_NUM_OF_AMF_TIMER,
 
 } amf_timer_e;
@@ -54,6 +67,19 @@ void amf_timer_nf_instance_heartbeat_interval(void *data);
 void amf_timer_nf_instance_heartbeat(void *data);
 void amf_timer_nf_instance_validity(void *data);
 void amf_timer_subscription_validity(void *data);
+
+void amf_timer_ng_delayed_send(void *data);
+
+void amf_timer_t3413_expire(void *data);
+void amf_timer_t3422_expire(void *data);
+void amf_timer_t3450_expire(void *data);
+void amf_timer_t3460_expire(void *data);
+void amf_timer_t3470_expire(void *data);
+void amf_timer_t3489_expire(void *data);
+
+#if 0
+void amf_timer_sgs_cli_conn_to_srv(void *data);
+#endif
 
 #ifdef __cplusplus
 }
