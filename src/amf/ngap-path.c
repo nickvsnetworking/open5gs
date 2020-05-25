@@ -112,7 +112,7 @@ int ngap_delayed_send_to_gnb_ue(
         e = amf_event_new(AMF_EVT_NGAP_TIMER);
         ogs_assert(e);
         e->timer = ogs_timer_add(
-                amf_self()->timer_mgr, amf_timer_s1_delayed_send, e);
+                amf_self()->timer_mgr, amf_timer_ng_delayed_send, e);
         ogs_assert(e->timer);
         e->pkbuf = pkbuf;
         e->gnb_ue = gnb_ue;
@@ -242,7 +242,7 @@ int ngap_send_to_nas(gnb_ue_t *gnb_ue,
     }
 }
 
-void ngap_send_s1_setup_response(amf_gnb_t *gnb)
+void ngap_send_ng_setup_response(amf_gnb_t *gnb)
 {
     ogs_pkbuf_t *ngap_buffer;
 
@@ -255,7 +255,7 @@ void ngap_send_s1_setup_response(amf_gnb_t *gnb)
 }
 #endif
 
-void ngap_send_s1_setup_failure(
+void ngap_send_ng_setup_failure(
         amf_gnb_t *gnb, NGAP_Cause_PR group, long cause)
 {
     ogs_pkbuf_t *ngap_buffer;
@@ -528,7 +528,7 @@ void ngap_send_error_indication(
     ogs_expect(rv == OGS_OK);
 }
 
-void ngap_send_s1_reset_ack(
+void ngap_send_ng_reset_ack(
         amf_gnb_t *gnb,
         NGAP_UE_associatedLogicalNG_ConnectionListRes_t *partOfNG_Interface)
 {
@@ -537,7 +537,7 @@ void ngap_send_s1_reset_ack(
 
     ogs_assert(gnb);
 
-    ngapbuf = ngap_build_s1_reset_ack(partOfNG_Interface);
+    ngapbuf = ngap_build_ng_reset_ack(partOfNG_Interface);
     ogs_expect_or_return(ngapbuf);
 
     rv = ngap_send_to_gnb(gnb, ngapbuf, NGAP_NON_UE_SIGNALLING);

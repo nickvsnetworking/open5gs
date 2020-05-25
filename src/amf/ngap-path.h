@@ -48,9 +48,9 @@ int ngap_send_to_nas(gnb_ue_t *gnb_ue,
         NGAP_ProcedureCode_t procedureCode, NGAP_NAS_PDU_t *nasPdu);
 int ngap_send_to_esm(amf_ue_t *amf_ue, ogs_pkbuf_t *esmbuf);
 
-void ngap_send_s1_setup_response(amf_gnb_t *gnb);
+void ngap_send_ng_setup_response(amf_gnb_t *gnb);
 #endif
-void ngap_send_s1_setup_failure(
+void ngap_send_ng_setup_failure(
         amf_gnb_t *gnb, NGAP_Cause_PR group, long cause);
 
 #if 0
@@ -93,7 +93,7 @@ void ngap_send_error_indication(
         NGAP_AMF_UE_NGAP_ID_t *amf_ue_ngap_id,
         NGAP_ENB_UE_NGAP_ID_t *gnb_ue_ngap_id,
         NGAP_Cause_PR group, long cause);
-void ngap_send_s1_reset_ack(
+void ngap_send_ng_reset_ack(
         amf_gnb_t *gnb,
         NGAP_UE_associatedLogicalNG_ConnectionListRes_t *partOfNG_Interface);
 #endif

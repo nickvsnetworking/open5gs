@@ -899,3 +899,45 @@ int amf_gnb_sock_type(ogs_sock_t *sock)
     return SOCK_STREAM;
 }
 
+int amf_find_served_tai(ogs_5gs_tai_t *tai)
+{
+    int i = 0, j = 0, k = 0;
+
+    ogs_assert(tai);
+
+    for (i = 0; i < self.num_of_served_tai; i++) {
+        ogs_5gs_tai0_list_t *list0 = &self.served_tai[i].list0;
+        ogs_assert(list0);
+        ogs_5gs_tai2_list_t *list2 = &self.served_tai[i].list2;
+        ogs_assert(list2);
+
+        for (j = 0; list0->tai[j].num; j++) {
+            ogs_assert(list0->tai[j].type == OGS_TAI0_TYPE);
+            ogs_assert(list0->tai[j].num < OGS_MAX_NUM_OF_TAI);
+
+            for (k = 0; k < list0->tai[j].num; k++) {
+                if (memcmp(&list0->tai[j].plmn_id,
+                            &tai->plmn_id, OGS_PLMN_ID_LEN) == 0 && 
+                    list0->tai[j].tac[k].v == tai->tac.v) {
+                    return i;
+                }
+            }
+        }
+
+        if (list2->num) {
+            ogs_assert(list2->type == OGS_TAI1_TYPE ||
+                        list2->type == OGS_TAI2_TYPE);
+            ogs_assert(list2->num < OGS_MAX_NUM_OF_TAI);
+
+            for (j = 0; j < list2->num; j++) {
+                if (memcmp(&list2->tai[j].plmn_id,
+                            &tai->plmn_id, OGS_PLMN_ID_LEN) == 0 && 
+                    list2->tai[j].tac.v == tai->tac.v) {
+                    return i;
+                }
+            }
+        }
+    }
+
+    return -1;
+}

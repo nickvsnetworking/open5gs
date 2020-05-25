@@ -142,6 +142,8 @@ int amf_gnb_set_gnb_id(amf_gnb_t *gnb, uint32_t gnb_id);
 int amf_gnb_sock_type(ogs_sock_t *sock);
 bool amf_is_maximum_number_of_gnbs_reached(void);
 
+int amf_find_served_tai(ogs_5gs_tai_t *tai);
+
 #ifdef __cplusplus
 }
 #endif
