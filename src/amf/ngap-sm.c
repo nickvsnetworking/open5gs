@@ -67,18 +67,18 @@ void ngap_state_operational(ogs_fsm_t *s, amf_event_t *e)
         ogs_assert(pdu);
 
         switch (pdu->present) {
-        case NGAP_NGAP_PDU_PR_initiatingMessage :
+        case NGAP_NGAP_PDU_PR_initiatingMessage:
             initiatingMessage = pdu->choice.initiatingMessage;
             ogs_assert(initiatingMessage);
 
             switch (initiatingMessage->procedureCode) {
-            case NGAP_ProcedureCode_id_NGSetup :
+            case NGAP_ProcedureCode_id_NGSetup:
                 ngap_handle_ng_setup_request(gnb, pdu);
                 break;
-#if 0
-            case NGAP_ProcedureCode_id_initialUEMessage :
+            case NGAP_ProcedureCode_id_InitialUEMessage:
                 ngap_handle_initial_ue_message(gnb, pdu);
                 break;
+#if 0
             case NGAP_ProcedureCode_id_uplinkNASTransport :
                 ngap_handle_uplink_nas_transport(gnb, pdu);
                 break;
