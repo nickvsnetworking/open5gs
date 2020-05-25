@@ -49,3 +49,37 @@ void ogs_ngap_GNB_ID_to_uint32(NGAP_GNB_ID_t *gNB_ID, uint32_t *gnb_id)
 
     *gnb_id = (buf[0] << 16) + (buf[1] << 8) + buf[2];
 }
+
+void ogs_ngap_uint8_to_AMFRegionID(
+        uint8_t region, NGAP_AMFRegionID_t *aMFRegionID)
+{
+    ogs_assert(aMFRegionID);
+
+    aMFRegionID->size = 1;
+    aMFRegionID->buf = CALLOC(aMFRegionID->size, sizeof(uint8_t));
+
+    aMFRegionID->buf[0] = region;
+}
+void ogs_ngap_uint16_to_NGAP_AMFSetID(
+        uint16_t set, NGAP_AMFSetID_t *aMFSetID)
+{
+    ogs_assert(aMFSetID);
+
+    aMFSetID->size = 2;
+    aMFSetID->buf = CALLOC(aMFSetID->size, sizeof(uint8_t));
+    aMFSetID->bits_unused = 6;
+
+    aMFSetID->buf[0] = (set >> 8) & 0x03;
+    aMFSetID->buf[1] = (set & 0xff);
+}
+void ogs_ngap_uint8_to_NGAP_NGAP_AMFPointer(
+        uint8_t pointer, NGAP_AMFPointer_t *aMFPointer)
+{
+    ogs_assert(aMFPointer);
+
+    aMFPointer->size = 1;
+    aMFPointer->buf = CALLOC(aMFPointer->size, sizeof(uint8_t));
+    aMFPointer->bits_unused = 2;
+
+    aMFPointer->buf[0] = pointer;
+}

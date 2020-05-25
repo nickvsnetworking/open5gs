@@ -31,6 +31,13 @@ extern "C" {
 void ogs_ngap_uint32_to_GNB_ID(uint32_t gnb_id, NGAP_GNB_ID_t *gNB_ID);
 void ogs_ngap_GNB_ID_to_uint32(NGAP_GNB_ID_t *gNB_ID, uint32_t *gnb_id);
 
+void ogs_ngap_uint8_to_AMFRegionID(
+        uint8_t region, NGAP_AMFRegionID_t *aMFRegionID);
+void ogs_ngap_uint16_to_NGAP_AMFSetID(
+        uint16_t set, NGAP_AMFSetID_t *aMFSetID);
+void ogs_ngap_uint8_to_NGAP_NGAP_AMFPointer(
+        uint8_t pointer, NGAP_AMFPointer_t *aMFPointer);
+
 #ifdef __cplusplus
 }
 #endif

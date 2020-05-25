@@ -58,16 +58,14 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
 
     AMFName = &ie->value.choice.AMFName;
 
-#if 0
     ie = CALLOC(1, sizeof(NGAP_NGSetupResponseIEs_t));
     ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
 
-    ie->id = NGAP_ProtocolIE_ID_id_ServedGUAMFIs;
+    ie->id = NGAP_ProtocolIE_ID_id_ServedGUAMIList;
     ie->criticality = NGAP_Criticality_reject;
-    ie->value.present = NGAP_NGSetupResponseIEs__value_PR_ServedGUAMFIs;
+    ie->value.present = NGAP_NGSetupResponseIEs__value_PR_ServedGUAMIList;
 
-    ServedGUAMFIs = &ie->value.choice.ServedGUAMFIs;
-#endif
+    ServedGUAMIList = &ie->value.choice.ServedGUAMIList;
 
     ie = CALLOC(1, sizeof(NGAP_NGSetupResponseIEs_t));
     ASN_SEQUENCE_ADD(&NGSetupResponse->protocolIEs, ie);
@@ -82,49 +80,37 @@ ogs_pkbuf_t *ngap_build_setup_rsp(void)
     ogs_asn_buffer_to_OCTET_STRING(
             (char*)"amf.open5gs.org", strlen("amf.open5gs.org"), AMFName);
 
-#if 0
-    for (i = 0; i < amf_self()->max_num_of_served_guamfi; i++) {
-        NGAP_ServedGUAMFIsItem_t *ServedGUAMFIsItem = NULL;
-        ServedGUAMFIsItem = (NGAP_ServedGUAMFIsItem_t *)
-            CALLOC(1, sizeof(NGAP_ServedGUAMFIsItem_t));
+    for (i = 0; i < amf_self()->num_of_served_guami; i++) {
+        NGAP_ServedGUAMIItem_t *ServedGUAMIItem = NULL;
+        NGAP_GUAMI_t *gUAMI = NULL;
+        NGAP_PLMNIdentity_t *pLMNIdentity = NULL;
+        NGAP_AMFRegionID_t *aMFRegionID = NULL;
+        NGAP_AMFSetID_t *aMFSetID = NULL;
+        NGAP_AMFPointer_t *aMFPointer = NULL;
 
-        served_guamfi_t *served_guamfi = &amf_self()->served_guamfi[i];
-        for (j = 0; j < served_guamfi->num_of_plmn_id; j++) {
-            NGAP_PLMNidentity_t *PLMNidentity = NULL;
-            PLMNidentity = (NGAP_PLMNidentity_t *)
-                CALLOC(1, sizeof(NGAP_PLMNidentity_t));
-            ogs_ngap_buffer_to_OCTET_STRING(
-                    &served_guamfi->plmn_id[j], OGS_PLMN_ID_LEN, PLMNidentity);
-            ASN_SEQUENCE_ADD(
-                    &ServedGUAMFIsItem->servedPLMNs.list, PLMNidentity);
-            ogs_debug("    PLMN_ID[MCC:%d MNC:%d]",
-                ogs_plmn_id_mcc(&served_guamfi->plmn_id[j]),
-                ogs_plmn_id_mnc(&served_guamfi->plmn_id[j]));
-        }
+        ServedGUAMIItem = (NGAP_ServedGUAMIItem_t *)
+                CALLOC(1, sizeof(NGAP_ServedGUAMIItem_t));
+        gUAMI = &ServedGUAMIItem->gUAMI;
+        pLMNIdentity = &gUAMI->pLMNIdentity;
+        aMFRegionID = &gUAMI->aMFRegionID;
+        aMFSetID = &gUAMI->aMFSetID;
+        aMFPointer = &gUAMI->aMFPointer;
 
-        for (j = 0; j < served_guamfi->num_of_amf_gid; j++) {
-            NGAP_AMF_Group_ID_t *AMF_Group_ID = NULL;
-            AMF_Group_ID = (NGAP_AMF_Group_ID_t *)
-                CALLOC(1, sizeof(NGAP_AMF_Group_ID_t));
-            ogs_asn_uint16_to_OCTET_STRING(
-                    served_guamfi->amf_gid[j], AMF_Group_ID);
-            ASN_SEQUENCE_ADD(
-                    &ServedGUAMFIsItem->servedGroupIDs.list, AMF_Group_ID);
-            ogs_debug("    AMF Group[%d]", served_guamfi->amf_gid[j]);
-        }
+        ogs_asn_buffer_to_OCTET_STRING(
+                &amf_self()->served_guami[i].plmn_id,
+                OGS_PLMN_ID_LEN, pLMNIdentity);
+        ogs_ngap_uint8_to_AMFRegionID(
+                ogs_amf_region_id(&amf_self()->served_guami[i].amf_id),
+                aMFRegionID);
+        ogs_ngap_uint16_to_NGAP_AMFSetID(
+                ogs_amf_set_id(&amf_self()->served_guami[i].amf_id),
+                aMFSetID);
+        ogs_ngap_uint8_to_NGAP_NGAP_AMFPointer(
+                ogs_amf_pointer(&amf_self()->served_guami[i].amf_id),
+                aMFPointer);
 
-        for (j = 0; j < served_guamfi->num_of_amf_code; j++) {
-            NGAP_AMF_Code_t *AMF_Code = NULL ;
-            AMF_Code = (NGAP_AMF_Code_t *)
-                CALLOC(1, sizeof(NGAP_AMF_Code_t));
-            ogs_asn_uint8_to_OCTET_STRING(
-                    served_guamfi->amf_code[j], AMF_Code);
-            ASN_SEQUENCE_ADD(&ServedGUAMFIsItem->servedAMFCs.list, AMF_Code);
-            ogs_debug("    AMF Code[%d]", served_guamfi->amf_code[j]);
-        }
-        ASN_SEQUENCE_ADD(&ServedGUAMFIs->list, ServedGUAMFIsItem);
+        ASN_SEQUENCE_ADD(&ServedGUAMIList->list, ServedGUAMIItem);
     }
-#endif
 
     *RelativeAMFCapacity = amf_self()->relative_capacity;
 
