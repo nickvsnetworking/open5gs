@@ -69,8 +69,8 @@ void ogs_ngap_uint16_to_NGAP_AMFSetID(
     aMFSetID->buf = CALLOC(aMFSetID->size, sizeof(uint8_t));
     aMFSetID->bits_unused = 6;
 
-    aMFSetID->buf[0] = (set >> 8) & 0x03;
-    aMFSetID->buf[1] = (set & 0xff);
+    aMFSetID->buf[0] = (set >> 2);
+    aMFSetID->buf[1] = (set & 0x03);
 }
 void ogs_ngap_uint8_to_NGAP_NGAP_AMFPointer(
         uint8_t pointer, NGAP_AMFPointer_t *aMFPointer)
@@ -81,5 +81,5 @@ void ogs_ngap_uint8_to_NGAP_NGAP_AMFPointer(
     aMFPointer->buf = CALLOC(aMFPointer->size, sizeof(uint8_t));
     aMFPointer->bits_unused = 2;
 
-    aMFPointer->buf[0] = pointer;
+    aMFPointer->buf[0] = (pointer << 2);
 }
