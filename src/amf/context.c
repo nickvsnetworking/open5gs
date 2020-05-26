@@ -1782,13 +1782,15 @@ amf_bearer_t *amf_bearer_find_by_ue_ebi(amf_ue_t *amf_ue, uint8_t ebi)
 amf_bearer_t *amf_bearer_find_or_add_by_message(
         amf_ue_t *amf_ue, ogs_nas_5gs_message_t *message)
 {
-    uint8_t pti = OGS_NAS_PROCEDURE_TRANSACTION_IDENTITY_UNASSIGNED;
 #if 0
+    uint8_t pti = OGS_NAS_PROCEDURE_TRANSACTION_IDENTITY_UNASSIGNED;
     uint8_t ebi = OGS_NAS_5GS_BEARER_IDENTITY_UNASSIGNED;
 #endif
 
     amf_bearer_t *bearer = NULL;
+#if 0
     amf_sess_t *sess = NULL;
+#endif
 
 #if 0
     ogs_assert(amf_ue);
