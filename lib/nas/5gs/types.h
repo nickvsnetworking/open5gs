@@ -141,15 +141,26 @@ ED3(uint8_t type:4;,
 /* 9.11.3.4 5GS mobile identity
  * M LV-E 6-n */
 #define OGS_NAS_MAX_SCHEME_OUTPUT_LEN 64
-typedef struct ogs_nas_5gs_mobile_identity_imsi_s {
+typedef struct ogs_nas_5gs_mobile_identity_header_s {
 ED4(uint8_t spare1:1;,
 #define OGS_NAS_5GS_SUPI_FORMAT_IMSI 0
 #define OGS_NAS_5GS_SUPI_FORMAT_NETWORK_SPECIFIC_IDENTIFIER 1
     uint8_t supi_format:3;,
     uint8_t spare:1;,
     uint8_t type:3;)
+} __attribute__ ((packed)) ogs_nas_5gs_mobile_identity_header_t;
+typedef struct ogs_nas_5gs_mobile_identity_imsi_s {
+    ogs_nas_5gs_mobile_identity_header_t h;
     ogs_nas_plmn_id_t nas_plmn_id;
-    uint16_t routing_indicator;
+    union {
+        struct {
+        ED2(uint8_t ri2:4;,
+            uint8_t ri1:4;)
+        ED2(uint8_t ri4:4;,
+            uint8_t ri3:4;)
+        };
+        uint16_t routing_indicator;
+    };
 ED2(uint8_t spare3:4;,
 #define OGS_NAS_5GS_NULL_SCHEME 0
 #define OGS_NAS_5GS_ECIES_SCHEME_PROFILE_A 1
@@ -159,27 +170,24 @@ ED2(uint8_t spare3:4;,
     uint8_t scheme_output[OGS_NAS_MAX_SCHEME_OUTPUT_LEN];
 } __attribute__ ((packed)) ogs_nas_5gs_mobile_identity_imsi_t;
 typedef struct ogs_nas_5gs_mobile_identity_guti_s {
-ED3(uint8_t _0xf:4;,
-    uint8_t spare:1;,
-    uint8_t type:3;)
+    ogs_nas_5gs_mobile_identity_header_t h;
     ogs_nas_plmn_id_t nas_plmn_id;
     ogs_amf_id_t amf_id;
     uint32_t m_tmsi;
 } __attribute__ ((packed)) ogs_nas_5gs_mobile_identity_guti_t;
 typedef struct ogs_nas_5gs_mobile_identity_s_tmsi_s {
-ED3(uint8_t _0xf:4;,
-    uint8_t spare:1;,
-    uint8_t type:3;)
-    uint8_t amf_region_id;
-    uint8_t amf_set_id1;
-ED2(uint8_t amf_set_id2:2;,
-    uint8_t amf_pointer:6;)
+    ogs_nas_5gs_mobile_identity_header_t h;
+    ogs_amf_id_t amf_id;
     uint32_t m_tmsi;
 } __attribute__ ((packed)) ogs_nas_5gs_mobile_identity_s_tmsi_t;
 typedef struct ogs_nas_5gs_mobile_identity_s {
     uint16_t length;
     uint8_t *buffer;
 } ogs_nas_5gs_mobile_identity_t;
+
+void ogs_nas_5gs_mobile_identity_imsi_build(
+        ogs_nas_5gs_mobile_identity_imsi_t *target,
+        ogs_nas_5gs_mobile_identity_t *source);
 
 /* 9.11.3.5 5GS network feature support
  * M LV 2 */

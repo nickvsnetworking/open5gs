@@ -45,11 +45,14 @@ ogs_pkbuf_t *testgmm_build_registration_request(void)
     registration_type->value = 1;
 
     memset(&mobile_identity_imsi, 0, sizeof(mobile_identity_imsi));
-    mobile_identity_imsi.supi_format = OGS_NAS_5GS_SUPI_FORMAT_IMSI;
-    mobile_identity_imsi.type = OGS_NAS_5GS_MOBILE_IDENTITY_SUCI;
+    mobile_identity_imsi.h.supi_format = OGS_NAS_5GS_SUPI_FORMAT_IMSI;
+    mobile_identity_imsi.h.type = OGS_NAS_5GS_MOBILE_IDENTITY_SUCI;
     ogs_nas_from_plmn_id(&mobile_identity_imsi.nas_plmn_id,
             &test_self()->tai.plmn_id);
-    mobile_identity_imsi.routing_indicator = 0xfff0;
+    mobile_identity_imsi.ri1 = 0;
+    mobile_identity_imsi.ri2 = 0xf;
+    mobile_identity_imsi.ri3 = 0xf;
+    mobile_identity_imsi.ri4 = 0xf;
     mobile_identity_imsi.protection_scheme_id = OGS_NAS_5GS_NULL_SCHEME;
     mobile_identity_imsi.home_network_pki_value = 0;
     mobile_identity_imsi.scheme_output[0] = 0;

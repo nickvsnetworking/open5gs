@@ -1288,6 +1288,8 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
     ogs_nas_5gs_extended_service_request_t *extended_service_request = NULL;
 #endif
     ogs_nas_5gs_mobile_identity_t *mobile_identity = NULL;
+    ogs_nas_5gs_mobile_identity_header_t *mobile_identity_header = NULL;
+    ogs_nas_5gs_mobile_identity_imsi_t mobile_identity_imsi;
     ogs_nas_5gs_guti_t nas_guti;
 
 #if 0
@@ -1304,12 +1306,19 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
     ogs_assert(registration_request);
     mobile_identity = &registration_request->mobile_identity;
     ogs_assert(mobile_identity);
+    mobile_identity_header =
+            (ogs_nas_5gs_mobile_identity_header_t *)mobile_identity->buffer;
+    ogs_assert(mobile_identity_header);
 
     switch (message->gmm.h.message_type) {
     case OGS_NAS_5GS_REGISTRATION_REQUEST:
-#if 0
-        switch (mobile_identity->suci.type) {
+        switch (mobile_identity_header->type) {
         case OGS_NAS_5GS_MOBILE_IDENTITY_SUCI:
+            ogs_nas_5gs_mobile_identity_imsi_build(
+                    &mobile_identity_imsi, mobile_identity);
+
+
+
 #if 0
             ogs_nas_imsi_to_bcd(
                 &eps_mobile_identity->imsi, eps_mobile_identity->length,
@@ -1342,10 +1351,9 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
 #endif
             break;
         default:
-            ogs_error("Unknown SUCI type [%d]", mobile_identity->suci.type);
+            ogs_error("Unknown SUCI type [%d]", mobile_identity_header->type);
             break;
         }
-#endif
         break;
 #if 0
     case OGS_NAS_5GS_DETACH_REQUEST:

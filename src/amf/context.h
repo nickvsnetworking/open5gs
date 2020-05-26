@@ -221,7 +221,7 @@ struct amf_ue_s {
     uint8_t         imsi[OGS_MAX_IMSI_LEN];
     int             imsi_len;
     char            imsi_bcd[OGS_MAX_IMSI_BCD_LEN+1];
-    ogs_nas_mobile_identity_imsi_t nas_mobile_identity_imsi;
+    ogs_nas_5gs_mobile_identity_imsi_t nas_mobile_identity_imsi;
 
     bool            imeisv_presence;
     uint8_t         imeisv[OGS_MAX_IMEISV_LEN];
