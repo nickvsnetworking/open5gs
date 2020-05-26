@@ -141,7 +141,17 @@ ED3(uint8_t type:4;,
 /* 9.11.3.4 5GS mobile identity
  * M LV-E 6-n */
 #define OGS_NAS_MAX_SCHEME_OUTPUT_LEN 256
-typedef struct ogs_nas_5gs_mobile_identity_suci_s {
+typedef struct ogs_nas_5gs_mobile_identity_msin_s {
+ED2(uint8_t digit2:4;,
+    uint8_t digit1:4;)
+ED2(uint8_t digit4:4;,
+    uint8_t digit3:4;)
+ED2(uint8_t digit6:4;,
+    uint8_t digit5:4;)
+ED2(uint8_t digit8:4;,
+    uint8_t digit7:4;)
+} ogs_nas_5gs_mobile_identity_msin_t;
+typedef struct ogs_nas_5gs_mobile_identity_imsi_s {
 ED4(uint8_t spare1:1;,
 #define OGS_NAS_5GS_SUPI_FORMAT_IMSI 0
 #define OGS_NAS_5GS_SUPI_FORMAT_NETWORK_SPECIFIC_IDENTIFIER 1
@@ -159,8 +169,8 @@ ED2(uint8_t spare3:4;,
 #define OGS_NAS_5GS_ECIES_SCHEME_PROFILE_B 2
     uint8_t protection_scheme_id:4;)
     uint8_t home_network_pki_value;
-    uint8_t scheme_output[OGS_NAS_MAX_SCHEME_OUTPUT_LEN];
-} __attribute__ ((packed)) ogs_nas_5gs_mobile_identity_suci_t;
+    ogs_nas_5gs_mobile_identity_msin_t msin;
+} __attribute__ ((packed)) ogs_nas_5gs_mobile_identity_imsi_t;
 typedef struct ogs_nas_5gs_mobile_identity_guti_s {
 ED3(uint8_t _0xf:4;,
     uint8_t spare:1;,
@@ -181,13 +191,7 @@ ED2(uint8_t amf_set_id2:2;,
 } __attribute__ ((packed)) ogs_nas_5gs_mobile_identity_s_tmsi_t;
 typedef struct ogs_nas_5gs_mobile_identity_s {
     uint16_t length;
-    union {
-        ogs_nas_5gs_mobile_identity_suci_t suci;
-        ogs_nas_5gs_mobile_identity_guti_t guti;
-        ogs_nas_5gs_mobile_identity_s_tmsi_t s_tmsi;
-        ogs_nas_mobile_identity_imei_t imei;
-        ogs_nas_mobile_identity_imeisv_t imeisv;
-    };
+    uint8_t *buffer;
 } ogs_nas_5gs_mobile_identity_t;
 
 /* 9.11.3.5 5GS network feature support
@@ -360,7 +364,7 @@ ED4(uint8_t type:4;,
 /* 9.11.3.18A CAG information list
  * O TLV-E 3-n */
 typedef struct ogs_nas_cag_information_list_s {
-    uint8_t length;
+    uint16_t length;
     uint8_t *buffer;
 } ogs_nas_cag_information_list_t;
 
@@ -378,7 +382,7 @@ ED3(uint8_t data_type:3;,
 /* 9.11.3.18C Ciphering key data
  * O TLV-E x-n */
 typedef struct ogs_nas_ciphering_key_data_s {
-    uint8_t length;
+    uint16_t length;
     uint8_t *buffer;
 } ogs_nas_ciphering_key_data_t;
 
@@ -518,7 +522,7 @@ typedef ogs_nas_allowed_pdu_session_status_t ogs_nas_pdu_session_reactivation_re
 /* 9.11.3.43 PDU session reactivation result error cause
  * O TLV-E 5-515 */
 typedef struct ogs_nas_pdu_session_reactivation_result_error_cause_s {
-    uint8_t length;
+    uint16_t length;
     uint8_t *buffer;
 } ogs_nas_pdu_session_reactivation_result_error_cause_t;
 

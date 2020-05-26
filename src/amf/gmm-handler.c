@@ -165,6 +165,7 @@ int gmm_handle_registration_request(amf_ue_t *amf_ue,
         return OGS_ERROR;
     }
 
+#if 0
     switch (mobile_identity->suci.type) {
     case OGS_NAS_5GS_MOBILE_IDENTITY_SUCI:
 #if 0
@@ -194,6 +195,7 @@ int gmm_handle_registration_request(amf_ue_t *amf_ue,
         ogs_warn("Not implemented[%d]", mobile_identity->suci.type);
         break;
     }
+#endif
 
 #if 0
     OGS_NAS_STORE_DATA(

@@ -28,7 +28,7 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.2.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-25 19:44:18.399906 by acetcom
+ * Created on: 2020-05-26 15:00:26.752026 by acetcom
  * from 24501-g41.docx
  ******************************************************************************/
 
@@ -1735,42 +1735,35 @@ int ogs_nas_5gs_decode_5gs_mobile_identity(ogs_nas_5gs_mobile_identity_t *mobile
     size = mobile_identity->length + sizeof(mobile_identity->length);
 
     ogs_assert(ogs_pkbuf_pull(pkbuf, size));
-    memcpy(mobile_identity, pkbuf->data - size, size);
-
-    if (mobile_identity->guti.type == OGS_NAS_5GS_MOBILE_IDENTITY_GUTI) {
-        mobile_identity->guti.m_tmsi = be32toh(mobile_identity->guti.m_tmsi);
-    } else if (mobile_identity->s_tmsi.type == OGS_NAS_5GS_MOBILE_IDENTITY_S_TMSI) {
-        mobile_identity->s_tmsi.m_tmsi = be32toh(mobile_identity->s_tmsi.m_tmsi);
-    }
+    mobile_identity->buffer = pkbuf->data - size + sizeof(mobile_identity->length);
 
     ogs_trace("  5GS_MOBILE_IDENTITY - ");
-    ogs_log_hexdump(OGS_LOG_TRACE, pkbuf->data - size, size);
+    ogs_log_hexdump(OGS_LOG_TRACE, (void*)mobile_identity->buffer, mobile_identity->length);
 
     return size;
 }
 
 int ogs_nas_5gs_encode_5gs_mobile_identity(ogs_pkbuf_t *pkbuf, ogs_nas_5gs_mobile_identity_t *mobile_identity)
 {
-    uint16_t size = mobile_identity->length + sizeof(mobile_identity->length);
-    ogs_nas_5gs_mobile_identity_t target;
+    uint16_t size = 0;
+    uint16_t target;
 
-    memcpy(&target, mobile_identity, sizeof(ogs_nas_5gs_mobile_identity_t));
-    target.length = htobe16(target.length);
-    if (mobile_identity->guti.type == OGS_NAS_5GS_MOBILE_IDENTITY_GUTI) {
-        target.guti.m_tmsi = htobe32(mobile_identity->guti.m_tmsi);
-        target.guti._0xf = 0xf;
-    } else if (mobile_identity->s_tmsi.type == OGS_NAS_5GS_MOBILE_IDENTITY_S_TMSI) {
-        target.s_tmsi.m_tmsi = htobe32(mobile_identity->s_tmsi.m_tmsi);
-        target.s_tmsi._0xf = 0xf;
-    }
+    ogs_assert(mobile_identity);
+    ogs_assert(mobile_identity->buffer);
 
+    size = sizeof(mobile_identity->length);
     ogs_assert(ogs_pkbuf_pull(pkbuf, size));
+    target = htobe16(mobile_identity->length);
     memcpy(pkbuf->data - size, &target, size);
+
+    size = mobile_identity->length;
+    ogs_assert(ogs_pkbuf_pull(pkbuf, size));
+    memcpy(pkbuf->data - size, mobile_identity->buffer, size);
 
     ogs_trace("  5GS_MOBILE_IDENTITY - ");
     ogs_log_hexdump(OGS_LOG_TRACE, pkbuf->data - size, size);
 
-    return size;
+    return mobile_identity->length + sizeof(mobile_identity->length);
 }
 
 /* 9.11.3.40 Payload container type

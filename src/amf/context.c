@@ -1307,6 +1307,7 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
 
     switch (message->gmm.h.message_type) {
     case OGS_NAS_5GS_REGISTRATION_REQUEST:
+#if 0
         switch (mobile_identity->suci.type) {
         case OGS_NAS_5GS_MOBILE_IDENTITY_SUCI:
 #if 0
@@ -1323,6 +1324,7 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
 #endif
             break;
         case OGS_NAS_5GS_MOBILE_IDENTITY_GUTI:
+#if 0 /* NOW */
             memcpy(&nas_guti.nas_plmn_id,
                     &mobile_identity->guti.nas_plmn_id, OGS_PLMN_ID_LEN);
             memcpy(&nas_guti.amf_id,
@@ -1337,11 +1339,14 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
                 ogs_warn("Unknown UE by 5G-S_TMSI[AMF_ID:0x%x,M_TMSI:0x%x]",
                     ogs_amf_id_hexdump(&nas_guti.amf_id), nas_guti.m_tmsi);
             }
+#endif
             break;
         default:
             ogs_error("Unknown SUCI type [%d]", mobile_identity->suci.type);
             break;
         }
+#endif
+        break;
 #if 0
     case OGS_NAS_5GS_DETACH_REQUEST:
         /* TODO */

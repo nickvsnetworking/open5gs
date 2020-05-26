@@ -29,6 +29,7 @@ ogs_pkbuf_t *testgmm_build_registration_request(void)
             &registration_request->registration_type;
     ogs_nas_5gs_mobile_identity_t *mobile_identity =
             &registration_request->mobile_identity;
+    ogs_nas_5gs_mobile_identity_imsi_t mobile_identity_imsi;
     ogs_nas_5gmm_capability_t *gmm_capability =
             &registration_request->gmm_capability;
     ogs_nas_ue_security_capability_t *ue_security_capability =
@@ -43,6 +44,30 @@ ogs_pkbuf_t *testgmm_build_registration_request(void)
     registration_type->follow_on_request = 1;
     registration_type->value = 1;
 
+    memset(&mobile_identity_imsi, 0, sizeof(mobile_identity_imsi));
+    mobile_identity_imsi.supi_format = OGS_NAS_5GS_SUPI_FORMAT_IMSI;
+    mobile_identity_imsi.type = OGS_NAS_5GS_MOBILE_IDENTITY_SUCI;
+    ogs_nas_from_plmn_id(&mobile_identity_imsi.nas_plmn_id,
+            &test_self()->tai.plmn_id);
+    mobile_identity_imsi.routing_indicator1 = 0xf;
+    mobile_identity_imsi.routing_indicator2 = 0xf;
+    mobile_identity_imsi.routing_indicator3 = 0;
+    mobile_identity_imsi.routing_indicator4 = 0xf;
+    mobile_identity_imsi.protection_scheme_id = OGS_NAS_5GS_NULL_SCHEME;
+    mobile_identity_imsi.home_network_pki_value = 0;
+    mobile_identity_imsi.msin.digit1 = 0;
+    mobile_identity_imsi.msin.digit2 = 0;
+    mobile_identity_imsi.msin.digit3 = 0;
+    mobile_identity_imsi.msin.digit4 = 0;
+    mobile_identity_imsi.msin.digit5 = 4;
+    mobile_identity_imsi.msin.digit6 = 7;
+    mobile_identity_imsi.msin.digit7 = 7;
+    mobile_identity_imsi.msin.digit8 = 8;
+
+
+    mobile_identity->length = 12;
+    mobile_identity->buffer = &mobile_identity_imsi;
+#if 0
     mobile_identity->length = 12;
     mobile_identity->suci.supi_format = OGS_NAS_5GS_SUPI_FORMAT_IMSI;
     mobile_identity->suci.type = OGS_NAS_5GS_MOBILE_IDENTITY_SUCI;
@@ -58,6 +83,7 @@ ogs_pkbuf_t *testgmm_build_registration_request(void)
     mobile_identity->suci.scheme_output[1] = 0;
     mobile_identity->suci.scheme_output[2] = 0x47;
     mobile_identity->suci.scheme_output[3] = 0x78;
+#endif
 
     registration_request->presencemask |=
             OGS_NAS_5GS_REGISTRATION_REQUEST_5GMM_CAPABILITY_PRESENT;
@@ -71,8 +97,8 @@ ogs_pkbuf_t *testgmm_build_registration_request(void)
     ue_security_capability->length = 8;
     ue_security_capability->nea = 0xff;
     ue_security_capability->nia = 0xff;
-    ue_security_capability->ea = 0xff;
-    ue_security_capability->ia = 0xff;
+    ue_security_capability->eps_ea = 0xff;
+    ue_security_capability->eps_ia = 0xff;
 
     return ogs_nas_5gs_plain_encode(&message);
 }

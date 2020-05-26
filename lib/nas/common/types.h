@@ -615,16 +615,16 @@ typedef struct ogs_nas_ue_security_capability_s {
         uint8_t uea;
 
         struct {
-        ED8(uint8_t ea0:1;,
-            uint8_t ea1:1;,
-            uint8_t ea2:1;,
-            uint8_t ea3:1;,
-            uint8_t ea4:1;,
-            uint8_t ea5:1;,
-            uint8_t ea6:1;,
-            uint8_t ea7:1;)
+        ED8(uint8_t eps_ea0:1;,
+            uint8_t eps_ea1:1;,
+            uint8_t eps_ea2:1;,
+            uint8_t eps_ea3:1;,
+            uint8_t eps_ea4:1;,
+            uint8_t eps_ea5:1;,
+            uint8_t eps_ea6:1;,
+            uint8_t eps_ea7:1;)
         };
-        uint8_t ea; 
+        uint8_t eps_ea; 
     };
     union {
         struct {
@@ -640,16 +640,16 @@ typedef struct ogs_nas_ue_security_capability_s {
         uint8_t uia;
 
         struct {
-        ED8(uint8_t ia0:1;,
-            uint8_t ia1:1;,
-            uint8_t ia2:1;,
-            uint8_t ia3:1;,
-            uint8_t ia4:1;,
-            uint8_t ia5:1;,
-            uint8_t ia6:1;,
-            uint8_t ia7:1;)
+        ED8(uint8_t eps_ia0:1;,
+            uint8_t eps_ia1:1;,
+            uint8_t eps_ia2:1;,
+            uint8_t eps_ia3:1;,
+            uint8_t eps_ia4:1;,
+            uint8_t eps_ia5:1;,
+            uint8_t eps_ia6:1;,
+            uint8_t eps_ia7:1;)
         };
-        uint8_t ia; 
+        uint8_t eps_ia; 
     };
     union {
         struct {
