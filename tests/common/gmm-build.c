@@ -19,7 +19,7 @@
 
 #include "test-common.h"
 
-ogs_pkbuf_t *test5gmm_build_registration_request(void)
+ogs_pkbuf_t *testgmm_build_registration_request(void)
 {
     ogs_nas_5gs_message_t message;
     ogs_pkbuf_t *pkbuf = NULL;

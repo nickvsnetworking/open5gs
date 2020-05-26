@@ -94,13 +94,12 @@ void gmm_state_registered(ogs_fsm_t *s, amf_event_t *e)
 
 static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
 {
-#if 0
     int rv;
 
     amf_ue_t *amf_ue = NULL;
-    enb_ue_t *enb_ue = NULL;
-    ogs_nas_eps_message_t *message = NULL;
-    S1AP_ProcedureCode_t procedureCode;
+    ran_ue_t *ran_ue = NULL;
+    ogs_nas_5gs_message_t *message = NULL;
+    NGAP_ProcedureCode_t procedureCode;
     
     ogs_assert(e);
         
@@ -112,20 +111,21 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
         return;
     case OGS_FSM_EXIT_SIG:
         return;
-    case AMF_EVT_EMM_MESSAGE:
-        message = e->nas_message;
+    case AMF_EVT_5GMM_MESSAGE:
+        message = e->nas.message;
         ogs_assert(message);
 
-        enb_ue = amf_ue->enb_ue;
-        ogs_assert(enb_ue);
+        ran_ue = amf_ue->ran_ue;
+        ogs_assert(ran_ue);
 
+#if 0
         if (message->5gmm.h.security_header_type
                 == OGS_NAS_SECURITY_HEADER_FOR_SERVICE_REQUEST_MESSAGE) {
             ogs_debug("[EMM] Service request");
-            rv = 5gmm_handle_service_request(
+            rv = gmm_handle_service_request(
                     amf_ue, &message->5gmm.service_request);
             if (rv != OGS_OK) {
-                ogs_error("5gmm_handle_service_request() failed");
+                ogs_error("gmm_handle_service_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
@@ -157,16 +157,18 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
             ngap_send_initial_context_setup_request(amf_ue);
             return;
         }
+#endif
 
-        switch (message->5gmm.h.message_type) {
+        switch (message->gmm.h.message_type) {
+#if 0
         case OGS_NAS_EPS_IDENTITY_RESPONSE:
             ogs_debug("[EMM] Identity response");
             CLEAR_AMF_UE_TIMER(amf_ue->t3470);
 
-            rv = 5gmm_handle_identity_response(amf_ue,
+            rv = gmm_handle_identity_response(amf_ue,
                     &message->5gmm.identity_response);
             if (rv != OGS_OK) {
-                ogs_error("5gmm_handle_identity_response() failed");
+                ogs_error("gmm_handle_identity_response() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
@@ -179,22 +181,26 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
 
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
             break;
-        case OGS_NAS_EPS_ATTACH_REQUEST:
-            ogs_debug("[EMM] Attach request[%s]", amf_ue->imsi_bcd);
-            rv = 5gmm_handle_attach_request(
+#endif
+        case OGS_NAS_5GS_REGISTRATION_REQUEST:
+#if 0
+            ogs_debug("Registration request[%s]", amf_ue->imsi_bcd);
+            rv = gmm_handle_attach_request(
                     amf_ue, &message->5gmm.attach_request);
             if (rv != OGS_OK) {
-                ogs_error("5gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_attach_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
+#endif
             break;
+#if 0
         case OGS_NAS_EPS_TRACKING_AREA_UPDATE_REQUEST:
             ogs_debug("[EMM] Tracking area update request");
-            rv = 5gmm_handle_tau_request(
+            rv = gmm_handle_tau_request(
                     amf_ue, &message->5gmm.tracking_area_update_request);
             if (rv != OGS_OK) {
-                ogs_error("5gmm_handle_tau_request() failed");
+                ogs_error("gmm_handle_tau_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
@@ -214,10 +220,10 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
             return;
         case OGS_NAS_EPS_EXTENDED_SERVICE_REQUEST:
             ogs_debug("[EMM] Extended service request");
-            rv = 5gmm_handle_extended_service_request(
+            rv = gmm_handle_extended_service_request(
                     amf_ue, &message->5gmm.extended_service_request);
             if (rv != OGS_OK) {
-                ogs_error("5gmm_handle_extended_service_request() failed");
+                ogs_error("gmm_handle_extended_service_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
@@ -240,11 +246,11 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
         case OGS_NAS_EPS_DETACH_REQUEST:
             ogs_debug("[EMM] Detach request");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
-            rv = 5gmm_handle_detach_request(
+            rv = gmm_handle_detach_request(
                     amf_ue, &message->5gmm.detach_request_from_ue);
             if (rv != OGS_OK)
             {
-                ogs_error("5gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_attach_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
@@ -264,26 +270,28 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
                 sgsap_send_uplink_unitdata(amf_ue, &message->5gmm.
                         uplink_nas_transport.nas_message_container);
             } else {
-                S1AP_AMF_UE_S1AP_ID_t AMF_UE_S1AP_ID;
-                S1AP_ENB_UE_S1AP_ID_t ENB_UE_S1AP_ID;
+                NGAP_AMF_UE_NGAP_ID_t AMF_UE_NGAP_ID;
+                NGAP_ENB_UE_NGAP_ID_t ENB_UE_NGAP_ID;
 
                 ogs_warn("No connection of MSC/VLR");
-                AMF_UE_S1AP_ID = enb_ue->amf_ue_ngap_id;
-                ENB_UE_S1AP_ID = enb_ue->enb_ue_ngap_id;
+                AMF_UE_NGAP_ID = ran_ue->amf_ue_ngap_id;
+                ENB_UE_NGAP_ID = ran_ue->ran_ue_ngap_id;
 
-                ngap_send_error_indication(enb_ue->enb, 
-                        &AMF_UE_S1AP_ID, &ENB_UE_S1AP_ID,
-                        S1AP_Cause_PR_transport,
-                        S1AP_CauseTransport_transport_resource_unavailable);
+                ngap_send_error_indication(ran_ue->gnb, 
+                        &AMF_UE_NGAP_ID, &ENB_UE_NGAP_ID,
+                        NGAP_Cause_PR_transport,
+                        NGAP_CauseTransport_transport_resource_unavailable);
             }
 
             return;
+#endif
         default:
-            ogs_warn("Unknown message[%d]", message->5gmm.h.message_type);
+            ogs_warn("Unknown message[%d]", message->gmm.h.message_type);
             return;
         }
         break;
-    case AMF_EVT_EMM_TIMER:
+    case AMF_EVT_5GMM_TIMER:
+#if 0
         switch (e->timer_id) {
         case AMF_TIMER_T3413:
             if (amf_ue->t3413.retry_count >=
@@ -327,20 +335,22 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
                     amf_timer_get_name(e->timer_id), e->timer_id);
             break;
         }
+#endif
         return;
     default:
         ogs_error("Unknown event[%s]", amf_event_get_name(e));
         return;
     }
 
+#if 0
     if (!AMF_UE_HAVE_IMSI(amf_ue)) {
         CLEAR_AMF_UE_TIMER(amf_ue->t3470);
         nas_eps_send_identity_request(amf_ue);
         return;
     }
 
-    enb_ue = amf_ue->enb_ue;
-    ogs_assert(enb_ue);
+    ran_ue = amf_ue->ran_ue;
+    ogs_assert(ran_ue);
 
     switch (amf_ue->nas_eps.type) {
     case AMF_EPS_TYPE_ATTACH_REQUEST:
@@ -382,20 +392,20 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
             break;
         }
 
-        if (procedureCode == S1AP_ProcedureCode_id_initialUEMessage) {
+        if (procedureCode == NGAP_ProcedureCode_id_initialUEMessage) {
             ogs_debug("    Iniital UE Message");
             if (amf_ue->nas_eps.update.active_flag) {
                 nas_eps_send_tau_accept(amf_ue,
-                        S1AP_ProcedureCode_id_InitialContextSetup);
+                        NGAP_ProcedureCode_id_InitialContextSetup);
             } else {
                 nas_eps_send_tau_accept(amf_ue,
-                        S1AP_ProcedureCode_id_downlinkNASTransport);
-                amf_send_release_access_bearer_or_ue_context_release(enb_ue);
+                        NGAP_ProcedureCode_id_downlinkNASTransport);
+                amf_send_release_access_bearer_or_ue_context_release(ran_ue);
             }
-        } else if (procedureCode == S1AP_ProcedureCode_id_uplinkNASTransport) {
+        } else if (procedureCode == NGAP_ProcedureCode_id_uplinkNASTransport) {
             ogs_debug("    Uplink NAS Transport");
             nas_eps_send_tau_accept(amf_ue,
-                    S1AP_ProcedureCode_id_downlinkNASTransport);
+                    NGAP_ProcedureCode_id_downlinkNASTransport);
         } else {
             ogs_fatal("Invalid Procedure Code[%d]", (int)procedureCode);
         }
@@ -427,7 +437,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
             return;
         }
 
-        if (procedureCode == S1AP_ProcedureCode_id_initialUEMessage) {
+        if (procedureCode == NGAP_ProcedureCode_id_initialUEMessage) {
             ogs_debug("    Initial UE Message");
             if (amf_ue->nas_eps.service.value ==
                     OGS_NAS_SERVICE_TYPE_CS_FALLBACK_FROM_UE ||
@@ -452,7 +462,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
 
             ngap_send_initial_context_setup_request(amf_ue);
 
-        } else if (procedureCode == S1AP_ProcedureCode_id_uplinkNASTransport) {
+        } else if (procedureCode == NGAP_ProcedureCode_id_uplinkNASTransport) {
             ogs_debug("    Uplink NAS Transport");
             if (amf_ue->nas_eps.service.value ==
                     OGS_NAS_SERVICE_TYPE_CS_FALLBACK_FROM_UE ||
@@ -586,10 +596,10 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
         }
         case OGS_NAS_EPS_ATTACH_REQUEST:
             ogs_warn("[EMM] Attach request[%s]", amf_ue->imsi_bcd);
-            rv = 5gmm_handle_attach_request(
+            rv = gmm_handle_attach_request(
                     amf_ue, &message->5gmm.attach_request);
             if (rv != OGS_OK) {
-                ogs_error("5gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_attach_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
@@ -606,10 +616,10 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
         case OGS_NAS_EPS_DETACH_REQUEST:
             ogs_debug("[EMM] Detach request");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
-            rv = 5gmm_handle_detach_request(
+            rv = gmm_handle_detach_request(
                     amf_ue, &message->5gmm.detach_request_from_ue);
             if (rv != OGS_OK) {
-                ogs_error("5gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_attach_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
@@ -714,17 +724,17 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
                 break;
             }
 
-            rv = 5gmm_handle_security_mode_complete(
+            rv = gmm_handle_security_mode_complete(
                     amf_ue, &message->5gmm.security_mode_complete);
             if (rv != OGS_OK) {
-                ogs_error("5gmm_handle_security_mode_complete() failed");
+                ogs_error("gmm_handle_security_mode_complete() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
 
-            amf_kdf_enb(amf_ue->kasme, amf_ue->ul_count.i32, 
-                    amf_ue->kenb);
-            amf_kdf_nh(amf_ue->kasme, amf_ue->kenb, amf_ue->nh);
+            amf_kdf_gnb(amf_ue->kasme, amf_ue->ul_count.i32, 
+                    amf_ue->kgnb);
+            amf_kdf_nh(amf_ue->kasme, amf_ue->kgnb, amf_ue->nh);
             amf_ue->nhcc = 1;
 
             amf_s6a_send_ulr(amf_ue);
@@ -747,10 +757,10 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
             break;
         case OGS_NAS_EPS_ATTACH_REQUEST:
             ogs_warn("[EMM] Attach request[%s]", amf_ue->imsi_bcd);
-            rv = 5gmm_handle_attach_request(
+            rv = gmm_handle_attach_request(
                     amf_ue, &message->5gmm.attach_request);
             if (rv != OGS_OK) {
-                ogs_error("5gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_attach_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 break;
             }
@@ -773,10 +783,10 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
         case OGS_NAS_EPS_DETACH_REQUEST:
             ogs_debug("[EMM] Detach request");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
-            rv = 5gmm_handle_detach_request(
+            rv = gmm_handle_detach_request(
                     amf_ue, &message->5gmm.detach_request_from_ue);
             if (rv != OGS_OK) {
-                ogs_error("5gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_attach_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 break;
             }
@@ -847,10 +857,10 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
             ogs_debug("[EMM] Attach complete");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
 
-            rv = 5gmm_handle_attach_complete(
+            rv = gmm_handle_attach_complete(
                     amf_ue, &message->5gmm.attach_complete);
             if (rv != OGS_OK) {
-                ogs_error("5gmm_handle_attach_complete() failed "
+                ogs_error("gmm_handle_attach_complete() failed "
                         "in gmm_state_initial_context_setup");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 break;
@@ -862,10 +872,10 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
             break;
         case OGS_NAS_EPS_ATTACH_REQUEST:
             ogs_warn("[EMM] Attach request[%s]", amf_ue->imsi_bcd);
-            rv = 5gmm_handle_attach_request(
+            rv = gmm_handle_attach_request(
                     amf_ue, &message->5gmm.attach_request);
             if (rv != OGS_OK) {
-                ogs_error("5gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_attach_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
@@ -882,10 +892,10 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
         case OGS_NAS_EPS_DETACH_REQUEST:
             ogs_debug("[EMM] Detach request");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
-            rv = 5gmm_handle_detach_request(
+            rv = gmm_handle_detach_request(
                     amf_ue, &message->5gmm.detach_request_from_ue);
             if (rv != OGS_OK) {
-                ogs_error("5gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_attach_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }

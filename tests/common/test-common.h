@@ -39,7 +39,7 @@ extern "C" {
 #include "common/sctp.h"
 #include "common/gtpu.h"
 #include "common/application.h"
-#include "common/5gmm-build.h"
+#include "common/gmm-build.h"
 
 #undef OGS_TEST_INSIDE
 

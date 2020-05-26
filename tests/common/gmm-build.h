@@ -17,17 +17,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef TEST_5GMM_BUILD_H
-#define TEST_5GMM_BUILD_H
+#ifndef TEST_GMM_BUILD_H
+#define TEST_GMM_BUILD_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-ogs_pkbuf_t *test5gmm_build_registration_request(void);
+ogs_pkbuf_t *testgmm_build_registration_request(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* TEST_5GMM_BUILD_H */
+#endif /* TEST_GMM_BUILD_H */

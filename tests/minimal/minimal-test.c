@@ -132,7 +132,7 @@ static void test1_func(abts_case *tc, void *data)
         recvbuf->len) == 0);
     ogs_pkbuf_free(recvbuf);
 
-    gmmbuf = test5gmm_build_registration_request();
+    gmmbuf = testgmm_build_registration_request();
     ABTS_PTR_NOTNULL(tc, gmmbuf);
     sendbuf = testngap_build_initial_ue_message(gmmbuf);
     ABTS_PTR_NOTNULL(tc, sendbuf);
