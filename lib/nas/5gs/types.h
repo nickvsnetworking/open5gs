@@ -140,17 +140,7 @@ ED3(uint8_t type:4;,
 
 /* 9.11.3.4 5GS mobile identity
  * M LV-E 6-n */
-#define OGS_NAS_MAX_SCHEME_OUTPUT_LEN 256
-typedef struct ogs_nas_5gs_mobile_identity_msin_s {
-ED2(uint8_t digit2:4;,
-    uint8_t digit1:4;)
-ED2(uint8_t digit4:4;,
-    uint8_t digit3:4;)
-ED2(uint8_t digit6:4;,
-    uint8_t digit5:4;)
-ED2(uint8_t digit8:4;,
-    uint8_t digit7:4;)
-} ogs_nas_5gs_mobile_identity_msin_t;
+#define OGS_NAS_MAX_SCHEME_OUTPUT_LEN 64
 typedef struct ogs_nas_5gs_mobile_identity_imsi_s {
 ED4(uint8_t spare1:1;,
 #define OGS_NAS_5GS_SUPI_FORMAT_IMSI 0
@@ -159,17 +149,14 @@ ED4(uint8_t spare1:1;,
     uint8_t spare:1;,
     uint8_t type:3;)
     ogs_nas_plmn_id_t nas_plmn_id;
-ED4(uint8_t routing_indicator2:4;,
-    uint8_t routing_indicator1:4;,
-    uint8_t routing_indicator4:4;,
-    uint8_t routing_indicator3:4;)
+    uint16_t routing_indicator;
 ED2(uint8_t spare3:4;,
 #define OGS_NAS_5GS_NULL_SCHEME 0
 #define OGS_NAS_5GS_ECIES_SCHEME_PROFILE_A 1
 #define OGS_NAS_5GS_ECIES_SCHEME_PROFILE_B 2
     uint8_t protection_scheme_id:4;)
     uint8_t home_network_pki_value;
-    ogs_nas_5gs_mobile_identity_msin_t msin;
+    uint8_t scheme_output[OGS_NAS_MAX_SCHEME_OUTPUT_LEN];
 } __attribute__ ((packed)) ogs_nas_5gs_mobile_identity_imsi_t;
 typedef struct ogs_nas_5gs_mobile_identity_guti_s {
 ED3(uint8_t _0xf:4;,
