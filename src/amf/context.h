@@ -36,6 +36,8 @@ extern "C" {
 #define MAX_NUM_OF_SERVED_GUAMI     8
 
 extern int __amf_log_domain;
+extern int __5gmm_log_domain;
+extern int __5gsm_log_domain;
 
 #undef OGS_LOG_DOMAIN
 #define OGS_LOG_DOMAIN __amf_log_domain

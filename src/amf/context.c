@@ -22,6 +22,8 @@
 static amf_context_t self;
 
 int __amf_log_domain;
+int __5gmm_log_domain;
+int __5gsm_log_domain;
 
 static OGS_POOL(amf_gnb_pool, amf_gnb_t);
 static OGS_POOL(amf_ue_pool, amf_ue_t);
@@ -38,7 +40,12 @@ void amf_context_init(void)
     /* Initialize AMF context */
     memset(&self, 0, sizeof(amf_context_t));
 
+    ogs_log_install_domain(&__ogs_sctp_domain, "sctp", ogs_core()->log.level);
+    ogs_log_install_domain(&__ogs_ngap_domain, "ngap", ogs_core()->log.level);
+    ogs_log_install_domain(&__ogs_nas_domain, "nas", ogs_core()->log.level);
     ogs_log_install_domain(&__amf_log_domain, "amf", ogs_core()->log.level);
+    ogs_log_install_domain(&__5gmm_log_domain, "5gmm", ogs_core()->log.level);
+    ogs_log_install_domain(&__5gsm_log_domain, "5gsm", ogs_core()->log.level);
 
     ogs_list_init(&self.ngap_list);
     ogs_list_init(&self.ngap_list6);
@@ -68,6 +75,7 @@ void amf_context_final(void)
     ogs_assert(context_initialized == 1);
 
     amf_gnb_remove_all();
+    amf_ue_remove_all();
 
     ogs_assert(self.gnb_addr_hash);
     ogs_hash_destroy(self.gnb_addr_hash);
@@ -1170,12 +1178,10 @@ amf_ue_t *amf_ue_add(ran_ue_t *ran_ue)
     amf_ue->t3470.pkbuf = NULL;
 
     /* Create FSM */
-#if 0 /* NOW */
     e.amf_ue = amf_ue;
     e.id = 0;
     ogs_fsm_create(&amf_ue->sm, gmm_state_initial, gmm_state_final);
     ogs_fsm_init(&amf_ue->sm, &e);
-#endif
 
     ogs_list_add(&self.amf_ue_list, amf_ue);
 
@@ -1190,11 +1196,9 @@ void amf_ue_remove(amf_ue_t *amf_ue)
 
     ogs_list_remove(&self.amf_ue_list, amf_ue);
 
-#if 0 /* NOW */
     e.amf_ue = amf_ue;
     ogs_fsm_fini(&amf_ue->sm, &e);
     ogs_fsm_delete(&amf_ue->sm);
-#endif
 
     /* Clear hash table */
     if (amf_ue->m_tmsi) {
@@ -1695,10 +1699,8 @@ amf_bearer_t *amf_bearer_add(amf_sess_t *sess)
     
     e.bearer = bearer;
     e.id = 0;
-#if 0
-    ogs_fsm_create(&bearer->sm, esm_state_initial, esm_state_final);
+    ogs_fsm_create(&bearer->sm, gsm_state_initial, gsm_state_final);
     ogs_fsm_init(&bearer->sm, &e);
-#endif
 
     return bearer;
 }
@@ -1711,10 +1713,8 @@ void amf_bearer_remove(amf_bearer_t *bearer)
     ogs_assert(bearer->sess);
 
     e.bearer = bearer;
-#if 0
     ogs_fsm_fini(&bearer->sm, &e);
     ogs_fsm_delete(&bearer->sm);
-#endif
 
     CLEAR_BEARER_ALL_TIMERS(bearer);
     ogs_timer_delete(bearer->t3489.timer);

@@ -33,6 +33,9 @@ libamf_sources = files('''
 
     nas-security.c
 
+    5gmm-sm.c
+    5gsm-sm.c
+
     amf-sm.c
 
     init.c
