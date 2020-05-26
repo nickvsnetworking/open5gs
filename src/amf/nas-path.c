@@ -133,8 +133,8 @@ void nas_5gs_send_registration_reject(
 
     ogs_assert(amf_ue);
 
-    ogs_debug("Registration reject");
-    ogs_debug("    IMSI[%s] Cause[%d]", amf_ue->imsi_bcd, gmm_cause);
+    ogs_warn("Registration reject");
+    ogs_warn("    IMSI[%s] Cause[%d]", amf_ue->imsi_bcd, gmm_cause);
 
     gmmbuf = gmm_build_registration_reject(gmm_cause);
     ogs_expect_or_return(gmmbuf);
