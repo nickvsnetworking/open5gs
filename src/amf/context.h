@@ -40,7 +40,7 @@ extern int __amf_log_domain;
 #undef OGS_LOG_DOMAIN
 #define OGS_LOG_DOMAIN __amf_log_domain
 
-typedef struct gnb_ue_s gnb_ue_t;
+typedef struct ran_ue_s ran_ue_t;
 typedef struct amf_ue_s amf_ue_t;
 
 typedef uint32_t amf_m_tmsi_t;
@@ -153,11 +153,11 @@ typedef struct amf_gnb_s {
     uint8_t         num_of_supported_ta_list;
     ogs_5gs_tai_t   supported_ta_list[OGS_MAX_NUM_OF_TAI*OGS_MAX_NUM_OF_BPLMN];
 
-    ogs_list_t      gnb_ue_list;
+    ogs_list_t      ran_ue_list;
 
 } amf_gnb_t;
 
-struct gnb_ue_s {
+struct ran_ue_s {
     ogs_lnode_t     lnode;
 
     /* UE identity */
@@ -169,11 +169,11 @@ struct gnb_ue_s {
 
     /* Handover Info */
     NGAP_HandoverType_t handover_type;
-    gnb_ue_t        *source_ue;
-    gnb_ue_t        *target_ue;
+    ran_ue_t        *source_ue;
+    ran_ue_t        *target_ue;
 
     /* Use amf_ue->tai, amf_ue->e_cgi.
-     * Do not access gnb_ue->saved.tai gnb_ue->saved.e_cgi.
+     * Do not access ran_ue->saved.tai ran_ue->saved.e_cgi.
      * 
      * Save TAI and ECGI. And then, this will copy 'amf_ue_t' context later */
     struct {
@@ -314,10 +314,10 @@ struct amf_ue_s {
     ogs_list_t      sess_list;
 
 #define ECM_CONNECTED(__mME) \
-    ((__mME) && ((__mME)->gnb_ue != NULL))
+    ((__mME) && ((__mME)->ran_ue != NULL))
 #define ECM_IDLE(__mME) (!ECM_CONNECTED(__mME))
     /* S1 UE context */
-    gnb_ue_t        *gnb_ue;
+    ran_ue_t        *ran_ue;
 
 #if 0
     /* Save PDN Connectivity Request */
@@ -533,18 +533,18 @@ amf_gnb_t *amf_gnb_find_by_gnb_id(uint32_t gnb_id);
 int amf_gnb_set_gnb_id(amf_gnb_t *gnb, uint32_t gnb_id);
 int amf_gnb_sock_type(ogs_sock_t *sock);
 
-gnb_ue_t *gnb_ue_add(amf_gnb_t *gnb, uint32_t ran_ue_ngap_id);
-unsigned int gnb_ue_count(void);
-void gnb_ue_remove(gnb_ue_t *gnb_ue);
-void gnb_ue_remove_in_gnb(amf_gnb_t *gnb);
-void gnb_ue_switch_to_gnb(gnb_ue_t *gnb_ue, amf_gnb_t *new_gnb);
-gnb_ue_t *gnb_ue_find_by_ran_ue_ngap_id(
+ran_ue_t *ran_ue_add(amf_gnb_t *gnb, uint32_t ran_ue_ngap_id);
+unsigned int ran_ue_count(void);
+void ran_ue_remove(ran_ue_t *ran_ue);
+void ran_ue_remove_in_gnb(amf_gnb_t *gnb);
+void ran_ue_switch_to_gnb(ran_ue_t *ran_ue, amf_gnb_t *new_gnb);
+ran_ue_t *ran_ue_find_by_ran_ue_ngap_id(
         amf_gnb_t *gnb, uint32_t ran_ue_ngap_id);
-gnb_ue_t *gnb_ue_find_by_amf_ue_ngap_id(uint64_t amf_ue_ngap_id);
-gnb_ue_t *gnb_ue_first_in_gnb(amf_gnb_t *gnb);
-gnb_ue_t *gnb_ue_next_in_gnb(gnb_ue_t *gnb_ue);
+ran_ue_t *ran_ue_find_by_amf_ue_ngap_id(uint64_t amf_ue_ngap_id);
+ran_ue_t *ran_ue_first_in_gnb(amf_gnb_t *gnb);
+ran_ue_t *ran_ue_next_in_gnb(ran_ue_t *ran_ue);
 
-amf_ue_t *amf_ue_add(gnb_ue_t *gnb_ue);
+amf_ue_t *amf_ue_add(ran_ue_t *ran_ue);
 void amf_ue_remove(amf_ue_t *amf_ue);
 void amf_ue_remove_all(void);
 
@@ -607,11 +607,11 @@ int amf_ue_clear_indirect_tunnel(amf_ue_t *amf_ue);
  * ### GNB_UE_REMOVE() ####
  *   - Delete Indirect Data Forwarding Tunnel Request/Response
  */
-void amf_ue_associate_gnb_ue(amf_ue_t *amf_ue, gnb_ue_t *gnb_ue);
-void gnb_ue_deassociate(gnb_ue_t *gnb_ue);
+void amf_ue_associate_ran_ue(amf_ue_t *amf_ue, ran_ue_t *ran_ue);
+void ran_ue_deassociate(ran_ue_t *ran_ue);
 void amf_ue_deassociate(amf_ue_t *amf_ue);
-void source_ue_associate_target_ue(gnb_ue_t *source_ue, gnb_ue_t *target_ue);
-void source_ue_deassociate_target_ue(gnb_ue_t *gnb_ue);
+void source_ue_associate_target_ue(ran_ue_t *source_ue, ran_ue_t *target_ue);
+void source_ue_deassociate_target_ue(ran_ue_t *ran_ue);
 
 amf_sess_t *amf_sess_add(amf_ue_t *amf_ue, uint8_t pti);
 void amf_sess_remove(amf_sess_t *sess);

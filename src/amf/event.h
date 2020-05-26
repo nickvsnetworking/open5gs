@@ -39,7 +39,7 @@ typedef struct NGAP_NGAP_PDU ogs_ngap_message_t;
 typedef long NGAP_ProcedureCode_t;
 
 typedef struct amf_gnb_s amf_gnb_t;
-typedef struct gnb_ue_s gnb_ue_t;
+typedef struct ran_ue_s ran_ue_t;
 typedef struct amf_ue_s amf_ue_t;
 typedef struct amf_sess_s amf_sess_t;
 typedef struct amf_bearer_s amf_bearer_t;
@@ -100,7 +100,7 @@ typedef struct amf_event_s {
     } nas;
 
     amf_gnb_t *gnb;
-    gnb_ue_t *gnb_ue;
+    ran_ue_t *ran_ue;
     amf_ue_t *amf_ue;
     amf_sess_t *sess;
     amf_bearer_t *bearer;

@@ -25,7 +25,7 @@ int __amf_log_domain;
 
 static OGS_POOL(amf_gnb_pool, amf_gnb_t);
 static OGS_POOL(amf_ue_pool, amf_ue_t);
-static OGS_POOL(gnb_ue_pool, gnb_ue_t);
+static OGS_POOL(ran_ue_pool, ran_ue_t);
 static OGS_POOL(amf_sess_pool, amf_sess_t);
 static OGS_POOL(amf_bearer_pool, amf_bearer_t);
 
@@ -46,7 +46,7 @@ void amf_context_init(void)
     /* Allocate TWICE the pool to check if maximum number of gNBs is reached */
     ogs_pool_init(&amf_gnb_pool, ogs_config()->max.gnb*2);
     ogs_pool_init(&amf_ue_pool, ogs_config()->pool.ue);
-    ogs_pool_init(&gnb_ue_pool, ogs_config()->pool.ue);
+    ogs_pool_init(&ran_ue_pool, ogs_config()->pool.ue);
     ogs_pool_init(&amf_sess_pool, ogs_config()->pool.sess);
     ogs_pool_init(&amf_bearer_pool, ogs_config()->pool.bearer);
     ogs_pool_init(&self.m_tmsi, ogs_config()->pool.ue);
@@ -85,7 +85,7 @@ void amf_context_final(void)
     ogs_pool_final(&amf_bearer_pool);
     ogs_pool_final(&amf_sess_pool);
     ogs_pool_final(&amf_ue_pool);
-    ogs_pool_final(&gnb_ue_pool);
+    ogs_pool_final(&ran_ue_pool);
     ogs_pool_final(&amf_gnb_pool);
 
     context_initialized = 0;
@@ -831,7 +831,7 @@ amf_gnb_t *amf_gnb_add(ogs_sock_t *sock, ogs_sockaddr_t *addr)
         ogs_info("[GNB] max_num_of_ostreams : %d", gnb->max_num_of_ostreams);
     }
 
-    ogs_list_init(&gnb->gnb_ue_list);
+    ogs_list_init(&gnb->ran_ue_list);
 
     if (gnb->sock_type == SOCK_STREAM) {
         gnb->poll = ogs_pollset_add(amf_self()->pollset,
@@ -867,7 +867,7 @@ int amf_gnb_remove(amf_gnb_t *gnb)
     ogs_hash_set(self.gnb_addr_hash, gnb->addr, sizeof(ogs_sockaddr_t), NULL);
     ogs_hash_set(self.gnb_id_hash, &gnb->gnb_id, sizeof(gnb->gnb_id), NULL);
 
-    gnb_ue_remove_in_gnb(gnb);
+    ran_ue_remove_in_gnb(gnb);
 
     if (gnb->sock_type == SOCK_STREAM) {
         ogs_pollset_remove(gnb->poll);
@@ -930,20 +930,20 @@ int amf_gnb_sock_type(ogs_sock_t *sock)
     return SOCK_STREAM;
 }
 
-/** gnb_ue_context handling function */
-gnb_ue_t *gnb_ue_add(amf_gnb_t *gnb, uint32_t ran_ue_ngap_id)
+/** ran_ue_context handling function */
+ran_ue_t *ran_ue_add(amf_gnb_t *gnb, uint32_t ran_ue_ngap_id)
 {
-    gnb_ue_t *gnb_ue = NULL;
+    ran_ue_t *ran_ue = NULL;
 
     ogs_assert(self.amf_ue_ngap_id_hash);
     ogs_assert(gnb);
 
-    ogs_pool_alloc(&gnb_ue_pool, &gnb_ue);
-    ogs_assert(gnb_ue);
-    memset(gnb_ue, 0, sizeof *gnb_ue);
+    ogs_pool_alloc(&ran_ue_pool, &ran_ue);
+    ogs_assert(ran_ue);
+    memset(ran_ue, 0, sizeof *ran_ue);
 
-    gnb_ue->ran_ue_ngap_id = ran_ue_ngap_id;
-    gnb_ue->amf_ue_ngap_id = OGS_NEXT_ID(self.amf_ue_ngap_id, 1, 0xffffffff);
+    ran_ue->ran_ue_ngap_id = ran_ue_ngap_id;
+    ran_ue->amf_ue_ngap_id = OGS_NEXT_ID(self.amf_ue_ngap_id, 1, 0xffffffff);
 
     /*
      * SCTP output stream identification
@@ -951,101 +951,101 @@ gnb_ue_t *gnb_ue_add(amf_gnb_t *gnb, uint32_t ran_ue_ngap_id)
      *   0 : Non UE signalling
      *   1-29 : UE specific association 
      */
-    gnb_ue->gnb_ostream_id = 
+    ran_ue->gnb_ostream_id =
         OGS_NEXT_ID(gnb->ostream_id, 1, gnb->max_num_of_ostreams-1);
 
-    gnb_ue->gnb = gnb;
+    ran_ue->gnb = gnb;
 
-    ogs_hash_set(self.amf_ue_ngap_id_hash, &gnb_ue->amf_ue_ngap_id, 
-            sizeof(gnb_ue->amf_ue_ngap_id), gnb_ue);
-    ogs_list_add(&gnb->gnb_ue_list, gnb_ue);
+    ogs_hash_set(self.amf_ue_ngap_id_hash, &ran_ue->amf_ue_ngap_id,
+            sizeof(ran_ue->amf_ue_ngap_id), ran_ue);
+    ogs_list_add(&gnb->ran_ue_list, ran_ue);
 
-    return gnb_ue;
+    return ran_ue;
 }
 
-unsigned int gnb_ue_count()
+unsigned int ran_ue_count()
 {
     ogs_assert(self.amf_ue_ngap_id_hash);
     return ogs_hash_count(self.amf_ue_ngap_id_hash);
 }
 
-void gnb_ue_remove(gnb_ue_t *gnb_ue)
+void ran_ue_remove(ran_ue_t *ran_ue)
 {
     ogs_assert(self.amf_ue_ngap_id_hash);
-    ogs_assert(gnb_ue);
-    ogs_assert(gnb_ue->gnb);
+    ogs_assert(ran_ue);
+    ogs_assert(ran_ue->gnb);
 
     /* De-associate S1 with NAS/EMM */
-    gnb_ue_deassociate(gnb_ue);
+    ran_ue_deassociate(ran_ue);
 
-    ogs_list_remove(&gnb_ue->gnb->gnb_ue_list, gnb_ue);
-    ogs_hash_set(self.amf_ue_ngap_id_hash, &gnb_ue->amf_ue_ngap_id, 
-            sizeof(gnb_ue->amf_ue_ngap_id), NULL);
+    ogs_list_remove(&ran_ue->gnb->ran_ue_list, ran_ue);
+    ogs_hash_set(self.amf_ue_ngap_id_hash, &ran_ue->amf_ue_ngap_id,
+            sizeof(ran_ue->amf_ue_ngap_id), NULL);
 
-    ogs_pool_free(&gnb_ue_pool, gnb_ue);
+    ogs_pool_free(&ran_ue_pool, ran_ue);
 }
 
-void gnb_ue_remove_in_gnb(amf_gnb_t *gnb)
+void ran_ue_remove_in_gnb(amf_gnb_t *gnb)
 {
-    gnb_ue_t *gnb_ue = NULL, *next_gnb_ue = NULL;
+    ran_ue_t *ran_ue = NULL, *next_ran_ue = NULL;
     
-    gnb_ue = gnb_ue_first_in_gnb(gnb);
-    while (gnb_ue) {
-        next_gnb_ue = gnb_ue_next_in_gnb(gnb_ue);
+    ran_ue = ran_ue_first_in_gnb(gnb);
+    while (ran_ue) {
+        next_ran_ue = ran_ue_next_in_gnb(ran_ue);
 
-        gnb_ue_remove(gnb_ue);
+        ran_ue_remove(ran_ue);
 
-        gnb_ue = next_gnb_ue;
+        ran_ue = next_ran_ue;
     }
 }
 
-void gnb_ue_switch_to_gnb(gnb_ue_t *gnb_ue, amf_gnb_t *new_gnb)
+void ran_ue_switch_to_gnb(ran_ue_t *ran_ue, amf_gnb_t *new_gnb)
 {
-    ogs_assert(gnb_ue);
-    ogs_assert(gnb_ue->gnb);
+    ogs_assert(ran_ue);
+    ogs_assert(ran_ue->gnb);
     ogs_assert(new_gnb);
 
     /* Remove from the old gnb */
-    ogs_list_remove(&gnb_ue->gnb->gnb_ue_list, gnb_ue);
+    ogs_list_remove(&ran_ue->gnb->ran_ue_list, ran_ue);
 
     /* Add to the new gnb */
-    ogs_list_add(&new_gnb->gnb_ue_list, gnb_ue);
+    ogs_list_add(&new_gnb->ran_ue_list, ran_ue);
 
     /* Switch to gnb */
-    gnb_ue->gnb = new_gnb;
+    ran_ue->gnb = new_gnb;
 }
 
-gnb_ue_t *gnb_ue_find_by_ran_ue_ngap_id(
+ran_ue_t *ran_ue_find_by_ran_ue_ngap_id(
         amf_gnb_t *gnb, uint32_t ran_ue_ngap_id)
 {
-    gnb_ue_t *gnb_ue = NULL;
+    ran_ue_t *ran_ue = NULL;
     
-    gnb_ue = gnb_ue_first_in_gnb(gnb);
-    while (gnb_ue) {
-        if (ran_ue_ngap_id == gnb_ue->ran_ue_ngap_id)
+    ran_ue = ran_ue_first_in_gnb(gnb);
+    while (ran_ue) {
+        if (ran_ue_ngap_id == ran_ue->ran_ue_ngap_id)
             break;
 
-        gnb_ue = gnb_ue_next_in_gnb(gnb_ue);
+        ran_ue = ran_ue_next_in_gnb(ran_ue);
     }
 
-    return gnb_ue;
+    return ran_ue;
 }
 
-gnb_ue_t *gnb_ue_find_by_amf_ue_ngap_id(uint64_t amf_ue_ngap_id)
+ran_ue_t *ran_ue_find_by_amf_ue_ngap_id(uint64_t amf_ue_ngap_id)
 {
     ogs_assert(self.amf_ue_ngap_id_hash);
     return ogs_hash_get(self.amf_ue_ngap_id_hash, 
             &amf_ue_ngap_id, sizeof(amf_ue_ngap_id));
 }
 
-gnb_ue_t *gnb_ue_first_in_gnb(amf_gnb_t *gnb)
+ran_ue_t *ran_ue_first_in_gnb(amf_gnb_t *gnb)
 {
-    return ogs_list_first(&gnb->gnb_ue_list);
+    return ogs_list_first(&gnb->ran_ue_list);
 }
 
-gnb_ue_t *gnb_ue_next_in_gnb(gnb_ue_t *gnb_ue)
+ran_ue_t *ran_ue_next_in_gnb(ran_ue_t *ran_ue)
 {
-    return ogs_list_next(gnb_ue);
+    return ogs_list_next(ran_ue);
 }
 
 static int amf_ue_new_guti(amf_ue_t *amf_ue)
@@ -1087,14 +1087,14 @@ static int amf_ue_new_guti(amf_ue_t *amf_ue)
     return OGS_OK;
 }
 
-amf_ue_t *amf_ue_add(gnb_ue_t *gnb_ue)
+amf_ue_t *amf_ue_add(ran_ue_t *ran_ue)
 {
     amf_gnb_t *gnb = NULL;
     amf_ue_t *amf_ue = NULL;
     amf_event_t e;
 
-    ogs_assert(gnb_ue);
-    gnb = gnb_ue->gnb;
+    ogs_assert(ran_ue);
+    gnb = ran_ue->gnb;
     ogs_assert(gnb);
 
     ogs_pool_alloc(&amf_ue_pool, &amf_ue);
@@ -1129,7 +1129,7 @@ amf_ue_t *amf_ue_add(gnb_ue_t *gnb_ue)
         amf_self()->smf = ogs_list_first(&amf_self()->smf_list);
         while (amf_self()->smf && !found) {
             for (i = 0; i < amf_self()->smf->num_of_tac && !found; i++)
-                found = amf_self()->smf->tac[i] == gnb_ue->saved.tai.tac ? 1: 0;
+                found = amf_self()->smf->tac[i] == ran_ue->saved.tai.tac ? 1: 0;
 
             if (!found)
                 amf_self()->smf = ogs_list_next(amf_self()->smf);
@@ -1137,7 +1137,7 @@ amf_ue_t *amf_ue_add(gnb_ue_t *gnb_ue)
 
         if (!found) {
             ogs_warn("No corresponding SMF found for gNB TAC[%d]",
-                    gnb_ue->saved.tai.tac);
+                    ran_ue->saved.tai.tac);
             ogs_warn("Defaulting to first SMF in amf.yaml list");
             amf_self()->smf = ogs_list_first(&amf_self()->smf_list);
         }
@@ -1278,26 +1278,34 @@ amf_ue_t *amf_ue_find_by_teid(uint32_t teid)
 amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
 {
     amf_ue_t *amf_ue = NULL;
+    ogs_nas_5gs_registration_request_t *registration_request = NULL;
 #if 0
-    ogs_nas_5gs_attach_request_t *attach_request = NULL;
     ogs_nas_5gs_tracking_area_update_request_t *tau_request = NULL;
     ogs_nas_5gs_extended_service_request_t *extended_service_request = NULL;
+#endif
     ogs_nas_5gs_mobile_identity_t *mobile_identity = NULL;
-    ogs_nas_mobile_identity_t *mobile_identity = NULL;
+    ogs_nas_5gs_guti_t nas_guti;
 
+#if 0
     char imsi_bcd[OGS_MAX_IMSI_BCD_LEN+1];
-    ogs_nas_5gs_mobile_identity_guti_t *mobile_identity_guti = NULL;
+#endif
+#if 0
     ogs_nas_mobile_identity_tmsi_t *mobile_identity_tmsi = NULL;
     served_guami_t *served_guami = NULL;
-    ogs_nas_5gs_guti_t ogs_nas_guti;
+#endif
+
+    ogs_assert(message);
+
+    registration_request = &message->gmm.registration_request;
+    ogs_assert(registration_request);
+    mobile_identity = &registration_request->mobile_identity;
+    ogs_assert(mobile_identity);
 
     switch (message->gmm.h.message_type) {
-    case OGS_NAS_EPS_ATTACH_REQUEST:
-        attach_request = &message->gmm.attach_request;
-        mobile_identity = &attach_request->eps_mobile_identity;
-
-        switch(eps_mobile_identity->imsi.type) {
-        case OGS_NAS_EPS_MOBILE_IDENTITY_IMSI:
+    case OGS_NAS_5GS_REGISTRATION_REQUEST:
+        switch (mobile_identity->suci.type) {
+        case OGS_NAS_5GS_MOBILE_IDENTITY_SUCI:
+#if 0
             ogs_nas_imsi_to_bcd(
                 &eps_mobile_identity->imsi, eps_mobile_identity->length,
                 imsi_bcd);
@@ -1308,33 +1316,29 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
             } else {
                 ogs_trace("Unknown UE by IMSI[%s]", imsi_bcd);
             }
+#endif
             break;
-        case OGS_NAS_EPS_MOBILE_IDENTITY_GUTI:
-            eps_mobile_identity_guti = &eps_mobile_identity->guti;
+        case OGS_NAS_5GS_MOBILE_IDENTITY_GUTI:
+            memcpy(&nas_guti.nas_plmn_id,
+                    &mobile_identity->guti.nas_plmn_id, OGS_PLMN_ID_LEN);
+            memcpy(&nas_guti.amf_id,
+                    &mobile_identity->guti.amf_id, sizeof(ogs_amf_id_t));
+            nas_guti.m_tmsi = mobile_identity->guti.m_tmsi;
 
-            ogs_nas_guti.nas_plmn_id = eps_mobile_identity_guti->nas_plmn_id;
-            ogs_nas_guti.amf_gid = eps_mobile_identity_guti->amf_gid;
-            ogs_nas_guti.amf_code = eps_mobile_identity_guti->amf_code;
-            ogs_nas_guti.m_tmsi = eps_mobile_identity_guti->m_tmsi;
-
-            amf_ue = amf_ue_find_by_guti(&ogs_nas_guti);
+            amf_ue = amf_ue_find_by_guti(&nas_guti);
             if (amf_ue) {
-                ogs_trace("Known UE by GUTI[G:%d,C:%d,M_TMSI:0x%x]",
-                        ogs_nas_guti.amf_gid,
-                        ogs_nas_guti.amf_code,
-                        ogs_nas_guti.m_tmsi);
+                ogs_debug("Known UE by 5G-S_TMSI[AMF_ID:0x%x,M_TMSI:0x%x]",
+                    ogs_amf_id_hexdump(&nas_guti.amf_id), nas_guti.m_tmsi);
             } else {
-                ogs_warn("Unknown UE by GUTI[G:%d,C:%d,M_TMSI:0x%x]",
-                        ogs_nas_guti.amf_gid,
-                        ogs_nas_guti.amf_code,
-                        ogs_nas_guti.m_tmsi);
+                ogs_warn("Unknown UE by 5G-S_TMSI[AMF_ID:0x%x,M_TMSI:0x%x]",
+                    ogs_amf_id_hexdump(&nas_guti.amf_id), nas_guti.m_tmsi);
             }
             break;
         default:
-            ogs_error("Unknown IMSI type [%d]", eps_mobile_identity->imsi.type);
+            ogs_error("Unknown SUCI type [%d]", mobile_identity->suci.type);
             break;
         }
-        break;
+#if 0
     case OGS_NAS_EPS_DETACH_REQUEST:
         /* TODO */
         break;
@@ -1403,10 +1407,10 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
             break;
         }
         break;
+#endif
     default:
         break;
     }
-#endif
 
     return amf_ue;
 }
@@ -1426,8 +1430,8 @@ int amf_ue_set_imsi(amf_ue_t *amf_ue, char *imsi_bcd)
         if (ogs_pool_index(&amf_ue_pool, amf_ue) !=
             ogs_pool_index(&amf_ue_pool, old_amf_ue)) {
             ogs_warn("OLD UE Context Release [IMSI:%s]", amf_ue->imsi_bcd);
-            if (old_amf_ue->gnb_ue)
-                gnb_ue_deassociate(old_amf_ue->gnb_ue);
+            if (old_amf_ue->ran_ue)
+                ran_ue_deassociate(old_amf_ue->ran_ue);
             amf_ue_remove(old_amf_ue);
         }
     }
@@ -1482,29 +1486,29 @@ int amf_ue_clear_indirect_tunnel(amf_ue_t *amf_ue)
     return OGS_OK;
 }
 
-void amf_ue_associate_gnb_ue(amf_ue_t *amf_ue, gnb_ue_t *gnb_ue)
+void amf_ue_associate_ran_ue(amf_ue_t *amf_ue, ran_ue_t *ran_ue)
 {
     ogs_assert(amf_ue);
-    ogs_assert(gnb_ue);
+    ogs_assert(ran_ue);
 
-    amf_ue->gnb_ue = gnb_ue;
-    gnb_ue->amf_ue = amf_ue;
+    amf_ue->ran_ue = ran_ue;
+    ran_ue->amf_ue = amf_ue;
 }
 
-void gnb_ue_deassociate(gnb_ue_t *gnb_ue)
+void ran_ue_deassociate(ran_ue_t *ran_ue)
 {
-    ogs_assert(gnb_ue);
-    gnb_ue->amf_ue = NULL;
+    ogs_assert(ran_ue);
+    ran_ue->amf_ue = NULL;
 }
 
 void amf_ue_deassociate(amf_ue_t *amf_ue)
 {
     ogs_assert(amf_ue);
-    amf_ue->gnb_ue = NULL;
+    amf_ue->ran_ue = NULL;
 }
 
 void source_ue_associate_target_ue(
-        gnb_ue_t *source_ue, gnb_ue_t *target_ue)
+        ran_ue_t *source_ue, ran_ue_t *target_ue)
 {
     amf_ue_t *amf_ue = NULL;
 
@@ -1518,23 +1522,23 @@ void source_ue_associate_target_ue(
     source_ue->target_ue = target_ue;
 }
 
-void source_ue_deassociate_target_ue(gnb_ue_t *gnb_ue)
+void source_ue_deassociate_target_ue(ran_ue_t *ran_ue)
 {
-    gnb_ue_t *source_ue = NULL;
-    gnb_ue_t *target_ue = NULL;
-    ogs_assert(gnb_ue);
+    ran_ue_t *source_ue = NULL;
+    ran_ue_t *target_ue = NULL;
+    ogs_assert(ran_ue);
 
-    if (gnb_ue->target_ue) {
-        source_ue = gnb_ue;
-        target_ue = gnb_ue->target_ue;
+    if (ran_ue->target_ue) {
+        source_ue = ran_ue;
+        target_ue = ran_ue->target_ue;
 
         ogs_assert(source_ue->target_ue);
         ogs_assert(target_ue->source_ue);
         source_ue->target_ue = NULL;
         target_ue->source_ue = NULL;
-    } else if (gnb_ue->source_ue) {
-        target_ue = gnb_ue;
-        source_ue = gnb_ue->source_ue;
+    } else if (ran_ue->source_ue) {
+        target_ue = ran_ue;
+        source_ue = ran_ue->source_ue;
 
         ogs_assert(source_ue->target_ue);
         ogs_assert(target_ue->source_ue);

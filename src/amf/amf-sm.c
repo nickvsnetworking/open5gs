@@ -20,6 +20,7 @@
 #include "sbi-path.h"
 #include "nnrf-handler.h"
 #include "ngap-path.h"
+#include "nas-security.h"
 
 void amf_state_initial(ogs_fsm_t *s, amf_event_t *e)
 {
@@ -55,7 +56,7 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
     int rc;
 
     ogs_nas_5gs_message_t nas_message;
-    gnb_ue_t *gnb_ue = NULL;
+    ran_ue_t *ran_ue = NULL;
     amf_ue_t *amf_ue = NULL;
 
     ogs_sbi_server_t *server = NULL;
@@ -392,13 +393,88 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
         break;
 
     case AMF_EVT_NGAP_TIMER:
-        gnb_ue = e->gnb_ue;
-        ogs_assert(gnb_ue);
+        ran_ue = e->ran_ue;
+        ogs_assert(ran_ue);
         gnb = e->gnb;
         ogs_assert(gnb);
         ogs_assert(OGS_FSM_STATE(&gnb->sm));
 
         ogs_fsm_dispatch(&gnb->sm, e);
+        break;
+
+    case AMF_EVT_5GMM_MESSAGE:
+        ran_ue = e->ran_ue;
+        ogs_assert(ran_ue);
+        pkbuf = e->pkbuf;
+        ogs_assert(pkbuf);
+        if (ogs_nas_5gmm_decode(&nas_message, pkbuf) != OGS_OK) {
+            ogs_error("ogs_nas_5gmm_decode() failed");
+            ogs_pkbuf_free(pkbuf);
+            return;
+        }
+
+        amf_ue = ran_ue->amf_ue;
+        if (!amf_ue) {
+            amf_ue = amf_ue_find_by_message(&nas_message);
+            if (!amf_ue) {
+                amf_ue = amf_ue_add(ran_ue);
+                ogs_assert(amf_ue);
+            } else {
+                /* Here, if the AMF_UE Context is found,
+                 * the integrity check is not performed
+                 * For example, REGISTRATION_REQUEST,
+                 * TRACKING_AREA_UPDATE_REQUEST message
+                 *
+                 * Now, We will check the MAC in the NAS message*/
+                ogs_nas_security_header_type_t h;
+                h.type = e->nas.type;
+                if (h.integrity_protected) {
+                    /* Decryption was performed in NGAP handler.
+                     * So, we disabled 'ciphered'
+                     * not to decrypt NAS message */
+                    h.ciphered = 0;
+                    if (nas_5gs_security_decode(amf_ue, h, pkbuf) != OGS_OK) {
+                        ogs_error("nas_security_decode() failed");
+                        ogs_pkbuf_free(pkbuf);
+                        return;
+                    }
+                }
+            }
+
+            /* If NAS(amf_ue_t) has already been associated with
+             * older NG(ran_ue_t) context */
+            if (ECM_CONNECTED(amf_ue)) {
+               /* Implcit NG release */
+                ogs_debug("Implicit NG release");
+                ogs_debug("    RAN_UE_NGAP_ID[%d] AMF_UE_NGAP_ID[%ld]",
+                      amf_ue->ran_ue->ran_ue_ngap_id,
+                      amf_ue->ran_ue->amf_ue_ngap_id);
+                ran_ue_remove(amf_ue->ran_ue);
+            }
+            amf_ue_associate_ran_ue(amf_ue, ran_ue);
+        }
+
+        ogs_assert(amf_ue);
+        ogs_assert(OGS_FSM_STATE(&amf_ue->sm));
+
+        e->amf_ue = amf_ue;
+        e->nas.message = &nas_message;
+
+        ogs_fsm_dispatch(&amf_ue->sm, e);
+#if 0
+        if (OGS_FSM_CHECK(&amf_ue->sm, emm_state_exception)) {
+            mme_send_delete_session_or_amf_ue_context_release(amf_ue);
+        }
+#endif
+
+        ogs_pkbuf_free(pkbuf);
+        break;
+    case AMF_EVT_5GMM_TIMER:
+        amf_ue = e->amf_ue;
+        ogs_assert(amf_ue);
+        ogs_assert(OGS_FSM_STATE(&amf_ue->sm));
+
+        ogs_fsm_dispatch(&amf_ue->sm, e);
         break;
 
 
