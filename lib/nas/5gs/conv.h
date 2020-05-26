@@ -21,8 +21,8 @@
 #error "This header cannot be included directly."
 #endif
 
-#ifndef OGS_NAS_COMMON_CONV_H
-#define OGS_NAS_COMMON_CONV_H
+#ifndef OGS_NAS_5GS_CONV_H
+#define OGS_NAS_5GS_CONV_H
 
 #include "ogs-nas-common.h"
 
@@ -30,19 +30,12 @@
 extern "C" {
 #endif
 
-void ogs_nas_imsi_to_buffer(
-    ogs_nas_mobile_identity_imsi_t *imsi, uint8_t imsi_len, 
-    uint8_t *buf, uint8_t *buf_len);
-
-void ogs_nas_eps_imsi_to_bcd(
-    ogs_nas_mobile_identity_imsi_t *imsi, uint8_t imsi_len, char *bcd);
-
-void ogs_nas_imeisv_to_bcd(
-    ogs_nas_mobile_identity_imeisv_t *imeisv, uint8_t imeisv_len, char *bcd);
+void ogs_nas_5gs_imsi_to_bcd(
+    ogs_nas_5gs_mobile_identity_t *mobile_identity, char *bcd);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* OGS_NAS_COMMON_CONV_H */
+#endif /* OGS_NAS_5GS_CONV_H */
 

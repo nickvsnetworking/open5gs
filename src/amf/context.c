@@ -1289,7 +1289,7 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
 #endif
     ogs_nas_5gs_mobile_identity_t *mobile_identity = NULL;
     ogs_nas_5gs_mobile_identity_header_t *mobile_identity_header = NULL;
-    ogs_nas_5gs_mobile_identity_imsi_t mobile_identity_imsi;
+    ogs_nas_5gs_mobile_identity_guti_t *mobile_identity_guti;
     ogs_nas_5gs_guti_t nas_guti;
 
     char imsi_bcd[OGS_MAX_IMSI_BCD_LEN+1];
@@ -1312,40 +1312,24 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
     case OGS_NAS_5GS_REGISTRATION_REQUEST:
         switch (mobile_identity_header->type) {
         case OGS_NAS_5GS_MOBILE_IDENTITY_SUCI:
-#if 0
-            memcpy(&mobile_identity_imsi,
-                    mobile_identity->buffer, mobile_identity->length);
-            ogs_nas_mobile_identity_to_imsi_bcd(mobile_identity, imsi_bcd);
-
-
-            ogs_assert(source->length > 8);
-            ogs_buffer_to_bcd(target->scheme_output,
-                    source->length - 8, out);
-            ogs_fatal("%s", out);
-#endif
-
-
-
-#if 0
-            ogs_nas_imsi_to_bcd(
-                &eps_mobile_identity->imsi, eps_mobile_identity->length,
-                imsi_bcd);
-
+            ogs_nas_5gs_imsi_to_bcd(mobile_identity, imsi_bcd);
             amf_ue = amf_ue_find_by_imsi_bcd(imsi_bcd);
             if (amf_ue) {
                 ogs_trace("known UE by IMSI[%s]", imsi_bcd);
             } else {
                 ogs_trace("Unknown UE by IMSI[%s]", imsi_bcd);
             }
-#endif
             break;
         case OGS_NAS_5GS_MOBILE_IDENTITY_GUTI:
-#if 0 /* NOW */
+            mobile_identity_guti =
+                (ogs_nas_5gs_mobile_identity_guti_t *)mobile_identity->buffer;
+            ogs_assert(mobile_identity_guti);
+
             memcpy(&nas_guti.nas_plmn_id,
-                    &mobile_identity->guti.nas_plmn_id, OGS_PLMN_ID_LEN);
+                    &mobile_identity_guti->nas_plmn_id, OGS_PLMN_ID_LEN);
             memcpy(&nas_guti.amf_id,
-                    &mobile_identity->guti.amf_id, sizeof(ogs_amf_id_t));
-            nas_guti.m_tmsi = mobile_identity->guti.m_tmsi;
+                    &mobile_identity_guti->amf_id, sizeof(ogs_amf_id_t));
+            nas_guti.m_tmsi = be32toh(mobile_identity_guti->m_tmsi);
 
             amf_ue = amf_ue_find_by_guti(&nas_guti);
             if (amf_ue) {
@@ -1355,7 +1339,6 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
                 ogs_warn("Unknown UE by 5G-S_TMSI[AMF_ID:0x%x,M_TMSI:0x%x]",
                     ogs_amf_id_hexdump(&nas_guti.amf_id), nas_guti.m_tmsi);
             }
-#endif
             break;
         default:
             ogs_error("Unknown SUCI type [%d]", mobile_identity_header->type);
@@ -1363,9 +1346,6 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
         }
         break;
 #if 0
-    case OGS_NAS_5GS_DETACH_REQUEST:
-        /* TODO */
-        break;
     case OGS_NAS_5GS_TRACKING_AREA_UPDATE_REQUEST:
         tau_request = &message->gmm.tracking_area_update_request;
         eps_mobile_identity = &tau_request->old_guti;
