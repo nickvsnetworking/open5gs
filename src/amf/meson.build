@@ -34,7 +34,9 @@ libamf_sources = files('''
     kdf.c
     nas-security.c
 
+    gmm-build.c
     gmm-handler.c
+    nas-path.c
     gmm-sm.c
 
     gsm-sm.c

@@ -21,9 +21,7 @@
 #include "kdf.h"
 
 #include "ngap-path.h"
-#if 0
 #include "nas-path.h"
-#endif
 
 #include "gmm-handler.h"
 
@@ -109,11 +107,8 @@ int gmm_handle_registration_request(amf_ue_t *amf_ue,
         /* Send Registration Reject */
         ogs_warn("Cannot find Served TAI[PLMN_ID:%06x,TAC:%d]",
             ogs_plmn_id_hexdump(&amf_ue->tai.plmn_id), amf_ue->tai.tac.v);
-#if 0
         nas_5gs_send_registration_reject(amf_ue,
-            EMM_CAUSE_TRACKING_AREA_NOT_ALLOWED,
-            ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
-#endif
+            OGS_5GMM_CAUSE_TRACKING_AREA_NOT_ALLOWED);
         return OGS_ERROR;
     }
     ogs_debug("    SERVED_TAI_INDEX[%d]", served_tai_index);
@@ -159,11 +154,8 @@ int gmm_handle_registration_request(amf_ue_t *amf_ue,
             "but Integrity[0x%x] cannot be bypassed with NIA0",
             amf_selected_enc_algorithm(amf_ue), 
             amf_selected_int_algorithm(amf_ue));
-#if 0
         nas_5gs_send_registration_reject(amf_ue,
-            EMM_CAUSE_UE_SECURITY_CAPABILITIES_MISMATCH,
-            ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
-#endif
+            OGS_5GMM_CAUSE_UE_SECURITY_CAPABILITIES_MISMATCH);
         return OGS_ERROR;
     }
 

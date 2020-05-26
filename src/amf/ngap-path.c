@@ -89,7 +89,6 @@ int ngap_send_to_gnb(amf_gnb_t *gnb, ogs_pkbuf_t *pkbuf, uint16_t stream_no)
     return rv;
 }
 
-#if 0
 int ngap_send_to_ran_ue(ran_ue_t *ran_ue, ogs_pkbuf_t *pkbuf)
 {
     amf_gnb_t *gnb = NULL;
@@ -129,7 +128,6 @@ int ngap_delayed_send_to_ran_ue(
         return ngap_send_to_ran_ue(ran_ue, pkbuf);
     }
 }
-#endif
 
 int ngap_send_to_5gsm(amf_ue_t *amf_ue, ogs_pkbuf_t *esmbuf)
 {
