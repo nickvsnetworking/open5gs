@@ -323,11 +323,6 @@ struct amf_ue_s {
     /* S1 UE context */
     ran_ue_t        *ran_ue;
 
-#if 0
-    /* Save PDN Connectivity Request */
-    ogs_nas_esm_message_container_t pdn_connectivity_request;
-#endif
-
 #define CLEAR_AMF_UE_ALL_TIMERS(__mME) \
     do { \
         CLEAR_AMF_UE_TIMER((__mME)->t3413); \

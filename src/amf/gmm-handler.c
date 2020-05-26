@@ -187,11 +187,6 @@ int gmm_handle_registration_request(amf_ue_t *amf_ue,
         break;
     }
 
-#if 0
-    OGS_NAS_STORE_DATA(
-            &amf_ue->pdn_connectivity_request, esm_message_container);
-#endif
-
     return OGS_OK;
 }
 
