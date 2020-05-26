@@ -152,15 +152,10 @@ ED4(uint8_t spare1:1;,
 typedef struct ogs_nas_5gs_mobile_identity_imsi_s {
     ogs_nas_5gs_mobile_identity_header_t h;
     ogs_nas_plmn_id_t nas_plmn_id;
-    union {
-        struct {
-        ED2(uint8_t ri2:4;,
-            uint8_t ri1:4;)
-        ED2(uint8_t ri4:4;,
-            uint8_t ri3:4;)
-        };
-        uint16_t routing_indicator;
-    };
+    ED2(uint8_t routing_indicator2:4;,
+        uint8_t routing_indicator1:4;)
+    ED2(uint8_t routing_indicator4:4;,
+        uint8_t routing_indicator3:4;)
 ED2(uint8_t spare3:4;,
 #define OGS_NAS_5GS_NULL_SCHEME 0
 #define OGS_NAS_5GS_ECIES_SCHEME_PROFILE_A 1
@@ -184,10 +179,6 @@ typedef struct ogs_nas_5gs_mobile_identity_s {
     uint16_t length;
     uint8_t *buffer;
 } ogs_nas_5gs_mobile_identity_t;
-
-void ogs_nas_5gs_mobile_identity_imsi_build(
-        ogs_nas_5gs_mobile_identity_imsi_t *target,
-        ogs_nas_5gs_mobile_identity_t *source);
 
 /* 9.11.3.5 5GS network feature support
  * M LV 2 */

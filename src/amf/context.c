@@ -1292,9 +1292,7 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
     ogs_nas_5gs_mobile_identity_imsi_t mobile_identity_imsi;
     ogs_nas_5gs_guti_t nas_guti;
 
-#if 0
     char imsi_bcd[OGS_MAX_IMSI_BCD_LEN+1];
-#endif
 #if 0
     ogs_nas_mobile_identity_tmsi_t *mobile_identity_tmsi = NULL;
     served_guami_t *served_guami = NULL;
@@ -1314,8 +1312,17 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
     case OGS_NAS_5GS_REGISTRATION_REQUEST:
         switch (mobile_identity_header->type) {
         case OGS_NAS_5GS_MOBILE_IDENTITY_SUCI:
-            ogs_nas_5gs_mobile_identity_imsi_build(
-                    &mobile_identity_imsi, mobile_identity);
+#if 0
+            memcpy(&mobile_identity_imsi,
+                    mobile_identity->buffer, mobile_identity->length);
+            ogs_nas_mobile_identity_to_imsi_bcd(mobile_identity, imsi_bcd);
+
+
+            ogs_assert(source->length > 8);
+            ogs_buffer_to_bcd(target->scheme_output,
+                    source->length - 8, out);
+            ogs_fatal("%s", out);
+#endif
 
 
 

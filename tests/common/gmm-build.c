@@ -49,10 +49,10 @@ ogs_pkbuf_t *testgmm_build_registration_request(void)
     mobile_identity_imsi.h.type = OGS_NAS_5GS_MOBILE_IDENTITY_SUCI;
     ogs_nas_from_plmn_id(&mobile_identity_imsi.nas_plmn_id,
             &test_self()->tai.plmn_id);
-    mobile_identity_imsi.ri1 = 0;
-    mobile_identity_imsi.ri2 = 0xf;
-    mobile_identity_imsi.ri3 = 0xf;
-    mobile_identity_imsi.ri4 = 0xf;
+    mobile_identity_imsi.routing_indicator1 = 0;
+    mobile_identity_imsi.routing_indicator2 = 0xf;
+    mobile_identity_imsi.routing_indicator3 = 0xf;
+    mobile_identity_imsi.routing_indicator4 = 0xf;
     mobile_identity_imsi.protection_scheme_id = OGS_NAS_5GS_NULL_SCHEME;
     mobile_identity_imsi.home_network_pki_value = 0;
     mobile_identity_imsi.scheme_output[0] = 0;

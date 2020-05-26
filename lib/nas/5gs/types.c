@@ -19,27 +19,6 @@
 
 #include "ogs-nas-5gs.h"
 
-void ogs_nas_5gs_mobile_identity_imsi_build(
-        ogs_nas_5gs_mobile_identity_imsi_t *target,
-        ogs_nas_5gs_mobile_identity_t *source)
-{
-    ogs_assert(target);
-    ogs_assert(source);
-    ogs_assert(source->buffer);
-
-    memcpy(target, source->buffer, source->length);
-    ogs_fatal("%x", ntohs(target->routing_indicator));
-#if 0
-    mobile_identity_imsi.routing_indicator = 0xfff0;
-    mobile_identity_imsi.protection_scheme_id = OGS_NAS_5GS_NULL_SCHEME;
-    mobile_identity_imsi.home_network_pki_value = 0;
-    mobile_identity_imsi.scheme_output[0] = 0;
-    mobile_identity_imsi.scheme_output[1] = 0;
-    mobile_identity_imsi.scheme_output[2] = 0x47;
-    mobile_identity_imsi.scheme_output[3] = 0x78;
-#endif
-}
-
 void ogs_nas_5gs_tai_list_build(
         ogs_nas_5gs_tracking_area_identity_list_t *target,
         ogs_5gs_tai0_list_t *source0, ogs_5gs_tai2_list_t *source2)
