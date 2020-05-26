@@ -337,6 +337,7 @@ void gsm_state_bearer_deactivated(ogs_fsm_t *s, amf_event_t *e)
         break;
     }
 }
+#endif
 
 void gsm_state_exception(ogs_fsm_t *s, amf_event_t *e)
 {
@@ -357,4 +358,3 @@ void gsm_state_exception(ogs_fsm_t *s, amf_event_t *e)
         break;
     }
 }
-#endif

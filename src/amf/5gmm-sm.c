@@ -59,7 +59,6 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e);
 
 void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
 {
-#if 0
     amf_ue_t *amf_ue = NULL;
     ogs_assert(s);
     ogs_assert(e);
@@ -72,14 +71,13 @@ void gmm_state_de_registered(ogs_fsm_t *s, amf_event_t *e)
     switch (e->id) {
     case OGS_FSM_ENTRY_SIG:
         CLEAR_SERVICE_INDICATOR(amf_ue);
-        CLEAR_MME_UE_ALL_TIMERS(amf_ue);
+        CLEAR_AMF_UE_ALL_TIMERS(amf_ue);
         break;
     case OGS_FSM_EXIT_SIG:
         break;
     default:
         break;
     }
-#endif
 
     common_register_state(s, e);
 }
@@ -114,7 +112,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
         return;
     case OGS_FSM_EXIT_SIG:
         return;
-    case MME_EVT_EMM_MESSAGE:
+    case AMF_EVT_EMM_MESSAGE:
         message = e->nas_message;
         ogs_assert(message);
 
@@ -132,7 +130,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
                 return;
             }
 
-            if (!MME_UE_HAVE_IMSI(amf_ue)) {
+            if (!AMF_UE_HAVE_IMSI(amf_ue)) {
                 ogs_warn("[EMM] Service request : Unknown UE");
                 nas_eps_send_service_reject(amf_ue,
                     EMM_CAUSE_UE_IDENTITY_CANNOT_BE_DERIVED_BY_THE_NETWORK);
@@ -163,7 +161,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
         switch (message->5gmm.h.message_type) {
         case OGS_NAS_EPS_IDENTITY_RESPONSE:
             ogs_debug("[EMM] Identity response");
-            CLEAR_MME_UE_TIMER(amf_ue->t3470);
+            CLEAR_AMF_UE_TIMER(amf_ue->t3470);
 
             rv = 5gmm_handle_identity_response(amf_ue,
                     &message->5gmm.identity_response);
@@ -173,7 +171,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
                 return;
             }
 
-            if (!MME_UE_HAVE_IMSI(amf_ue)) {
+            if (!AMF_UE_HAVE_IMSI(amf_ue)) {
                 ogs_error("No IMSI");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
@@ -201,7 +199,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
                 return;
             }
 
-            if (!MME_UE_HAVE_IMSI(amf_ue)) {
+            if (!AMF_UE_HAVE_IMSI(amf_ue)) {
                 ogs_warn("[EMM] TAU request : Unknown UE");
                 nas_eps_send_tau_reject(amf_ue,
                     EMM_CAUSE_UE_IDENTITY_CANNOT_BE_DERIVED_BY_THE_NETWORK);
@@ -224,7 +222,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
                 return;
             }
 
-            if (!MME_UE_HAVE_IMSI(amf_ue)) {
+            if (!AMF_UE_HAVE_IMSI(amf_ue)) {
                 ogs_warn("[EMM] Extended Service request : Unknown UE");
                 nas_eps_send_service_reject(amf_ue,
                     EMM_CAUSE_UE_IDENTITY_CANNOT_BE_DERIVED_BY_THE_NETWORK);
@@ -251,7 +249,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
                 return;
             }
 
-            if (MME_P_TMSI_IS_AVAILABLE(amf_ue)) {
+            if (AMF_P_TMSI_IS_AVAILABLE(amf_ue)) {
                 sgsap_send_detach_indication(amf_ue);
             } else {
                 amf_send_delete_session_or_detach(amf_ue);
@@ -262,19 +260,19 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
         case OGS_NAS_EPS_UPLINK_NAS_TRANSPORT:
             ogs_debug("[EMM] Uplink NAS Transport");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
-            if (MME_SGSAP_IS_CONNECTED(amf_ue)) {
+            if (AMF_SGSAP_IS_CONNECTED(amf_ue)) {
                 sgsap_send_uplink_unitdata(amf_ue, &message->5gmm.
                         uplink_nas_transport.nas_message_container);
             } else {
-                S1AP_MME_UE_S1AP_ID_t MME_UE_S1AP_ID;
+                S1AP_AMF_UE_S1AP_ID_t AMF_UE_S1AP_ID;
                 S1AP_ENB_UE_S1AP_ID_t ENB_UE_S1AP_ID;
 
                 ogs_warn("No connection of MSC/VLR");
-                MME_UE_S1AP_ID = enb_ue->amf_ue_ngap_id;
+                AMF_UE_S1AP_ID = enb_ue->amf_ue_ngap_id;
                 ENB_UE_S1AP_ID = enb_ue->enb_ue_ngap_id;
 
                 ngap_send_error_indication(enb_ue->enb, 
-                        &MME_UE_S1AP_ID, &ENB_UE_S1AP_ID,
+                        &AMF_UE_S1AP_ID, &ENB_UE_S1AP_ID,
                         S1AP_Cause_PR_transport,
                         S1AP_CauseTransport_transport_resource_unavailable);
             }
@@ -285,15 +283,15 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
             return;
         }
         break;
-    case MME_EVT_EMM_TIMER:
+    case AMF_EVT_EMM_TIMER:
         switch (e->timer_id) {
-        case MME_TIMER_T3413:
+        case AMF_TIMER_T3413:
             if (amf_ue->t3413.retry_count >=
-                    amf_timer_cfg(MME_TIMER_T3413)->max_count) {
+                    amf_timer_cfg(AMF_TIMER_T3413)->max_count) {
                 /* Paging failed */
                 ogs_warn("[EMM] Paging to IMSI[%s] failed. Stop paging",
                         amf_ue->imsi_bcd);
-                CLEAR_MME_UE_TIMER(amf_ue->t3413);
+                CLEAR_AMF_UE_TIMER(amf_ue->t3413);
 
                 if (CS_CALL_SERVICE_INDICATOR(amf_ue) ||
                     SMS_SERVICE_INDICATOR(amf_ue)) {
@@ -312,12 +310,12 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
                 ngap_send_paging(amf_ue, 0);
             }
             break;
-        case MME_TIMER_T3470:
+        case AMF_TIMER_T3470:
             if (amf_ue->t3470.retry_count >=
-                    amf_timer_cfg(MME_TIMER_T3470)->max_count) {
+                    amf_timer_cfg(AMF_TIMER_T3470)->max_count) {
                 ogs_warn("[EMM] Retransmission of Identity-Request failed. "
                         "Stop retransmission");
-                CLEAR_MME_UE_TIMER(amf_ue->t3470);
+                CLEAR_AMF_UE_TIMER(amf_ue->t3470);
                 OGS_FSM_TRAN(&amf_ue->sm, &gmm_state_exception);
             } else {
                 amf_ue->t3470.retry_count++;
@@ -335,8 +333,8 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
         return;
     }
 
-    if (!MME_UE_HAVE_IMSI(amf_ue)) {
-        CLEAR_MME_UE_TIMER(amf_ue->t3470);
+    if (!AMF_UE_HAVE_IMSI(amf_ue)) {
+        CLEAR_AMF_UE_TIMER(amf_ue->t3470);
         nas_eps_send_identity_request(amf_ue);
         return;
     }
@@ -345,7 +343,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
     ogs_assert(enb_ue);
 
     switch (amf_ue->nas_eps.type) {
-    case MME_EPS_TYPE_ATTACH_REQUEST:
+    case AMF_EPS_TYPE_ATTACH_REQUEST:
         if (SECURITY_CONTEXT_IS_VALID(amf_ue)) {
             rv = nas_eps_send_5gmm_to_5gsm(amf_ue,
                     &amf_ue->pdn_connectivity_request);
@@ -367,7 +365,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
             OGS_FSM_TRAN(s, &gmm_state_authentication);
         }
         break;
-    case MME_EPS_TYPE_TAU_REQUEST:
+    case AMF_EPS_TYPE_TAU_REQUEST:
         procedureCode = e->ngap_code;
 
         if (!SESSION_CONTEXT_IS_AVAILABLE(amf_ue)) {
@@ -402,10 +400,10 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
             ogs_fatal("Invalid Procedure Code[%d]", (int)procedureCode);
         }
         break;
-    case MME_EPS_TYPE_EXTENDED_SERVICE_REQUEST:
+    case AMF_EPS_TYPE_EXTENDED_SERVICE_REQUEST:
         procedureCode = e->ngap_code;
 
-        if (!MME_P_TMSI_IS_AVAILABLE(amf_ue)) {
+        if (!AMF_P_TMSI_IS_AVAILABLE(amf_ue)) {
             ogs_warn("No P-TMSI : UE[%s]", amf_ue->imsi_bcd);
             nas_eps_send_service_reject(amf_ue,
                 EMM_CAUSE_UE_IDENTITY_CANNOT_BE_DERIVED_BY_THE_NETWORK);
@@ -510,7 +508,7 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
         break;
     case OGS_FSM_EXIT_SIG:
         break;
-    case MME_EVT_EMM_MESSAGE:
+    case AMF_EVT_EMM_MESSAGE:
         message = e->nas_message;
         ogs_assert(message);
 
@@ -527,7 +525,7 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
             ogs_debug("[EMM] Authentication response");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
 
-            CLEAR_MME_UE_TIMER(amf_ue->t3460);
+            CLEAR_AMF_UE_TIMER(amf_ue->t3460);
 
             if (authentication_response_parameter->length == 0 ||
                 memcmp(authentication_response_parameter->res,
@@ -559,7 +557,7 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
             ogs_debug("    IMSI[%s] EMM_CAUSE[%d]", amf_ue->imsi_bcd,
                     authentication_failure->5gmm_cause);
 
-            CLEAR_MME_UE_TIMER(amf_ue->t3460);
+            CLEAR_AMF_UE_TIMER(amf_ue->t3460);
 
             switch (authentication_failure->5gmm_cause) {
             case EMM_CAUSE_MAC_FAILURE:
@@ -624,11 +622,11 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
             break;
         }
         break;
-    case MME_EVT_EMM_TIMER:
+    case AMF_EVT_EMM_TIMER:
         switch (e->timer_id) {
-        case MME_TIMER_T3460:
+        case AMF_TIMER_T3460:
             if (amf_ue->t3460.retry_count >=
-                    amf_timer_cfg(MME_TIMER_T3460)->max_count) {
+                    amf_timer_cfg(AMF_TIMER_T3460)->max_count) {
                 ogs_warn("[EMM] Retransmission of IMSI[%s] failed. "
                         "Stop retransmission",
                         amf_ue->imsi_bcd);
@@ -669,12 +667,12 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
 
     switch (e->id) {
     case OGS_FSM_ENTRY_SIG:
-        CLEAR_MME_UE_TIMER(amf_ue->t3460);
+        CLEAR_AMF_UE_TIMER(amf_ue->t3460);
         nas_eps_send_security_mode_command(amf_ue);
         break;
     case OGS_FSM_EXIT_SIG:
         break;
-    case MME_EVT_EMM_MESSAGE:
+    case AMF_EVT_EMM_MESSAGE:
         message = e->nas_message;
         ogs_assert(message);
 
@@ -692,7 +690,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
             ogs_debug("[EMM] Security mode complete");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
 
-            CLEAR_MME_UE_TIMER(amf_ue->t3460);
+            CLEAR_AMF_UE_TIMER(amf_ue->t3460);
 
             /* Now, We will check the MAC in the NAS message*/
             h.type = e->nas_type;
@@ -730,11 +728,11 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
             amf_ue->nhcc = 1;
 
             amf_s6a_send_ulr(amf_ue);
-            if (amf_ue->nas_eps.type == MME_EPS_TYPE_ATTACH_REQUEST) {
+            if (amf_ue->nas_eps.type == AMF_EPS_TYPE_ATTACH_REQUEST) {
                 OGS_FSM_TRAN(s, &gmm_state_initial_context_setup);
             } else if (amf_ue->nas_eps.type ==
-                    MME_EPS_TYPE_SERVICE_REQUEST ||
-                    amf_ue->nas_eps.type == MME_EPS_TYPE_TAU_REQUEST) {
+                    AMF_EPS_TYPE_SERVICE_REQUEST ||
+                    amf_ue->nas_eps.type == AMF_EPS_TYPE_TAU_REQUEST) {
                 OGS_FSM_TRAN(s, &gmm_state_registered);
             } else {
                 ogs_fatal("Invalid OGS_NAS_EPS[%d]", amf_ue->nas_eps.type);
@@ -744,7 +742,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
             ogs_warn("[EMM] Security mode reject : IMSI[%s] Cause[%d]",
                     amf_ue->imsi_bcd,
                     message->5gmm.security_mode_reject.5gmm_cause);
-            CLEAR_MME_UE_TIMER(amf_ue->t3460);
+            CLEAR_AMF_UE_TIMER(amf_ue->t3460);
             OGS_FSM_TRAN(s, &gmm_state_exception);
             break;
         case OGS_NAS_EPS_ATTACH_REQUEST:
@@ -791,11 +789,11 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
             break;
         }
         break;
-    case MME_EVT_EMM_TIMER:
+    case AMF_EVT_EMM_TIMER:
         switch (e->timer_id) {
-        case MME_TIMER_T3460:
+        case AMF_TIMER_T3460:
             if (amf_ue->t3460.retry_count >=
-                    amf_timer_cfg(MME_TIMER_T3460)->max_count) {
+                    amf_timer_cfg(AMF_TIMER_T3460)->max_count) {
                 ogs_warn("[EMM] Retransmission of IMSI[%s] failed. "
                         "Stop retransmission",
                         amf_ue->imsi_bcd);
@@ -840,7 +838,7 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
         break;
     case OGS_FSM_EXIT_SIG:
         break;
-    case MME_EVT_EMM_MESSAGE:
+    case AMF_EVT_EMM_MESSAGE:
         message = e->nas_message;
         ogs_assert(message);
 
@@ -857,7 +855,7 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 break;
             }
-            if (MME_P_TMSI_IS_AVAILABLE(amf_ue))
+            if (AMF_P_TMSI_IS_AVAILABLE(amf_ue))
                 sgsap_send_tmsi_reallocation_complete(amf_ue);
 
             OGS_FSM_TRAN(s, &gmm_state_registered);
@@ -901,7 +899,7 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
             break;
         }
         break;
-    case MME_EVT_EMM_TIMER:
+    case AMF_EVT_EMM_TIMER:
         switch (e->timer_id) {
         default:
             ogs_error("Unknown timer[%s:%d]",
@@ -914,6 +912,7 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
         break;
     }
 }
+#endif
 
 void gmm_state_exception(ogs_fsm_t *s, amf_event_t *e)
 {
@@ -928,7 +927,7 @@ void gmm_state_exception(ogs_fsm_t *s, amf_event_t *e)
     switch (e->id) {
     case OGS_FSM_ENTRY_SIG:
         CLEAR_SERVICE_INDICATOR(amf_ue);
-        CLEAR_MME_UE_ALL_TIMERS(amf_ue);
+        CLEAR_AMF_UE_ALL_TIMERS(amf_ue);
         break;
     case OGS_FSM_EXIT_SIG:
         break;
@@ -937,4 +936,3 @@ void gmm_state_exception(ogs_fsm_t *s, amf_event_t *e)
         break;
     }
 }
-#endif
