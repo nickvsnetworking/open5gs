@@ -931,7 +931,7 @@ int amf_gnb_sock_type(ogs_sock_t *sock)
 }
 
 /** gnb_ue_context handling function */
-gnb_ue_t *gnb_ue_add(amf_gnb_t *gnb, uint32_t gnb_ue_ngap_id)
+gnb_ue_t *gnb_ue_add(amf_gnb_t *gnb, uint32_t ran_ue_ngap_id)
 {
     gnb_ue_t *gnb_ue = NULL;
 
@@ -942,7 +942,7 @@ gnb_ue_t *gnb_ue_add(amf_gnb_t *gnb, uint32_t gnb_ue_ngap_id)
     ogs_assert(gnb_ue);
     memset(gnb_ue, 0, sizeof *gnb_ue);
 
-    gnb_ue->gnb_ue_ngap_id = gnb_ue_ngap_id;
+    gnb_ue->ran_ue_ngap_id = ran_ue_ngap_id;
     gnb_ue->amf_ue_ngap_id = OGS_NEXT_ID(self.amf_ue_ngap_id, 1, 0xffffffff);
 
     /*
@@ -1015,14 +1015,14 @@ void gnb_ue_switch_to_gnb(gnb_ue_t *gnb_ue, amf_gnb_t *new_gnb)
     gnb_ue->gnb = new_gnb;
 }
 
-gnb_ue_t *gnb_ue_find_by_gnb_ue_ngap_id(
-        amf_gnb_t *gnb, uint32_t gnb_ue_ngap_id)
+gnb_ue_t *gnb_ue_find_by_ran_ue_ngap_id(
+        amf_gnb_t *gnb, uint32_t ran_ue_ngap_id)
 {
     gnb_ue_t *gnb_ue = NULL;
     
     gnb_ue = gnb_ue_first_in_gnb(gnb);
     while (gnb_ue) {
-        if (gnb_ue_ngap_id == gnb_ue->gnb_ue_ngap_id)
+        if (ran_ue_ngap_id == gnb_ue->ran_ue_ngap_id)
             break;
 
         gnb_ue = gnb_ue_next_in_gnb(gnb_ue);
@@ -1031,7 +1031,7 @@ gnb_ue_t *gnb_ue_find_by_gnb_ue_ngap_id(
     return gnb_ue;
 }
 
-gnb_ue_t *gnb_ue_find_by_amf_ue_ngap_id(uint32_t amf_ue_ngap_id)
+gnb_ue_t *gnb_ue_find_by_amf_ue_ngap_id(uint64_t amf_ue_ngap_id)
 {
     ogs_assert(self.amf_ue_ngap_id_hash);
     return ogs_hash_get(self.amf_ue_ngap_id_hash, 

@@ -28,7 +28,7 @@
 /*******************************************************************************
  * This file had been created by nas-message.py script v0.2.0
  * Please do not modify this file but regenerate it via script.
- * Created on: 2020-05-25 14:53:46.454145 by acetcom
+ * Created on: 2020-05-25 19:44:18.409368 by acetcom
  * from 24501-g41.docx
  ******************************************************************************/
 
@@ -43,8 +43,8 @@
 extern "C" {
 #endif
 
-#define OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_ESM 0x2e
-#define OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_EMM 0x7e
+#define OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_5GSM 0x2e
+#define OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_5GMM 0x7e
 
 #define OGS_NAS_PDU_SESSION_IDENTITY_UNASSIGNED 0
 

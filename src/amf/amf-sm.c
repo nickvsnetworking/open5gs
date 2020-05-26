@@ -54,9 +54,9 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
     ogs_pkbuf_t *pkbuf = NULL;
     int rc;
 
-#if 0
     ogs_nas_5gs_message_t nas_message;
-#endif
+    gnb_ue_t *gnb_ue = NULL;
+    amf_ue_t *amf_ue = NULL;
 
     ogs_sbi_server_t *server = NULL;
     ogs_sbi_session_t *session = NULL;
@@ -382,11 +382,9 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
             ogs_fsm_dispatch(&gnb->sm, e);
         } else {
             ogs_error("Cannot decode NGAP message");
-#if 0
             ngap_send_error_indication(
                     gnb, NULL, NULL, NGAP_Cause_PR_protocol, 
                     NGAP_CauseProtocol_abstract_syntax_error_falsely_constructed_message);
-#endif
         }
 
         ogs_ngap_free(&ngap_message);
@@ -394,7 +392,6 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
         break;
 
     case AMF_EVT_NGAP_TIMER:
-#if 0
         gnb_ue = e->gnb_ue;
         ogs_assert(gnb_ue);
         gnb = e->gnb;
@@ -402,9 +399,6 @@ void amf_state_operational(ogs_fsm_t *s, amf_event_t *e)
         ogs_assert(OGS_FSM_STATE(&gnb->sm));
 
         ogs_fsm_dispatch(&gnb->sm, e);
-#else
-        ogs_fatal("Not implemeted");
-#endif
         break;
 
 

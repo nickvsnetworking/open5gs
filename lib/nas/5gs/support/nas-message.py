@@ -532,8 +532,8 @@ f.write("""#if !defined(OGS_NAS_INSIDE) && !defined(OGS_NAS_COMPILATION)
 extern "C" {
 #endif
 
-#define OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_ESM 0x2e
-#define OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_EMM 0x7e
+#define OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_5GSM 0x2e
+#define OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_5GMM 0x7e
 
 #define OGS_NAS_PDU_SESSION_IDENTITY_UNASSIGNED 0
 
@@ -968,10 +968,10 @@ ogs_pkbuf_t *ogs_nas_5gs_plain_encode(ogs_nas_5gs_message_t *message)
             message->gsm.h.extended_protocol_discriminator);
 
     if (message->gmm.h.extended_protocol_discriminator == 
-            OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_EMM)
+            OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_5GMM)
         return ogs_nas_5gmm_encode(message);
     else if (message->gmm.h.extended_protocol_discriminator == 
-            OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_ESM)
+            OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_5GSM)
         return ogs_nas_5gsm_encode(message);
 
     return NULL;

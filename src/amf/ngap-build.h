@@ -55,7 +55,7 @@ ogs_pkbuf_t *ngap_build_amf_configuration_transfer(
 
 ogs_pkbuf_t *ngap_build_path_switch_ack(amf_ue_t *amf_ue);
 ogs_pkbuf_t *ngap_build_path_switch_failure(
-    uint32_t gnb_ue_ngap_id, uint32_t amf_ue_ngap_id,
+    uint32_t ran_ue_ngap_id, uint32_t amf_ue_ngap_id,
     NGAP_Cause_PR group, long cause);
 
 ogs_pkbuf_t *ngap_build_handover_command(gnb_ue_t *source_ue);
@@ -64,7 +64,7 @@ ogs_pkbuf_t *ngap_build_handover_preparation_failure(
 
 ogs_pkbuf_t *ngap_build_handover_request(
     amf_ue_t *amf_ue, gnb_ue_t *target_ue,
-    NGAP_ENB_UE_NGAP_ID_t *gnb_ue_ngap_id,
+    NGAP_RAN_UE_NGAP_ID_t *ran_ue_ngap_id,
     NGAP_AMF_UE_NGAP_ID_t *amf_ue_ngap_id,
     NGAP_HandoverType_t *handovertype,
     NGAP_Cause_t *cause,
@@ -76,14 +76,16 @@ ogs_pkbuf_t *ngap_build_handover_cancel_ack(
 
 ogs_pkbuf_t *ngap_build_amf_status_transfer(
     gnb_ue_t *target_ue,
-    NGAP_ENB_StatusTransfer_TransparentContainer_t
+    NGAP_RAN_StatusTransfer_TransparentContainer_t
         *gnb_statustransfer_transparentContainer);
+#endif
 
 ogs_pkbuf_t *ngap_build_error_indication(
-    NGAP_AMF_UE_NGAP_ID_t *amf_ue_ngap_id,
-    NGAP_ENB_UE_NGAP_ID_t *gnb_ue_ngap_id,
+    uint64_t *amf_ue_ngap_id,
+    NGAP_RAN_UE_NGAP_ID_t *ran_ue_ngap_id,
     NGAP_Cause_PR group, long cause);
 
+#if 0
 ogs_pkbuf_t *ngap_build_s1_reset(
     NGAP_Cause_PR group, long cause,
     NGAP_UE_associatedLogicalS1_ConnectionListRes_t *partOfS1_Interface);
@@ -91,7 +93,7 @@ ogs_pkbuf_t *ngap_build_s1_reset(
 ogs_pkbuf_t *ngap_build_s1_reset_partial(
     NGAP_Cause_PR group, long cause,
     NGAP_AMF_UE_NGAP_ID_t *amf_ue_ngap_id,
-    NGAP_ENB_UE_NGAP_ID_t *gnb_ue_ngap_id);
+    NGAP_RAN_UE_NGAP_ID_t *ran_ue_ngap_id);
 
 ogs_pkbuf_t *ngap_build_s1_reset_ack(
     NGAP_UE_associatedLogicalS1_ConnectionListRes_t *partOfS1_Interface);

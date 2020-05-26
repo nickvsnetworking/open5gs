@@ -36,7 +36,7 @@ ogs_pkbuf_t *test5gmm_build_registration_request(void)
 
     memset(&message, 0, sizeof(message));
     message.gmm.h.extended_protocol_discriminator =
-            OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_EMM;
+            OGS_NAS_EXTENDED_PROTOCOL_DISCRIMINATOR_5GMM;
     message.gmm.h.message_type = OGS_NAS_5GS_REGISTRATION_REQUEST;
 
     registration_type->type = 1;

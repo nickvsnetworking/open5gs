@@ -109,7 +109,7 @@ typedef struct amf_context_s {
     uint8_t         relative_capacity;
 
     /* Generator for unique identification */
-    uint32_t        amf_ue_ngap_id; /* amf_ue_ngap_id generator */
+    uint64_t        amf_ue_ngap_id; /* amf_ue_ngap_id generator */
 
     ogs_list_t      gnb_list;       /* GNB NGAP Client List */
     ogs_list_t      amf_ue_list;
@@ -161,9 +161,9 @@ struct gnb_ue_s {
     ogs_lnode_t     lnode;
 
     /* UE identity */
-#define INVALID_UE_NGAP_ID      0xffffffff /* Initial value of gnb_ue_ngap_id */
-    uint32_t        gnb_ue_ngap_id; /* eNB-UE-NGAP-ID received from eNB */
-    uint32_t        amf_ue_ngap_id; /* AMF-UE-NGAP-ID received from AMF */
+#define INVALID_UE_NGAP_ID      0xffffffff /* Initial value of ran_ue_ngap_id */
+    uint32_t        ran_ue_ngap_id; /* eNB-UE-NGAP-ID received from eNB */
+    uint64_t        amf_ue_ngap_id; /* AMF-UE-NGAP-ID received from AMF */
 
     uint16_t        gnb_ostream_id; /* SCTP output stream id for eNB */
 
@@ -533,14 +533,14 @@ amf_gnb_t *amf_gnb_find_by_gnb_id(uint32_t gnb_id);
 int amf_gnb_set_gnb_id(amf_gnb_t *gnb, uint32_t gnb_id);
 int amf_gnb_sock_type(ogs_sock_t *sock);
 
-gnb_ue_t *gnb_ue_add(amf_gnb_t *gnb, uint32_t gnb_ue_ngap_id);
+gnb_ue_t *gnb_ue_add(amf_gnb_t *gnb, uint32_t ran_ue_ngap_id);
 unsigned int gnb_ue_count(void);
 void gnb_ue_remove(gnb_ue_t *gnb_ue);
 void gnb_ue_remove_in_gnb(amf_gnb_t *gnb);
 void gnb_ue_switch_to_gnb(gnb_ue_t *gnb_ue, amf_gnb_t *new_gnb);
-gnb_ue_t *gnb_ue_find_by_gnb_ue_ngap_id(
-        amf_gnb_t *gnb, uint32_t gnb_ue_ngap_id);
-gnb_ue_t *gnb_ue_find_by_amf_ue_ngap_id(uint32_t amf_ue_ngap_id);
+gnb_ue_t *gnb_ue_find_by_ran_ue_ngap_id(
+        amf_gnb_t *gnb, uint32_t ran_ue_ngap_id);
+gnb_ue_t *gnb_ue_find_by_amf_ue_ngap_id(uint64_t amf_ue_ngap_id);
 gnb_ue_t *gnb_ue_first_in_gnb(amf_gnb_t *gnb);
 gnb_ue_t *gnb_ue_next_in_gnb(gnb_ue_t *gnb_ue);
 

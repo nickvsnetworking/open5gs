@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 by Sukchan Lee <acetcom@gmail.com>
+ * Copyright (C) 2019,2020 by Sukchan Lee <acetcom@gmail.com>
  *
  * This file is part of Open5GS.
  *
@@ -17,24 +17,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef NAS_EPS_SECURITY_H
-#define NAS_EPS_SECURITY_H
+#ifndef NAS_5GS_SECURITY_H
+#define NAS_5GS_SECURITY_H
 
 #include "ogs-crypt.h"
-#include "mme-context.h"
+#include "context.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-ogs_pkbuf_t *nas_eps_security_encode(
-    mme_ue_t *mme_ue, ogs_nas_eps_message_t *message);
-int nas_eps_security_decode(mme_ue_t *mme_ue, 
+ogs_pkbuf_t *nas_5gs_security_encode(
+    amf_ue_t *amf_ue, ogs_nas_5gs_message_t *message);
+int nas_5gs_security_decode(amf_ue_t *amf_ue, 
     ogs_nas_security_header_type_t security_header_type, ogs_pkbuf_t *pkbuf);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* NAS_EPS_SECURITY_H */
+#endif /* NAS_5GS_SECURITY_H */
 
