@@ -144,7 +144,7 @@ void ogs_ngap_ASN_to_nr_cgi(NGAP_NR_CGI_t *nR_CGI, ogs_nr_cgi_t *cgi)
     ogs_assert(cgi);
     ogs_assert(nR_CGI);
 
-    memcpy(nR_CGI->pLMNIdentity.buf, &cgi->plmn_id, OGS_PLMN_ID_LEN);
+    memcpy(&cgi->plmn_id, nR_CGI->pLMNIdentity.buf, OGS_PLMN_ID_LEN);
 
     /* CellIdentity : 36bit */
     cgi->cell_id = (ogs_buffer_to_uint64(nR_CGI->nRCellIdentity.buf, 5) >> 4);
@@ -165,6 +165,6 @@ void ogs_ngap_ASN_to_5gs_tai(NGAP_TAI_t *tAI, ogs_5gs_tai_t *tai)
     ogs_assert(tai);
     ogs_assert(tAI);
 
-    memcpy(tAI->pLMNIdentity.buf, &tai->plmn_id, OGS_PLMN_ID_LEN);
+    memcpy(&tai->plmn_id, tAI->pLMNIdentity.buf, OGS_PLMN_ID_LEN);
     ogs_asn_OCTET_STRING_to_uint24(&tAI->tAC, &tai->tac);
 }

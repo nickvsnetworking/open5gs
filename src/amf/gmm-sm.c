@@ -21,10 +21,10 @@
 #include "amf-kdf.h"
 #endif
 #include "ngap-handler.h"
+#include "gmm-handler.h"
 #if 0
-#include "5gmm-handler.h"
-#include "5gmm-build.h"
-#include "5gsm-handler.h"
+#include "gmm-build.h"
+#include "gsm-handler.h"
 #include "nas-path.h"
 #endif
 #include "nas-security.h"
@@ -37,7 +37,7 @@
 #include "amf-sm.h"
 
 #undef OGS_LOG_DOMAIN
-#define OGS_LOG_DOMAIN __5gmm_log_domain
+#define OGS_LOG_DOMAIN __gmm_log_domain
 
 void gmm_state_initial(ogs_fsm_t *s, amf_event_t *e)
 {
@@ -99,7 +99,9 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
     amf_ue_t *amf_ue = NULL;
     ran_ue_t *ran_ue = NULL;
     ogs_nas_5gs_message_t *message = NULL;
+#if 0
     NGAP_ProcedureCode_t procedureCode;
+#endif
     
     ogs_assert(e);
         
@@ -119,11 +121,11 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
         ogs_assert(ran_ue);
 
 #if 0
-        if (message->5gmm.h.security_header_type
+        if (message->gmm.h.security_header_type
                 == OGS_NAS_SECURITY_HEADER_FOR_SERVICE_REQUEST_MESSAGE) {
             ogs_debug("[EMM] Service request");
             rv = gmm_handle_service_request(
-                    amf_ue, &message->5gmm.service_request);
+                    amf_ue, &message->gmm.service_request);
             if (rv != OGS_OK) {
                 ogs_error("gmm_handle_service_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
@@ -166,7 +168,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
             CLEAR_AMF_UE_TIMER(amf_ue->t3470);
 
             rv = gmm_handle_identity_response(amf_ue,
-                    &message->5gmm.identity_response);
+                    &message->gmm.identity_response);
             if (rv != OGS_OK) {
                 ogs_error("gmm_handle_identity_response() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
@@ -185,20 +187,20 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
         case OGS_NAS_5GS_REGISTRATION_REQUEST:
 #if 0
             ogs_debug("Registration request[%s]", amf_ue->imsi_bcd);
-            rv = gmm_handle_attach_request(
-                    amf_ue, &message->5gmm.attach_request);
+#endif
+            rv = gmm_handle_registration_request(
+                    amf_ue, &message->gmm.registration_request);
             if (rv != OGS_OK) {
-                ogs_error("gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_registration_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
-#endif
             break;
 #if 0
         case OGS_NAS_EPS_TRACKING_AREA_UPDATE_REQUEST:
             ogs_debug("[EMM] Tracking area update request");
             rv = gmm_handle_tau_request(
-                    amf_ue, &message->5gmm.tracking_area_update_request);
+                    amf_ue, &message->gmm.tracking_area_update_request);
             if (rv != OGS_OK) {
                 ogs_error("gmm_handle_tau_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
@@ -221,7 +223,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
         case OGS_NAS_EPS_EXTENDED_SERVICE_REQUEST:
             ogs_debug("[EMM] Extended service request");
             rv = gmm_handle_extended_service_request(
-                    amf_ue, &message->5gmm.extended_service_request);
+                    amf_ue, &message->gmm.extended_service_request);
             if (rv != OGS_OK) {
                 ogs_error("gmm_handle_extended_service_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
@@ -240,25 +242,25 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
         case OGS_NAS_EPS_EMM_STATUS:
             ogs_warn("[EMM] EMM STATUS : IMSI[%s] Cause[%d]",
                     amf_ue->imsi_bcd,
-                    message->5gmm.5gmm_status.5gmm_cause);
+                    message->gmm.5gmm_status.5gmm_cause);
             OGS_FSM_TRAN(s, &gmm_state_exception);
             return;
         case OGS_NAS_EPS_DETACH_REQUEST:
             ogs_debug("[EMM] Detach request");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
-            rv = gmm_handle_detach_request(
-                    amf_ue, &message->5gmm.detach_request_from_ue);
+            rv = gmm_handle_deregistration_request(
+                    amf_ue, &message->gmm.deregistration_request_from_ue);
             if (rv != OGS_OK)
             {
-                ogs_error("gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_registration_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
 
             if (AMF_P_TMSI_IS_AVAILABLE(amf_ue)) {
-                sgsap_send_detach_indication(amf_ue);
+                sgsap_send_deregistration_indication(amf_ue);
             } else {
-                amf_send_delete_session_or_detach(amf_ue);
+                amf_send_delete_session_or_deregistration(amf_ue);
             }
 
             OGS_FSM_TRAN(s, &gmm_state_de_registered);
@@ -267,7 +269,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
             ogs_debug("[EMM] Uplink NAS Transport");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
             if (AMF_SGSAP_IS_CONNECTED(amf_ue)) {
-                sgsap_send_uplink_unitdata(amf_ue, &message->5gmm.
+                sgsap_send_uplink_unitdata(amf_ue, &message->gmm.
                         uplink_nas_transport.nas_message_container);
             } else {
                 NGAP_AMF_UE_NGAP_ID_t AMF_UE_NGAP_ID;
@@ -359,7 +361,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
                     &amf_ue->pdn_connectivity_request);
             if (rv != OGS_OK) {
                 ogs_error("nas_eps_send_5gmm_to_5gsm() failed");
-                nas_eps_send_attach_reject(amf_ue,
+                nas_eps_send_registration_reject(amf_ue,
                     EMM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED,
                     ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
                 OGS_FSM_TRAN(s, &gmm_state_exception);
@@ -522,11 +524,11 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
         message = e->nas_message;
         ogs_assert(message);
 
-        switch (message->5gmm.h.message_type) {
+        switch (message->gmm.h.message_type) {
         case OGS_NAS_EPS_AUTHENTICATION_RESPONSE:
         {
             ogs_nas_eps_authentication_response_t *authentication_response =
-                &message->5gmm.authentication_response;
+                &message->gmm.authentication_response;
             ogs_nas_authentication_response_parameter_t
                 *authentication_response_parameter =
                     &authentication_response->
@@ -557,7 +559,7 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
         case OGS_NAS_EPS_AUTHENTICATION_FAILURE:
         {
             ogs_nas_eps_authentication_failure_t *authentication_failure =
-                &message->5gmm.authentication_failure;
+                &message->gmm.authentication_failure;
             ogs_nas_authentication_failure_parameter_t
                 *authentication_failure_parameter = 
                     &authentication_failure->
@@ -596,10 +598,10 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
         }
         case OGS_NAS_EPS_ATTACH_REQUEST:
             ogs_warn("[EMM] Attach request[%s]", amf_ue->imsi_bcd);
-            rv = gmm_handle_attach_request(
-                    amf_ue, &message->5gmm.attach_request);
+            rv = gmm_handle_registration_request(
+                    amf_ue, &message->gmm.registration_request);
             if (rv != OGS_OK) {
-                ogs_error("gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_registration_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
@@ -610,25 +612,25 @@ void gmm_state_authentication(ogs_fsm_t *s, amf_event_t *e)
         case OGS_NAS_EPS_EMM_STATUS:
             ogs_warn("[EMM] EMM STATUS : IMSI[%s] Cause[%d]",
                     amf_ue->imsi_bcd,
-                    message->5gmm.5gmm_status.5gmm_cause);
+                    message->gmm.5gmm_status.5gmm_cause);
             OGS_FSM_TRAN(s, &gmm_state_exception);
             break;
         case OGS_NAS_EPS_DETACH_REQUEST:
             ogs_debug("[EMM] Detach request");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
-            rv = gmm_handle_detach_request(
-                    amf_ue, &message->5gmm.detach_request_from_ue);
+            rv = gmm_handle_deregistration_request(
+                    amf_ue, &message->gmm.deregistration_request_from_ue);
             if (rv != OGS_OK) {
-                ogs_error("gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_registration_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
 
-            amf_send_delete_session_or_detach(amf_ue);
+            amf_send_delete_session_or_deregistration(amf_ue);
             OGS_FSM_TRAN(s, &gmm_state_de_registered);
             break;
         default:
-            ogs_warn("Unknown message[%d]", message->5gmm.h.message_type);
+            ogs_warn("Unknown message[%d]", message->gmm.h.message_type);
             break;
         }
         break;
@@ -686,7 +688,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
         message = e->nas_message;
         ogs_assert(message);
 
-        if (message->5gmm.h.security_header_type
+        if (message->gmm.h.security_header_type
                 == OGS_NAS_SECURITY_HEADER_FOR_SERVICE_REQUEST_MESSAGE) {
             ogs_debug("[EMM] Service request");
             nas_eps_send_service_reject(amf_ue,
@@ -695,7 +697,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
             return;
         }
 
-        switch (message->5gmm.h.message_type) {
+        switch (message->gmm.h.message_type) {
         case OGS_NAS_EPS_SECURITY_MODE_COMPLETE:
             ogs_debug("[EMM] Security mode complete");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
@@ -708,7 +710,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
                 ogs_error("Security-mode : No Integrity Protected in IMSI[%s]",
                         amf_ue->imsi_bcd);
 
-                nas_eps_send_attach_reject(amf_ue,
+                nas_eps_send_registration_reject(amf_ue,
                     EMM_CAUSE_SECURITY_MODE_REJECTED_UNSPECIFIED,
                     ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
                 OGS_FSM_TRAN(s, &gmm_state_exception);
@@ -717,7 +719,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
 
             if (!SECURITY_CONTEXT_IS_VALID(amf_ue)) {
                 ogs_warn("No Security Context : IMSI[%s]", amf_ue->imsi_bcd);
-                nas_eps_send_attach_reject(amf_ue,
+                nas_eps_send_registration_reject(amf_ue,
                     EMM_CAUSE_SECURITY_MODE_REJECTED_UNSPECIFIED,
                     ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
                 OGS_FSM_TRAN(s, &gmm_state_exception);
@@ -725,7 +727,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
             }
 
             rv = gmm_handle_security_mode_complete(
-                    amf_ue, &message->5gmm.security_mode_complete);
+                    amf_ue, &message->gmm.security_mode_complete);
             if (rv != OGS_OK) {
                 ogs_error("gmm_handle_security_mode_complete() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
@@ -751,16 +753,16 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
         case OGS_NAS_EPS_SECURITY_MODE_REJECT:
             ogs_warn("[EMM] Security mode reject : IMSI[%s] Cause[%d]",
                     amf_ue->imsi_bcd,
-                    message->5gmm.security_mode_reject.5gmm_cause);
+                    message->gmm.security_mode_reject.5gmm_cause);
             CLEAR_AMF_UE_TIMER(amf_ue->t3460);
             OGS_FSM_TRAN(s, &gmm_state_exception);
             break;
         case OGS_NAS_EPS_ATTACH_REQUEST:
             ogs_warn("[EMM] Attach request[%s]", amf_ue->imsi_bcd);
-            rv = gmm_handle_attach_request(
-                    amf_ue, &message->5gmm.attach_request);
+            rv = gmm_handle_registration_request(
+                    amf_ue, &message->gmm.registration_request);
             if (rv != OGS_OK) {
-                ogs_error("gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_registration_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 break;
             }
@@ -777,25 +779,25 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
         case OGS_NAS_EPS_EMM_STATUS:
             ogs_warn("[EMM] EMM STATUS : IMSI[%s] Cause[%d]",
                     amf_ue->imsi_bcd,
-                    message->5gmm.5gmm_status.5gmm_cause);
+                    message->gmm.5gmm_status.5gmm_cause);
             OGS_FSM_TRAN(s, &gmm_state_exception);
             break;
         case OGS_NAS_EPS_DETACH_REQUEST:
             ogs_debug("[EMM] Detach request");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
-            rv = gmm_handle_detach_request(
-                    amf_ue, &message->5gmm.detach_request_from_ue);
+            rv = gmm_handle_deregistration_request(
+                    amf_ue, &message->gmm.deregistration_request_from_ue);
             if (rv != OGS_OK) {
-                ogs_error("gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_registration_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 break;
             }
 
-            amf_send_delete_session_or_detach(amf_ue);
+            amf_send_delete_session_or_deregistration(amf_ue);
             OGS_FSM_TRAN(s, &gmm_state_de_registered);
             break;
         default:
-            ogs_warn("Unknown message[%d]", message->5gmm.h.message_type);
+            ogs_warn("Unknown message[%d]", message->gmm.h.message_type);
             break;
         }
         break;
@@ -809,7 +811,7 @@ void gmm_state_security_mode(ogs_fsm_t *s, amf_event_t *e)
                         amf_ue->imsi_bcd);
                 OGS_FSM_TRAN(&amf_ue->sm, &gmm_state_exception);
 
-                nas_eps_send_attach_reject(amf_ue,
+                nas_eps_send_registration_reject(amf_ue,
                     EMM_CAUSE_SECURITY_MODE_REJECTED_UNSPECIFIED,
                     ESM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED);
             } else {
@@ -852,15 +854,15 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
         message = e->nas_message;
         ogs_assert(message);
 
-        switch (message->5gmm.h.message_type) {
+        switch (message->gmm.h.message_type) {
         case OGS_NAS_EPS_ATTACH_COMPLETE:
             ogs_debug("[EMM] Attach complete");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
 
-            rv = gmm_handle_attach_complete(
-                    amf_ue, &message->5gmm.attach_complete);
+            rv = gmm_handle_registration_complete(
+                    amf_ue, &message->gmm.registration_complete);
             if (rv != OGS_OK) {
-                ogs_error("gmm_handle_attach_complete() failed "
+                ogs_error("gmm_handle_registration_complete() failed "
                         "in gmm_state_initial_context_setup");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 break;
@@ -872,10 +874,10 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
             break;
         case OGS_NAS_EPS_ATTACH_REQUEST:
             ogs_warn("[EMM] Attach request[%s]", amf_ue->imsi_bcd);
-            rv = gmm_handle_attach_request(
-                    amf_ue, &message->5gmm.attach_request);
+            rv = gmm_handle_registration_request(
+                    amf_ue, &message->gmm.registration_request);
             if (rv != OGS_OK) {
-                ogs_error("gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_registration_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
@@ -886,26 +888,26 @@ void gmm_state_initial_context_setup(ogs_fsm_t *s, amf_event_t *e)
         case OGS_NAS_EPS_EMM_STATUS:
             ogs_warn("[EMM] EMM STATUS : IMSI[%s] Cause[%d]",
                     amf_ue->imsi_bcd,
-                    message->5gmm.5gmm_status.5gmm_cause);
+                    message->gmm.5gmm_status.5gmm_cause);
             OGS_FSM_TRAN(s, &gmm_state_exception);
             break;
         case OGS_NAS_EPS_DETACH_REQUEST:
             ogs_debug("[EMM] Detach request");
             ogs_debug("    IMSI[%s]", amf_ue->imsi_bcd);
-            rv = gmm_handle_detach_request(
-                    amf_ue, &message->5gmm.detach_request_from_ue);
+            rv = gmm_handle_deregistration_request(
+                    amf_ue, &message->gmm.deregistration_request_from_ue);
             if (rv != OGS_OK) {
-                ogs_error("gmm_handle_attach_request() failed");
+                ogs_error("gmm_handle_registration_request() failed");
                 OGS_FSM_TRAN(s, gmm_state_exception);
                 return;
             }
 
-            amf_send_delete_session_or_detach(amf_ue);
+            amf_send_delete_session_or_deregistration(amf_ue);
             OGS_FSM_TRAN(s, &gmm_state_de_registered);
             break;
         default:
             ogs_warn("Unknown message[%d]", 
-                    message->5gmm.h.message_type);
+                    message->gmm.h.message_type);
             break;
         }
         break;

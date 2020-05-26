@@ -22,8 +22,8 @@
 static amf_context_t self;
 
 int __amf_log_domain;
-int __5gmm_log_domain;
-int __5gsm_log_domain;
+int __gmm_log_domain;
+int __gsm_log_domain;
 
 static OGS_POOL(amf_gnb_pool, amf_gnb_t);
 static OGS_POOL(amf_ue_pool, amf_ue_t);
@@ -44,8 +44,8 @@ void amf_context_init(void)
     ogs_log_install_domain(&__ogs_ngap_domain, "ngap", ogs_core()->log.level);
     ogs_log_install_domain(&__ogs_nas_domain, "nas", ogs_core()->log.level);
     ogs_log_install_domain(&__amf_log_domain, "amf", ogs_core()->log.level);
-    ogs_log_install_domain(&__5gmm_log_domain, "5gmm", ogs_core()->log.level);
-    ogs_log_install_domain(&__5gsm_log_domain, "5gsm", ogs_core()->log.level);
+    ogs_log_install_domain(&__gmm_log_domain, "gmm", ogs_core()->log.level);
+    ogs_log_install_domain(&__gsm_log_domain, "gsm", ogs_core()->log.level);
 
     ogs_list_init(&self.ngap_list);
     ogs_list_init(&self.ngap_list6);
@@ -1343,15 +1343,15 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
             break;
         }
 #if 0
-    case OGS_NAS_EPS_DETACH_REQUEST:
+    case OGS_NAS_5GS_DETACH_REQUEST:
         /* TODO */
         break;
-    case OGS_NAS_EPS_TRACKING_AREA_UPDATE_REQUEST:
+    case OGS_NAS_5GS_TRACKING_AREA_UPDATE_REQUEST:
         tau_request = &message->gmm.tracking_area_update_request;
         eps_mobile_identity = &tau_request->old_guti;
 
         switch(eps_mobile_identity->imsi.type) {
-        case OGS_NAS_EPS_MOBILE_IDENTITY_GUTI:
+        case OGS_NAS_5GS_MOBILE_IDENTITY_GUTI:
             eps_mobile_identity_guti = &eps_mobile_identity->guti;
 
             ogs_nas_guti.nas_plmn_id = eps_mobile_identity_guti->nas_plmn_id;
@@ -1377,7 +1377,7 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
             break;
         }
         break;
-    case OGS_NAS_EPS_EXTENDED_SERVICE_REQUEST:
+    case OGS_NAS_5GS_EXTENDED_SERVICE_REQUEST:
         extended_service_request = &message->gmm.extended_service_request;
         mobile_identity = &extended_service_request->m_tmsi;
 
@@ -1686,7 +1686,7 @@ amf_bearer_t *amf_bearer_add(amf_sess_t *sess)
     memset(bearer, 0, sizeof *bearer);
 
     bearer->ebi = OGS_NEXT_ID(amf_ue->ebi,
-            MIN_EPS_BEARER_ID, MAX_EPS_BEARER_ID);
+            MIN_5GS_BEARER_ID, MAX_5GS_BEARER_ID);
 
     bearer->amf_ue = amf_ue;
     bearer->sess = sess;
@@ -1784,7 +1784,7 @@ amf_bearer_t *amf_bearer_find_or_add_by_message(
 {
     uint8_t pti = OGS_NAS_PROCEDURE_TRANSACTION_IDENTITY_UNASSIGNED;
 #if 0
-    uint8_t ebi = OGS_NAS_EPS_BEARER_IDENTITY_UNASSIGNED;
+    uint8_t ebi = OGS_NAS_5GS_BEARER_IDENTITY_UNASSIGNED;
 #endif
 
     amf_bearer_t *bearer = NULL;
@@ -1800,7 +1800,7 @@ amf_bearer_t *amf_bearer_find_or_add_by_message(
     ogs_debug("amf_bearer_find_or_add_by_message() [PTI:%d, EBI:%d]",
             pti, ebi);
 
-    if (ebi != OGS_NAS_EPS_BEARER_IDENTITY_UNASSIGNED) {
+    if (ebi != OGS_NAS_5GS_BEARER_IDENTITY_UNASSIGNED) {
         bearer = amf_bearer_find_by_ue_ebi(amf_ue, ebi);
         if (!bearer) {
             ogs_error("No Bearer : EBI[%d]", ebi);
@@ -1821,7 +1821,7 @@ amf_bearer_t *amf_bearer_find_or_add_by_message(
         return NULL;
     }
 
-    if (message->esm.h.message_type == OGS_NAS_EPS_PDN_DISCONNECT_REQUEST) {
+    if (message->esm.h.message_type == OGS_NAS_5GS_PDN_DISCONNECT_REQUEST) {
         ogs_nas_eps_pdn_disconnect_request_t *pdn_disconnect_request = 
             &message->esm.pdn_disconnect_request;
         ogs_nas_linked_eps_bearer_identity_t *linked_eps_bearer_identity =
@@ -1838,7 +1838,7 @@ amf_bearer_t *amf_bearer_find_or_add_by_message(
             return NULL;
         }
     } else if (message->esm.h.message_type ==
-            OGS_NAS_EPS_BEARER_RESOURCE_ALLOCATION_REQUEST) {
+            OGS_NAS_5GS_BEARER_RESOURCE_ALLOCATION_REQUEST) {
         ogs_nas_eps_bearer_resource_allocation_request_t
             *bearer_allocation_request =
                 &message->esm.bearer_resource_allocation_request;
@@ -1856,7 +1856,7 @@ amf_bearer_t *amf_bearer_find_or_add_by_message(
             return NULL;
         }
     } else if (message->esm.h.message_type ==
-            OGS_NAS_EPS_BEARER_RESOURCE_MODIFICATION_REQUEST) {
+            OGS_NAS_5GS_BEARER_RESOURCE_MODIFICATION_REQUEST) {
         ogs_nas_eps_bearer_resource_modification_request_t
             *bearer_modification_request =
                 &message->esm.bearer_resource_modification_request;
@@ -1883,11 +1883,11 @@ amf_bearer_t *amf_bearer_find_or_add_by_message(
         return bearer;
     }
 
-    if (message->esm.h.message_type == OGS_NAS_EPS_PDN_CONNECTIVITY_REQUEST) {
+    if (message->esm.h.message_type == OGS_NAS_5GS_PDN_CONNECTIVITY_REQUEST) {
         ogs_nas_eps_pdn_connectivity_request_t *pdn_connectivity_request =
             &message->esm.pdn_connectivity_request;
         if (pdn_connectivity_request->presencemask &
-                OGS_NAS_EPS_PDN_CONNECTIVITY_REQUEST_ACCESS_POINT_NAME_PRESENT)
+                OGS_NAS_5GS_PDN_CONNECTIVITY_REQUEST_ACCESS_POINT_NAME_PRESENT)
             sess = amf_sess_find_by_dnn(amf_ue,
                     pdn_connectivity_request->access_point_name.dnn);
         else
@@ -2137,7 +2137,6 @@ int amf_m_tmsi_free(amf_m_tmsi_t *m_tmsi)
     return OGS_OK;
 }
 
-#if 0
 uint8_t amf_selected_int_algorithm(amf_ue_t *amf_ue)
 {
     int i;
@@ -2145,7 +2144,7 @@ uint8_t amf_selected_int_algorithm(amf_ue_t *amf_ue)
     ogs_assert(amf_ue);
 
     for (i = 0; i < amf_self()->num_of_integrity_order; i++) {
-        if (amf_ue->ue_network_capability.eia & 
+        if (amf_ue->ue_security_capability.nia &
                 (0x80 >> amf_self()->integrity_order[i])) {
             return amf_self()->integrity_order[i];
         }
@@ -2161,7 +2160,7 @@ uint8_t amf_selected_enc_algorithm(amf_ue_t *amf_ue)
     ogs_assert(amf_ue);
 
     for (i = 0; i < amf_self()->num_of_ciphering_order; i++) {
-        if (amf_ue->ue_network_capability.eea & 
+        if (amf_ue->ue_security_capability.nea &
                 (0x80 >> amf_self()->ciphering_order[i])) {
             return amf_self()->ciphering_order[i];
         }
@@ -2169,4 +2168,3 @@ uint8_t amf_selected_enc_algorithm(amf_ue_t *amf_ue)
 
     return 0;
 }
-#endif

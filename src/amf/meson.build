@@ -31,9 +31,12 @@ libamf_sources = files('''
     ngap-path.c
     ngap-sm.c
 
+    kdf.c
     nas-security.c
 
+    gmm-handler.c
     gmm-sm.c
+
     gsm-sm.c
 
     amf-sm.c

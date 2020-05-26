@@ -36,8 +36,8 @@ extern "C" {
 #define MAX_NUM_OF_SERVED_GUAMI     8
 
 extern int __amf_log_domain;
-extern int __5gmm_log_domain;
-extern int __5gsm_log_domain;
+extern int __gmm_log_domain;
+extern int __gsm_log_domain;
 
 #undef OGS_LOG_DOMAIN
 #define OGS_LOG_DOMAIN __amf_log_domain
@@ -202,17 +202,11 @@ struct amf_ue_s {
     ogs_fsm_t       sm;     /* A state machine */
 
     struct {
-#define AMF_EPS_TYPE_ATTACH_REQUEST                 1
-#define AMF_EPS_TYPE_TAU_REQUEST                    2
-#define AMF_EPS_TYPE_SERVICE_REQUEST                3
-#define AMF_EPS_TYPE_EXTENDED_SERVICE_REQUEST       4
-#define AMF_EPS_TYPE_DETACH_REQUEST_FROM_UE         5 
-#define AMF_EPS_TYPE_DETACH_REQUEST_TO_UE           6 
         uint8_t     type;
         uint8_t     ksi;
         union {
+            ogs_nas_5gs_registration_type_t registration;
 #if 0
-            ogs_5gs_attach_type_t attach;
             ogs_5gs_update_type_t update;
             ogs_5gs_service_type_t service;
             ogs_5gs_detach_type_t detach;
@@ -247,6 +241,13 @@ struct amf_ue_s {
     ogs_nr_cgi_t    cgi;
     ogs_plmn_id_t   last_visited_plmn_id;
 
+    /* 5GMM Capability */
+    struct {
+        bool lte_positioning_protocol_capability;
+        bool ho_attach;
+        bool s1_mode;
+    } gmm_capability;
+
 #define SECURITY_CONTEXT_IS_VALID(__mME) \
     ((__mME) && \
     ((__mME)->security_context_available == 1) && \
@@ -263,8 +264,9 @@ struct amf_ue_s {
     int             mac_failed;
 
     /* Security Context */
-    ogs_nas_ue_network_capability_t ue_network_capability;
+    ogs_nas_ue_security_capability_t ue_security_capability;
 #if 0
+    ogs_nas_ue_network_capability_t ue_network_capability;
     ogs_nas_ms_network_capability_t ms_network_capability;
 #endif
     uint8_t         xres[OGS_MAX_RES_LEN];
@@ -304,15 +306,15 @@ struct amf_ue_s {
     uint8_t         selected_int_algorithm;
 
     /* ESM Info */
-#define MIN_EPS_BEARER_ID           5
-#define MAX_EPS_BEARER_ID           15
+#define MIN_5GS_BEARER_ID           5
+#define MAX_5GS_BEARER_ID           15
 
-#define CLEAR_EPS_BEARER_ID(__mME) \
+#define CLEAR_5GS_BEARER_ID(__mME) \
     do { \
         ogs_assert((__mME)); \
-        (__mME)->ebi = MIN_EPS_BEARER_ID - 1; \
+        (__mME)->ebi = MIN_5GS_BEARER_ID - 1; \
     } while(0)
-    uint8_t         ebi; /* EPS Bearer ID generator */
+    uint8_t         ebi; /* 5GS Bearer ID generator */
     ogs_list_t      sess_list;
 
 #define ECM_CONNECTED(__mME) \
@@ -470,7 +472,7 @@ typedef struct amf_bearer_s {
     ogs_lnode_t     lnode;
     ogs_fsm_t       sm;             /* State Machine */
 
-    uint8_t         ebi;            /* EPS Bearer ID */    
+    uint8_t         ebi;            /* 5GS Bearer ID */
 
     uint32_t        gnb_s1u_teid;
     ogs_ip_t        gnb_s1u_ip;
@@ -650,10 +652,8 @@ int amf_m_tmsi_pool_generate(void);
 amf_m_tmsi_t *amf_m_tmsi_alloc(void);
 int amf_m_tmsi_free(amf_m_tmsi_t *tmsi);
 
-#if 0
 uint8_t amf_selected_int_algorithm(amf_ue_t *amf_ue);
 uint8_t amf_selected_enc_algorithm(amf_ue_t *amf_ue);
-#endif
 
 #ifdef __cplusplus
 }

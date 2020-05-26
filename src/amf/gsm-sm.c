@@ -26,7 +26,7 @@
 #include "context.h"
 
 #undef OGS_LOG_DOMAIN
-#define OGS_LOG_DOMAIN __5gsm_log_domain
+#define OGS_LOG_DOMAIN __gsm_log_domain
 
 void gsm_state_initial(ogs_fsm_t *s, amf_event_t *e)
 {
