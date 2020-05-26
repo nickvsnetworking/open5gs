@@ -1289,14 +1289,10 @@ amf_ue_t *amf_ue_find_by_message(ogs_nas_5gs_message_t *message)
 #endif
     ogs_nas_5gs_mobile_identity_t *mobile_identity = NULL;
     ogs_nas_5gs_mobile_identity_header_t *mobile_identity_header = NULL;
-    ogs_nas_5gs_mobile_identity_guti_t *mobile_identity_guti;
+    ogs_nas_5gs_mobile_identity_guti_t *mobile_identity_guti = NULL;
     ogs_nas_5gs_guti_t nas_guti;
 
     char imsi_bcd[OGS_MAX_IMSI_BCD_LEN+1];
-#if 0
-    ogs_nas_mobile_identity_tmsi_t *mobile_identity_tmsi = NULL;
-    served_guami_t *served_guami = NULL;
-#endif
 
     ogs_assert(message);
 

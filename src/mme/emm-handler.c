@@ -179,7 +179,7 @@ int emm_handle_attach_request(
                 nas_guti.mme_code,
                 nas_guti.m_tmsi,
                 MME_UE_HAVE_IMSI(mme_ue) 
-                    ? mme_ue->imsi_bcd : "Unknown");
+                    ? mme_ue->imsi_bcd : "Unknown IMSI");
         break;
     default:
         ogs_warn("Not implemented[%d]", eps_mobile_identity->imsi.type);

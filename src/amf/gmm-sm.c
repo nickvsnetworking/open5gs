@@ -17,9 +17,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#if 0
-#include "amf-kdf.h"
-#endif
 #include "ngap-handler.h"
 #include "gmm-handler.h"
 #if 0
@@ -28,6 +25,7 @@
 #include "nas-path.h"
 #endif
 #include "nas-security.h"
+#include "kdf.h"
 #include "ngap-path.h"
 #if 0
 #include "sgsap-types.h"
@@ -185,9 +183,7 @@ static void common_register_state(ogs_fsm_t *s, amf_event_t *e)
             break;
 #endif
         case OGS_NAS_5GS_REGISTRATION_REQUEST:
-#if 0
             ogs_debug("Registration request[%s]", amf_ue->imsi_bcd);
-#endif
             rv = gmm_handle_registration_request(
                     amf_ue, &message->gmm.registration_request);
             if (rv != OGS_OK) {

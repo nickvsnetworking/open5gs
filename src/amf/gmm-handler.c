@@ -35,21 +35,23 @@ int gmm_handle_registration_request(amf_ue_t *amf_ue,
 {
     int served_tai_index = 0;
 
-    ogs_nas_5gs_guti_t nas_guti;
-
     ran_ue_t *ran_ue = NULL;
     ogs_nas_5gs_registration_type_t *registration_type = NULL;
     ogs_nas_5gs_mobile_identity_t *mobile_identity = NULL;
+    ogs_nas_5gs_mobile_identity_header_t *mobile_identity_header = NULL;
+    ogs_nas_5gs_mobile_identity_guti_t *mobile_identity_guti = NULL;
+    ogs_nas_5gs_guti_t nas_guti;
 
-#if 0
     char imsi_bcd[OGS_MAX_IMSI_BCD_LEN+1];
-#endif
 
     ogs_assert(registration_request);
     registration_type = &registration_request->registration_type;
     ogs_assert(registration_type);
     mobile_identity = &registration_request->mobile_identity;
     ogs_assert(mobile_identity);
+    mobile_identity_header =
+            (ogs_nas_5gs_mobile_identity_header_t *)mobile_identity->buffer;
+    ogs_assert(mobile_identity_header);
 
     ogs_assert(amf_ue);
     ran_ue = amf_ue->ran_ue;
@@ -165,37 +167,33 @@ int gmm_handle_registration_request(amf_ue_t *amf_ue,
         return OGS_ERROR;
     }
 
-#if 0
-    switch (mobile_identity->suci.type) {
+    switch (mobile_identity_header->type) {
     case OGS_NAS_5GS_MOBILE_IDENTITY_SUCI:
-#if 0
-        ogs_assert(sizeof(ogs_nas_mobile_identity_imsi_t) ==
-                5gs_mobile_identity->length);
-        memcpy(&amf_ue->nas_mobile_identity_imsi, 
-            &5gs_mobile_identity->imsi, 5gs_mobile_identity->length);
-        ogs_nas_imsi_to_bcd(
-            &5gs_mobile_identity->imsi, 5gs_mobile_identity->length,
-            imsi_bcd);
+        ogs_nas_5gs_imsi_to_bcd(mobile_identity, imsi_bcd);
         amf_ue_set_imsi(amf_ue, imsi_bcd);
 
         ogs_debug("    IMSI[%s]", imsi_bcd);
-#endif
         break;
     case OGS_NAS_5GS_MOBILE_IDENTITY_GUTI:
-        memcpy(&nas_guti.nas_plmn_id,
-                &mobile_identity->guti.nas_plmn_id, OGS_PLMN_ID_LEN);
-        memcpy(&nas_guti.amf_id,
-                &mobile_identity->guti.amf_id, sizeof(ogs_amf_id_t));
-        nas_guti.m_tmsi = mobile_identity->guti.m_tmsi;
+        mobile_identity_guti =
+            (ogs_nas_5gs_mobile_identity_guti_t *)mobile_identity->buffer;
+        ogs_assert(mobile_identity_guti);
 
-        ogs_debug("    5G-S_TMSI[AMF_ID:0x%x,M_TMSI:0x%x] SUCI[%d]",
-            ogs_amf_id_hexdump(&nas_guti.amf_id), nas_guti.m_tmsi, 999);
+        memcpy(&nas_guti.nas_plmn_id,
+                &mobile_identity_guti->nas_plmn_id, OGS_PLMN_ID_LEN);
+        memcpy(&nas_guti.amf_id,
+                &mobile_identity_guti->amf_id, sizeof(ogs_amf_id_t));
+        nas_guti.m_tmsi = be32toh(mobile_identity_guti->m_tmsi);
+
+        ogs_debug("    5G-S_GUTI[AMF_ID:0x%x,M_TMSI:0x%x] IMSI[%s]",
+            ogs_amf_id_hexdump(&nas_guti.amf_id), nas_guti.m_tmsi,
+                AMF_UE_HAVE_IMSI(amf_ue) 
+                    ? amf_ue->imsi_bcd : "Unknown IMSI");
         break;
     default:
-        ogs_warn("Not implemented[%d]", mobile_identity->suci.type);
+        ogs_error("Unknown SUCI type [%d]", mobile_identity_header->type);
         break;
     }
-#endif
 
 #if 0
     OGS_NAS_STORE_DATA(
