@@ -196,7 +196,9 @@ void OpenAPI_{{classname}}_free(OpenAPI_{{classname}}_t *{{classname}})
         {{#isMapContainer}}
             OpenAPI_list_for_each({{classname}}->{{name}}, node) {
                 OpenAPI_map_t *localKeyValue = (OpenAPI_map_t*)node->data;
+                /*
                 OpenAPI_{{complexType}}_free(localKeyValue->value);
+                */
                 ogs_free(localKeyValue);
             }
             OpenAPI_list_free({{classname}}->{{name}});

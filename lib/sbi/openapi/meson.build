@@ -100,6 +100,54 @@ libsbi_openapi_sources = files('''
     model/search_result.c
     model/stored_search_result.c
 
+    model/af_event.c
+	model/af_event.h
+	model/af_event_exposure_data.c
+	model/af_event_exposure_data.h
+	model/an_node_type.c
+	model/an_node_type.h
+	model/external_client_type.c
+	model/external_client_type.h
+	model/gmlc_info.c
+	model/gmlc_info.h
+	model/hss_info.c
+	model/hss_info.h
+	model/imsi_range.c
+	model/imsi_range.h
+	model/internal_group_id_range.c
+	model/internal_group_id_range.h
+	model/lmf_info.c
+	model/lmf_info.h
+	model/nef_info.c
+	model/nef_info.h
+	model/nf_info.c
+	model/nf_info.h
+	model/nf_service_set_cond.c
+	model/nf_service_set_cond.h
+	model/nf_set_cond.c
+	model/nf_set_cond.h
+	model/pcscf_info.c
+	model/pcscf_info.h
+	model/pfd_data.c
+	model/pfd_data.h
+	model/plmn_id_nid.c
+	model/plmn_id_nid.h
+	model/preferred_search.c
+	model/preferred_search.h
+	model/rat_type.c
+	model/rat_type.h
+	model/tngf_info.c
+	model/tngf_info.h
+	model/twif_info.c
+	model/twif_info.h
+	model/udsf_info.c
+	model/udsf_info.h
+	model/upf_cond.c
+	model/upf_cond.h
+	model/vendor_specific_feature.c
+	model/vendor_specific_feature.h
+	model/w_agf_info.c
+	model/w_agf_info.h
 '''.split())
 
 libsbi_openapi_inc = include_directories('.')
